@@ -469,3 +469,98 @@ def infer_direction(metric: str, *, default: int = 1) -> int:
     if any(token in lowered for token in lower_better_tokens):
         return -1
     return default
+
+
+# -- advisory diagnostics (C3): descriptive only, NEVER change verdicts --------
+# Contract: API_STABLE_1.0.md §8. Nothing in the decision path
+# (decide_best_candidate / sequential_look / check_regression) may read these.
+
+ADVISORY_POWER_TARGET = 0.80  # conventional "adequate power" line (advisory)
+ADVISORY_THIN_MARGIN_RATIO = 0.10  # ci_low < 10% of |mean| = thin (advisory)
+ADVISORY_NOISY_CI_RATIO = 2.0  # CI width > 2×|mean| = noisy (advisory)
+
+
+def paired_power(dz: float, n: int, *, alpha: float = 0.05) -> float:
+    """Normal-approximation one-sided power of a paired comparison.
+
+    ``power ≈ Φ(dz·√n − z_{1−α})`` for standardized effect ``dz`` (Cohen's
+    dz) over ``n`` pairs. This is the textbook normal approximation — the
+    real decision uses the exact/MC sign-flip p-value, so this number is
+    ADVISORY (planning "do I need more seeds?"), never a gate.
+
+    Conventions: ``dz=+inf`` → 1.0 (infinitely strong signal); ``dz=-inf``
+    or NaN → 0.0 (wrong direction / uninformative, conservative).
+    At the null (dz=0) power equals alpha, as it should.
+    """
+    if not 0.0 < alpha < 1.0:
+        raise ValueError(f"paired_power requires alpha in (0, 1), got {alpha}.")
+    if not isinstance(n, int) or isinstance(n, bool) or n < 1:
+        raise ValueError(f"paired_power requires integer n >= 1, got {n!r}.")
+    if isinstance(dz, bool) or not isinstance(dz, (int, float)):
+        raise ValueError(f"paired_power requires numeric dz, got {dz!r}.")
+    dz = float(dz)
+    if math.isnan(dz) or dz == float("-inf"):
+        return 0.0
+    if dz == float("inf"):
+        return 1.0
+    z_alpha = _NORM.inv_cdf(1.0 - alpha)
+    return min(1.0, max(0.0, _NORM.cdf(dz * math.sqrt(n) - z_alpha)))
+
+
+def diagnose_comparison(
+    comparison: PairedComparison, *, alpha: float = 0.05
+) -> dict[str, Any]:
+    """Advisory diagnostic sheet for one PairedComparison (C3).
+
+    Returns descriptive numbers + human ``notes`` (empty when unremarkable).
+    Thresholds are the ADVISORY_* constants above — arbitrary, documented,
+    and NEVER consulted by any verdict. Keys are stable (API_STABLE §8).
+    """
+    n = comparison.n_pairs
+    mean = comparison.mean_delta
+    ci_width = comparison.ci_high - comparison.ci_low
+    power = paired_power(comparison.effect_dz, max(1, n), alpha=alpha)
+    rel_margin: float | None = None
+    if mean != 0.0 and math.isfinite(mean) and math.isfinite(comparison.ci_low):
+        rel_margin = comparison.ci_low / abs(mean)
+    exact_floor: float | None = (1.0 / (1 << n)) if 7 <= n <= 16 else None
+
+    notes: list[str] = []
+    if n < AcceptancePolicy().min_pairs:
+        notes.append(
+            f"only {n} pair(s) — below the default min_pairs="
+            f"{AcceptancePolicy().min_pairs} (decide would skip this candidate)"
+        )
+    elif n < 7:
+        notes.append(
+            "Monte-Carlo p-value path (exact sign-flip enumeration needs 7..16 pairs)"
+        )
+    if math.isfinite(ci_width) and mean != 0.0 and math.isfinite(mean):
+        if ci_width > ADVISORY_NOISY_CI_RATIO * abs(mean):
+            notes.append(
+                f"CI width {ci_width:.4g} exceeds {ADVISORY_NOISY_CI_RATIO:g}×|mean| "
+                "— noisy estimate, consider more seeds (advisory)"
+            )
+    if power < ADVISORY_POWER_TARGET and math.isfinite(comparison.effect_dz):
+        notes.append(
+            f"approximate one-sided power {power:.2f} < {ADVISORY_POWER_TARGET:.2f} "
+            "at the observed effect — more seeds would sharpen this (advisory, "
+            "normal approximation, not the sign-flip test)"
+        )
+    if rel_margin is not None and 0.0 < rel_margin < ADVISORY_THIN_MARGIN_RATIO:
+        notes.append(
+            f"acceptance margin is thin (CI_low is {rel_margin:.1%} of |mean|, "
+            f"< {ADVISORY_THIN_MARGIN_RATIO:.0%}) — re-measure before trusting (advisory)"
+        )
+    return {
+        "metric": comparison.metric,
+        "n_pairs": n,
+        "effect_dz": comparison.effect_dz,
+        "approx_power_one_sided": power,
+        "power_alpha": alpha,
+        "ci_width": ci_width,
+        "margin_above_zero": comparison.ci_low,
+        "rel_margin": rel_margin,
+        "exact_p_floor": exact_floor,
+        "notes": notes,
+    }

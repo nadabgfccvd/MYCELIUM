@@ -15,6 +15,14 @@
   de sleep provado, 0 asserções mudadas; suíte total 43.1→41.7 s, resto é
   variância da máquina);
   nota xdist atualizada em AGENTS.md/README (medir localmente).
+- **C3 rigor estatístico II (advisory, 0 flips por construção):**
+  `stats.paired_power()` (aproximação normal, convenções NaN/inf, null=alfa)
+  + `stats.diagnose_comparison()` (ficha descritiva, chaves estáveis,
+  thresholds em constantes `ADVISORY_*` documentadas); isolamento pinado por
+  teste (decisão nunca lê advisory); fronteira S1/OBF auditada (0.0342 =
+  derivação com piso conservador, pinado); orçamento computacional por n em
+  `ARCHITECTURE.md` §9 (decisão a n=7 custa 3.2 ms); contrato em
+  `API_STABLE_1.0.md` §8. +17 testes, 0 existentes tocados.
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
