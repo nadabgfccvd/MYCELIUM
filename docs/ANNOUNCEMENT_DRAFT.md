@@ -5,7 +5,7 @@
 > `pip install mycelium-accel`
 > `mycelium-accel accelerate --target ./myproject`
 >
-> Point it at any project (Python/C/Rust/Node), it benchmarks your variants
+> Point it at any project (Python/C/Rust/Node/Go), it benchmarks your variants
 > across paired prime seeds and applies one only if the 95% CI excludes zero
 > (Holm-corrected) with no quality regression — auto-rollback otherwise.
 > No LLM, no deps, honest "no" when nothing proves out.

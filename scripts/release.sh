@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
 # V3.1: one-command release — build + twine + clean-venv verify + tag.
 # The version number stays deliberate: pass the TAG explicitly (no auto-bump).
-# Usage: scripts/release.sh v1.2.0 [--full]
+# Usage: scripts/release.sh v1.2.0 [--full] [--dry-run]
 #   --full also runs scripts/ci_local.sh first (~1 min).
+#   --dry-run (C9): guards + version checks only; builds/tags nothing.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" || $# -lt 1 ]]; then
-  echo "usage: scripts/release.sh vX.Y.Z [--full]"
+  echo "usage: scripts/release.sh vX.Y.Z [--full] [--dry-run]"
   echo "  builds, twine-checks, verifies in a clean venv, then tags."
   echo "  --full: run scripts/ci_local.sh first."
+  echo "  --dry-run: guards + version checks only; builds/tags nothing."
   exit 0
 fi
 TAG="$1"
-FULL="${2:-}"
+FULL=""
+DRY_RUN=""
+for arg in "$@"; do
+  if [[ "$arg" == "--full" ]]; then FULL="--full"; fi
+  if [[ "$arg" == "--dry-run" ]]; then DRY_RUN="1"; fi
+done
 
 if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "release.sh: bad TAG '$TAG' (want vX.Y.Z)" >&2
@@ -30,6 +37,11 @@ fi
 
 # Q3.5: versions + CHANGES must agree with the tag before anything builds.
 python3 scripts/release_check.py "$TAG" || exit 1
+
+if [[ -n "$DRY_RUN" ]]; then
+  echo "DRY-RUN $TAG: guards green (tree clean, tag free, versions + CHANGES agree); build/tag skipped."
+  exit 0
+fi
 
 if [[ "$FULL" == "--full" ]]; then
   echo "=== 0/4 full suite ==="

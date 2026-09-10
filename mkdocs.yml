@@ -24,6 +24,7 @@ nav:
     - Self-improvement: SELF_IMPROVEMENT.md
     - Performance: PERFORMANCE.md
     - Arquitetura: ARCHITECTURE.md
+    - Erros do CLI: ERRORS.md
   - API estável (1.0): API_STABLE_1.0.md
   - Decisões (ADRs):
     - Integrações: adr/0001-integrations.md

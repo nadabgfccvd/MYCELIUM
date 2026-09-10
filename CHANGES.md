@@ -58,6 +58,11 @@
   degradada honestamente); UI server ganha testes unitários puros (labels,
   matriz de status, árvore com teto, pin anti-DNS-reverso do CI-5) +
   auditoria "zero refs externas" nos estáticos. +8 testes.
+- **C9 release engineering:** `release.sh --dry-run` (guards + checks, zero
+  side effects, auditado ao vivo); teste live de single-source version
+  (pyproject==__init__==CHANGES, falha no bump parcial); nav do mkdocs com
+  teste (18 páginas user-facing linkadas, zero refs pendentes) + `ERRORS.md`
+  no site; quickstart agora fixa o JSON gêmeo do HTML; anúncio cita Go. +5 testes (454 verdes).
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
