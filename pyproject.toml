@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mycelium-accel"
-version = "1.4.0"
+version = "1.5.0"
 description = "MYCELIUM-Accel: paired-statistics acceleration harness for arbitrary projects (no LLM, prime seeds, sandboxed)"
 readme = "README.md"
 requires-python = ">=3.11"

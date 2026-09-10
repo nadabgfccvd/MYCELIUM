@@ -35,7 +35,7 @@ pareada completa), então ciclos sempre terminam em minutos.
 
 | Evidência | Número |
 |---|---|
-| Suíte de testes | 118 verdes (pré-rename), meta ≥ 123 pós-fundamentos |
+| Suíte de testes | **454 passed + 276 subtests** (v1.5.0; CI 3 SOs × 2 Pythons, ruff+mypy gates) |
 | Roda 25 min pós-roadmap (2026-09-09) | 73 ciclos em 1.512s (~20,7s/ciclo), **73/73 rejeições honestas** do guard pareado |
 | Screening com futilidade | busca focada de 29 candidatos em ~5s com portão fechado |
 | Library learning (corpus real, 30 rodadas) | 374 → 332 nós (11,3%), 8 abstrações, suporte médio 5,1 |
@@ -80,7 +80,11 @@ suíte 42→27 s, racing -66%, `--cache` 14×, `--adaptive-repeats` -13–60% ru
 `--sequential-seeds` (OBF, -14% decisivos), `--race-adaptive` (-33% screen),
 `--cache-dir` compartilhado, S2 morto com prova, CI 2 estágios, AGENTS.md ·
 suíte: **204 verdes** (v1.3) → v1.4 (QUALIDADE): **380 verdes** + 180 subtests,
-mypy gate, mutação stats.py 88.7% kill, CI 3 SOs × 2 Pythons verde
+mypy gate, mutação stats.py 88.7% kill, CI 3 SOs × 2 Pythons verde →
+v1.5 (10 ciclos autônomos, `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`):
+**454 verdes** + 276 subtests, kind `go`, `accelerate --dry-run`, advisory
+stats (§8), exports atômicos, telemetria rotativa, `screen_trail`,
+relatórios dark/print, release `--dry-run`
 - Documento-mãe: `docs/ROADMAP_ESTRATEGICO_MYCELIUM_AUTO_EVOLVE_20260909.md` · histórico: `CHANGES.md`
 
 ---

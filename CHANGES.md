@@ -1,6 +1,6 @@
 # CHANGES
 
-## Unreleased — autonomous 10-cycle improvement run (2026-09-10, branch arena/01a08ae0-mycelium)
+## 2026-09-10 — autonomous 10-cycle run: 1.5.0 (release candidate, branch arena/01a08ae0-mycelium)
 
 - **C1 higiene & verdade documental:** README evidencia "118 verdes" →
   380 passed + 180 subtests; linha v1.4 (QUALIDADE) no estado do roadmap;
@@ -63,6 +63,14 @@
   (pyproject==__init__==CHANGES, falha no bump parcial); nav do mkdocs com
   teste (18 páginas user-facing linkadas, zero refs pendentes) + `ERRORS.md`
   no site; quickstart agora fixa o JSON gêmeo do HTML; anúncio cita Go. +5 testes (454 verdes).
+- **C10 consolidação:** mutação amostral manual 8/8 mortos (faults em stats,
+  dry-run, CSV, telemetria, detect, release_check, doctor — todos pegos);
+  suíte 3× serial verde (42–44 s) + 1× xdist (23.6 s); bump 1.5.0
+  (pyproject+__init__+dist rebuildado, twine-PASS, `release.sh v1.5.0
+  --dry-run` verde); README evidências corrigidas (phantom-edit C1 auditado:
+  edições paralelas no mesmo arquivo correm — nunca mais em lote);
+  `docs/ROADMAP_NEXT_2.0.md` (propostas pós-contrato-1.x); cadeia de backups
+  verificada (ORIGINAL + C1..C10: 11 zips válidos + 10 pushes). anúncio cita Go. +5 testes (454 verdes).
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
