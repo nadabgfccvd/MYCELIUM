@@ -16,9 +16,9 @@ jobs:
       - name: Install package
         run: pip install .[dev]
       - name: Lint
-        run: pip install ruff && ruff check mycelium_accel/ tests/ scripts/
+        run: pip install "ruff==0.16.6" && ruff check mycelium_accel/ tests/ scripts/
       - name: Typecheck
-        run: pip install mypy && mypy mycelium_accel/
+        run: pip install "mypy==2.3.1" && mypy mycelium_accel/
       - name: Fast tests
         run: pytest -q -m "not slow"
 

@@ -22,7 +22,18 @@ classifiers = [
 
 [project.optional-dependencies]
 # Q1.1: dev/test-only deps. Runtime stays stdlib-only (no install_requires).
-dev = ["pytest", "pytest-xdist", "pytest-cov", "hypothesis", "scipy", "mypy"]
+# CI-1: exact pins — CI installs these blind; unpinned numpy 2.4+ stubs use
+# `type` statements (3.12+) that mypy under python_version 3.11 cannot parse.
+# Verified set (sandbox + CI matrix incl. cp314 wheels); bump deliberately.
+dev = [
+  "pytest==9.0.3",
+  "pytest-xdist==3.8.0",
+  "pytest-cov==7.1.0",
+  "hypothesis==6.168.0",
+  "scipy==1.17.1",
+  "numpy==2.3.5",
+  "mypy==2.3.1",
+]
 
 [project.scripts]
 mycelium-accel = "mycelium_accel.__main__:main"

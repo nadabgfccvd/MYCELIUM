@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from hypothesis import HealthCheck, settings
+from hypothesis import HealthCheck, assume, settings
 from hypothesis import strategies as st
 from hypothesis.stateful import RuleBasedStateMachine, initialize, invariant, rule
 
@@ -236,8 +236,12 @@ class SweepDecideExportMachine(RuleBasedStateMachine):
 
     @rule(baseline=st.one_of(st.sampled_from(["", "ghost"]), _HOSTILE_TEXT))
     def decide_unknown_baseline(self, baseline: str) -> None:
+        name = baseline or "ghost"
+        # CI-1: a hostile candidate may already own this name (fresh-DB CI runs
+        # hit the collision ~always); without the guard the "unknown" premise is false.
+        assume(name not in self.runs)
         best, reasons, comparisons = decide_best_candidate(
-            self._build_sweep(), baseline or "ghost", policy=self.policy
+            self._build_sweep(), name, policy=self.policy
         )
         assert best is None
         self._check_verdict(best, reasons)

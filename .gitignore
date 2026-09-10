@@ -34,3 +34,12 @@ site/
 # mutmut runs (Q4/M1; regenerable, never committed)
 mutants/
 .mutmut-cache/
+
+# Coverage artifacts (local only, never committed)
+.coverage
+.coverage.*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

@@ -8,6 +8,11 @@
   goldens, executor _run_once/candidate/sweep); 20/20 fault-injection sims
   green; projected 93.3% with battery; 37 survivors accepted (registry in
   the module docstring). Finding: _run_once seed_index never read (kept).
+- CI-1 (first GitHub push): 3 red causes fixed — dev deps pinned (latest
+  numpy stubs use 3.12+ `type` syntax, mypy gate runs 3.11); stateful
+  decide_unknown_baseline assume-guard (hostile-name collision on fresh-DB
+  runs); docs deploy installs mkdocs-material+ghp-import. Hygiene:
+  .gitattributes (LF), .coverage untracked+ignored.
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 
