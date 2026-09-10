@@ -58,6 +58,7 @@ def canonical_executable(name: str) -> str:
 ENV_PASSTHROUGH = {
     "PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "TEMP", "TMP",
     "CARGO_HOME", "RUSTUP_HOME", "NODE_ENV", "VIRTUAL_ENV",
+    "GOCACHE", "GOMODCACHE",
     "CC", "CXX", "CFLAGS", "CXXFLAGS", "LDFLAGS", "MAKEFLAGS",
 }
 

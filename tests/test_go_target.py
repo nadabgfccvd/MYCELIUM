@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import tempfile
 import unittest
@@ -15,7 +16,11 @@ from mycelium_accel.targets import (
     detect_kind,
     load_target,
 )
-from mycelium_accel.targets.base import DEFAULT_EXECUTABLE_ALLOWLIST, TargetManifest
+from mycelium_accel.targets.base import (
+    CommandRunner,
+    DEFAULT_EXECUTABLE_ALLOWLIST,
+    TargetManifest,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -89,6 +94,25 @@ class GoManifestTests(unittest.TestCase):
     def test_go_in_allowlist(self) -> None:
         self.assertIn("go", DEFAULT_EXECUTABLE_ALLOWLIST)
 
+    def test_go_cache_envs_pass_through_build_env(self) -> None:
+        # Regression (windows-latest CI, PR #3): GOCACHE was missing from the
+        # harness whitelist, so `go build` failed on runners where Go's
+        # default cache location is undefined (%LocalAppData% not set).
+        with tempfile.TemporaryDirectory() as temp:
+            saved = {k: os.environ.get(k) for k in ("GOCACHE", "GOMODCACHE")}
+            os.environ["GOCACHE"] = temp
+            os.environ["GOMODCACHE"] = temp
+            try:
+                env = CommandRunner(Path(temp)).build_env()
+            finally:
+                for k, v in saved.items():
+                    if v is None:
+                        os.environ.pop(k, None)
+                    else:
+                        os.environ[k] = v
+            self.assertEqual(env.get("GOCACHE"), temp)
+            self.assertEqual(env.get("GOMODCACHE"), temp)
+
     def test_load_target_maps_go_kind(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -131,6 +155,21 @@ class ValidateHintsTests(unittest.TestCase):
 @pytest.mark.slow
 @pytest.mark.skipif(shutil.which("go") is None, reason="needs go toolchain")
 class GoLiveTests(unittest.TestCase):
+    def setUp(self) -> None:
+        # Pin an explicit GOCACHE: runners like windows-latest may lack Go's
+        # default cache location (%LocalAppData% undefined), which made
+        # `go build` fail with "build cache is required". Deterministic fix.
+        self._gocache = tempfile.mkdtemp(prefix="mycelium-gocache-")
+        self._saved = os.environ.get("GOCACHE")
+        os.environ["GOCACHE"] = self._gocache
+
+    def tearDown(self) -> None:
+        if self._saved is None:
+            os.environ.pop("GOCACHE", None)
+        else:
+            os.environ["GOCACHE"] = self._saved
+        shutil.rmtree(self._gocache, True)
+
     def test_example_accelerates(self) -> None:
         from mycelium_accel.accelerate_generic import accelerate_target
 

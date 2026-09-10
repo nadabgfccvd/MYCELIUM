@@ -70,7 +70,10 @@
   --dry-run` verde); README evidências corrigidas (phantom-edit C1 auditado:
   edições paralelas no mesmo arquivo correm — nunca mais em lote);
   `docs/ROADMAP_NEXT_2.0.md` (propostas pós-contrato-1.x); cadeia de backups
-  verificada (ORIGINAL + C1..C10: 11 zips válidos + 10 pushes). anúncio cita Go. +5 testes (454 verdes).
+  verificada (ORIGINAL + C1..C10: 11 zips válidos + 10 pushes);
+  pós-PR (CI windows-latest, PR #3): `GOCACHE`/`GOMODCACHE` entram no
+  `ENV_PASSTHROUGH` do harness e o live test go fixa um GOCACHE explícito
+  (sem `%LocalAppData%`, `go build` falhava nos 2 runners windows); +1 teste.
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
