@@ -235,9 +235,10 @@ class CompareGoldenTests(unittest.TestCase):
             alternative="greater",
         )
         self.assertEqual(comp.p_value, 0.472)
-        self.assertEqual(
-            (comp.ci_low, comp.ci_high), (-0.20256899453462732, 0.2380812849358502)
-        )
+        # AlmostEqual: last-ulp libm dust differs on Apple silicon; places=12
+        # keeps full mutant-killing power (mutants move this value by ~1e-1).
+        self.assertAlmostEqual(comp.ci_low, -0.20256899453462732, places=12)
+        self.assertAlmostEqual(comp.ci_high, 0.2380812849358502, places=12)
         self.assertEqual(comp.mean_delta, 0.01054999999999997)
         self.assertEqual(comp.effect_dz, 0.01998526994230381)
         self.assertEqual(comp.prob_superior, 0.5)

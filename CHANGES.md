@@ -21,6 +21,13 @@
 - CI-3 (mac/win diagnosis): full job publishes FAILED lines as check
   annotations on red (re-run last-failed only, zero effect on green);
   shell-text example skips when sh is missing (Windows runners).
+- CI-4 (12 annotation-named failures): canonical_executable strips .exe so
+  Windows auto-detection (python.exe) validates — fixes scaffold manifest +
+  quickstart doctor; os.replace bounded PermissionError retry (Windows
+  replace-while-open); ui_smoke bypasses proxy env for loopback (macOS);
+  null_interior_p CI goldens → AlmostEqual places=12 (Apple libm dust);
+  shell-text baseline redesigned to one grep (3 ms vs 55 ms, verdict stable
+  on msys forks); release.sh + chmod-readonly tests posix-only skips.
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 

@@ -1,6 +1,7 @@
 """V3.1: release.sh guards (never tags from tests — help + validation only)."""
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import tempfile
@@ -13,6 +14,9 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import release_check  # noqa: E402
 
 
+@unittest.skipIf(os.name == "nt",
+                     "release.sh is a posix release tool (bash/mktemp/venv-bin); "
+                     "the bash available on Windows CI cannot run it reliably")
 class ReleaseScriptTests(unittest.TestCase):
     def test_help(self) -> None:
         proc = subprocess.run(["bash", str(SCRIPT), "--help"],

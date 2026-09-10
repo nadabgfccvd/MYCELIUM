@@ -54,6 +54,24 @@ def cache_key(
     return digest.hexdigest()
 
 
+def _replace_with_retry(tmp_name: str, path: Path, attempts: int = 10) -> None:
+    """Windows: os.replace raises PermissionError when another thread holds
+    the destination open (concurrent lookup during store). Bounded retry with
+    linear backoff; a no-op on posix where replace-while-open is legal."""
+    import time as _time  # local: keeps module import light
+
+    last: OSError | None = None
+    for attempt in range(attempts):
+        try:
+            os.replace(tmp_name, path)
+            return
+        except PermissionError as exc:
+            last = exc
+            _time.sleep(0.005 * (attempt + 1))
+    assert last is not None  # attempts >= 1 always sets last
+    raise last
+
+
 def _atomic_write_text(path: Path, text: str) -> None:
     """Q2.2: crash- and concurrency-safe write (tmp + rename)."""
     import tempfile as _tempfile  # local: keeps module import light
@@ -63,7 +81,7 @@ def _atomic_write_text(path: Path, text: str) -> None:
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
             handle.write(text)
-        os.replace(tmp_name, path)
+        _replace_with_retry(tmp_name, path)
     except BaseException:
         try:
             os.unlink(tmp_name)

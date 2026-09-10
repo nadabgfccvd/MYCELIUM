@@ -32,6 +32,9 @@ class IOFailureTests(unittest.TestCase):
     ROOT = Path(__file__).resolve().parent.parent
 
     @pytest.mark.slow  # Q2 re-tier: CLI subprocess
+    @unittest.skipIf(os.name == "nt",
+                     "chmod-based readonly dirs are posix semantics; "
+                     "Windows ACLs ignore the unix readonly bit")
     def test_readonly_export_is_friendly(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -49,6 +52,9 @@ class IOFailureTests(unittest.TestCase):
             self.assertNotIn("Traceback", proc.stderr)
 
     @pytest.mark.slow  # Q2 re-tier: CLI subprocess
+    @unittest.skipIf(os.name == "nt",
+                     "chmod-based readonly dirs are posix semantics; "
+                     "Windows ACLs ignore the unix readonly bit")
     def test_readonly_cache_dir_is_friendly(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -35,6 +35,7 @@ class UiSmokeTests(unittest.TestCase):
         proc = subprocess.Popen(
             [sys.executable, "scripts/mycelium_ui_server.py"],
             cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            stdin=subprocess.DEVNULL,
         )
         try:
             deadline = time.time() + 15
@@ -45,7 +46,11 @@ class UiSmokeTests(unittest.TestCase):
                     _, err = proc.communicate(timeout=5)
                     self.fail(f"server exited early: {err.decode()[-500:]}")
                 try:
-                    with urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=2) as resp:
+                    # Bypass proxy env vars: CI macOS runners may set http_proxy,
+                    # which urllib would otherwise apply even to loopback URLs.
+                    opener = urllib.request.build_opener(
+                        urllib.request.ProxyHandler({}))
+                    with opener.open(f"http://127.0.0.1:{port}/", timeout=2) as resp:
                         self.assertEqual(resp.status, 200)
                         body = resp.read().decode("utf-8", errors="replace")
                     break

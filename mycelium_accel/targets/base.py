@@ -47,7 +47,11 @@ def canonical_executable(name: str) -> str:
     """
     import re as _re
 
-    return "python3" if _re.fullmatch(r"python3\.\d+t?", name) else name
+    # Windows: auto-detection emits sys.executable's basename ("python.exe").
+    # Strip the platform suffix so it maps like posix "python". Allowlist
+    # membership is still required after normalization.
+    stem = name[:-4] if name.lower().endswith(".exe") else name
+    return "python3" if _re.fullmatch(r"python3\.\d+t?", stem) else stem
 
 
 ENV_PASSTHROUGH = {
