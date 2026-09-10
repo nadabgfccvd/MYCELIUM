@@ -1,0 +1,18 @@
+{
+  "name": "example-cmake",
+  "kind": "cmake",
+  "build_command": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build",
+  "benchmark_command": "./build/bench_example",
+  "metrics_parser": "regex:seconds=([0-9.]+)",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "artifact_paths": ["build/bench_example"],
+  "variants": [
+    {"name": "O3", "mode": "env", "env": {"CFLAGS": "-O3"},
+     "description": "rebuild with -O3"},
+    {"name": "O0", "mode": "env", "env": {"CFLAGS": "-O0"},
+     "description": "rebuild with -O0 (expected to lose)"}
+  ]
+}

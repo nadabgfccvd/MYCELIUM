@@ -1,0 +1,140 @@
+{
+  "comparisons": [],
+  "lower_is_better": true,
+  "metric": "seconds",
+  "started_at": 1789010118.5878487,
+  "summaries": [
+    {
+      "candidate": "baseline",
+      "flaky": true,
+      "maximum": 0.05,
+      "mean": 0.03666666666666667,
+      "median": 0.05,
+      "minimum": 0.01,
+      "runs": [
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025362409999985402,
+          "seed": 101,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02515546999998719,
+          "seed": 101,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025010307000002285,
+          "seed": 101,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02551694600001042,
+          "seed": 101,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025626754999990453,
+          "seed": 101,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025151759000010543,
+          "seed": 102,
+          "value": 0.01
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026127612999999883,
+          "seed": 102,
+          "value": 0.01
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026928351999998767,
+          "seed": 102,
+          "value": 0.01
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026541647999977158,
+          "seed": 102,
+          "value": 0.01
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.028492516999989448,
+          "seed": 102,
+          "value": 0.01
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026163465999985647,
+          "seed": 103,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025155399999988504,
+          "seed": 103,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025162154999975428,
+          "seed": 103,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02603102199998375,
+          "seed": 103,
+          "value": 0.05
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025113336000003983,
+          "seed": 103,
+          "value": 0.05
+        }
+      ],
+      "stddev": 0.019518001458970664
+    }
+  ],
+  "target": "/tmp/replay_gen/flaky"
+}

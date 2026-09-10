@@ -1,0 +1,140 @@
+{
+  "comparisons": [],
+  "lower_is_better": true,
+  "metric": "seconds",
+  "started_at": 1789010118.0475526,
+  "summaries": [
+    {
+      "candidate": "baseline",
+      "flaky": false,
+      "maximum": 0.031961851999994906,
+      "mean": 0.02668756799999983,
+      "median": 0.025138299000019515,
+      "minimum": 0.023386211000001822,
+      "runs": [
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.030565590000009024,
+          "seed": 101,
+          "value": 0.030565590000009024
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.030712762000007388,
+          "seed": 101,
+          "value": 0.030712762000007388
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02488039200000003,
+          "seed": 101,
+          "value": 0.02488039200000003
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025138299000019515,
+          "seed": 101,
+          "value": 0.025138299000019515
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02728296000000796,
+          "seed": 101,
+          "value": 0.02728296000000796
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.031961851999994906,
+          "seed": 103,
+          "value": 0.031961851999994906
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.028885810999980777,
+          "seed": 103,
+          "value": 0.028885810999980777
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.028680745000002617,
+          "seed": 103,
+          "value": 0.028680745000002617
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.029456523999982664,
+          "seed": 103,
+          "value": 0.029456523999982664
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.024423007999985202,
+          "seed": 103,
+          "value": 0.024423007999985202
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.023988881999997602,
+          "seed": 107,
+          "value": 0.023988881999997602
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.023764580000005253,
+          "seed": 107,
+          "value": 0.023764580000005253
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.023386211000001822,
+          "seed": 107,
+          "value": 0.023386211000001822
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.023764865000003965,
+          "seed": 107,
+          "value": 0.023764865000003965
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.0234210389999987,
+          "seed": 107,
+          "value": 0.0234210389999987
+        }
+      ],
+      "stddev": 0.003077782457268859
+    }
+  ],
+  "target": "/tmp/replay_gen/base"
+}

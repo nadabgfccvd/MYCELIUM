@@ -1,0 +1,32 @@
+site_name: MYCELIUM-Accel
+site_description: Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.
+site_author: Arena.ai Agent Mode
+# TODO(user): trocar pela URL real após o push (Fase 0).
+repo_url: https://github.com/INSIRA-ORGAO/mycelium-accel
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - content.code.copy
+nav:
+  - Quickstart (5 min): QUICKSTART.md
+  - Home: index.md
+  - Tutorial (10 min): TUTORIAL_10MIN.md
+  - Casos:
+    - EC1 dogfooding: CASE_MYCELIUM_20260909.md
+    - EC2 flags de C: CASE_C_FLAGS_20260909.md
+    - EC3 projeto real: CASE_EC3_20260909.md
+    - EC4 caso negativo: CASE_EC4_20260909.md
+    - S2 paralelo morto: S2_PARALLEL_PROOF_20260910.md
+  - Operação:
+    - Runs longas: RUNS.md
+    - Release: RELEASE.md
+    - Kill-switch & sandbox: KILLSWITCH_SANDBOX_CHECKLIST.md
+    - Self-improvement: SELF_IMPROVEMENT.md
+    - Performance: PERFORMANCE.md
+    - Arquitetura: ARCHITECTURE.md
+  - API estável (1.0): API_STABLE_1.0.md
+  - Decisões (ADRs):
+    - Integrações: adr/0001-integrations.md
+    - Tese de crescimento: adr/0002-open-growth-decision.md
+docs_dir: docs

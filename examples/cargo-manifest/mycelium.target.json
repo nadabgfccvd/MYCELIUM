@@ -1,0 +1,18 @@
+{
+  "name": "example-cargo",
+  "kind": "cargo",
+  "build_command": "cargo build --release",
+  "test_command": "cargo test --release",
+  "benchmark_command": "cargo run --release --bin bench_example",
+  "metrics_parser": "regex:seconds=([0-9.]+)",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "variants": [
+    {"name": "opt-level-3", "mode": "env", "env": {"RUSTFLAGS": "-C opt-level=3"},
+     "description": "max optimization"},
+    {"name": "opt-level-0", "mode": "env", "env": {"RUSTFLAGS": "-C opt-level=0"},
+     "description": "no optimization (expected to lose)"}
+  ]
+}

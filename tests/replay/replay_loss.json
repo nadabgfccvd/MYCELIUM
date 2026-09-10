@@ -1,0 +1,617 @@
+{
+  "comparisons": [
+    {
+      "baseline": "baseline",
+      "candidate": "python-counter",
+      "ci_high": -0.14695999742857,
+      "ci_low": -0.15470547578632587,
+      "confidence": 0.95,
+      "deltas": [
+        -0.15302286180000238,
+        -0.14633798880000198,
+        -0.1522293689999856,
+        -0.1435596647999887,
+        -0.14590869940000173,
+        -0.14886686120000833,
+        -0.15971977419999916
+      ],
+      "direction": -1,
+      "effect_dz": -27.265405327321275,
+      "mean_delta": -0.1499493170285697,
+      "median_delta": -0.14886686120000833,
+      "metric": "seconds",
+      "n_pairs": 7,
+      "p_value": 1.0,
+      "p_value_corrected": 1.0,
+      "prob_superior": 0.0
+    }
+  ],
+  "lower_is_better": true,
+  "metric": "seconds",
+  "started_at": 1789010117.480176,
+  "summaries": [
+    {
+      "candidate": "baseline",
+      "flaky": false,
+      "maximum": 0.03423078599999485,
+      "mean": 0.02717974282857085,
+      "median": 0.026437366999999767,
+      "minimum": 0.02591502100000298,
+      "runs": [
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02682086499999059,
+          "seed": 101,
+          "value": 0.02682086499999059
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02625514600001111,
+          "seed": 101,
+          "value": 0.02625514600001111
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026489538000021184,
+          "seed": 101,
+          "value": 0.026489538000021184
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026437366999999767,
+          "seed": 101,
+          "value": 0.026437366999999767
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026394485999986728,
+          "seed": 101,
+          "value": 0.026394485999986728
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02679161199998248,
+          "seed": 103,
+          "value": 0.02679161199998248
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026556585999998106,
+          "seed": 103,
+          "value": 0.026556585999998106
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026335043999978325,
+          "seed": 103,
+          "value": 0.026335043999978325
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02591502100000298,
+          "seed": 103,
+          "value": 0.02591502100000298
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026070556999997052,
+          "seed": 103,
+          "value": 0.026070556999997052
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026208918000008907,
+          "seed": 107,
+          "value": 0.026208918000008907
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026005022000020972,
+          "seed": 107,
+          "value": 0.026005022000020972
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02654530800000998,
+          "seed": 107,
+          "value": 0.02654530800000998
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02603169200000366,
+          "seed": 107,
+          "value": 0.02603169200000366
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026165343000002395,
+          "seed": 107,
+          "value": 0.026165343000002395
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026617369999996754,
+          "seed": 109,
+          "value": 0.026617369999996754
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02651485900000239,
+          "seed": 109,
+          "value": 0.02651485900000239
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.027675799000007828,
+          "seed": 109,
+          "value": 0.027675799000007828
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02777966200000037,
+          "seed": 109,
+          "value": 0.02777966200000037
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.026175975000001017,
+          "seed": 109,
+          "value": 0.026175975000001017
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02687246599998616,
+          "seed": 113,
+          "value": 0.02687246599998616
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02609872600001495,
+          "seed": 113,
+          "value": 0.02609872600001495
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.027536754999999857,
+          "seed": 113,
+          "value": 0.027536754999999857
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.025963732999997546,
+          "seed": 113,
+          "value": 0.025963732999997546
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02621401099997911,
+          "seed": 113,
+          "value": 0.02621401099997911
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02633515200000147,
+          "seed": 127,
+          "value": 0.02633515200000147
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02617077400000767,
+          "seed": 127,
+          "value": 0.02617077400000767
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02659726799998907,
+          "seed": 127,
+          "value": 0.02659726799998907
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02630129399997827,
+          "seed": 127,
+          "value": 0.02630129399997827
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.02597683700000175,
+          "seed": 127,
+          "value": 0.02597683700000175
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.03153736499999127,
+          "seed": 131,
+          "value": 0.03153736499999127
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.03423078599999485,
+          "seed": 131,
+          "value": 0.03423078599999485
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.029548700000020744,
+          "seed": 131,
+          "value": 0.029548700000020744
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.0339162710000096,
+          "seed": 131,
+          "value": 0.0339162710000096
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.028204690999984905,
+          "seed": 131,
+          "value": 0.028204690999984905
+        }
+      ],
+      "stddev": 0.002050784744870162
+    },
+    {
+      "candidate": "python-counter",
+      "flaky": false,
+      "maximum": 0.21729129199999875,
+      "mean": 0.17712905985714056,
+      "median": 0.1708426710000026,
+      "minimum": 0.16448158899999044,
+      "runs": [
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16896761400002447,
+          "seed": 101,
+          "value": 0.16896761400002447
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16962308600000142,
+          "seed": 101,
+          "value": 0.16962308600000142
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.18689924299999916,
+          "seed": 101,
+          "value": 0.18689924299999916
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.18218304399999852,
+          "seed": 101,
+          "value": 0.18218304399999852
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.18983872399999768,
+          "seed": 101,
+          "value": 0.18983872399999768
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.18997000799998887,
+          "seed": 103,
+          "value": 0.18997000799998887
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16808757199999036,
+          "seed": 103,
+          "value": 0.16808757199999036
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16448158899999044,
+          "seed": 103,
+          "value": 0.16448158899999044
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1708426710000026,
+          "seed": 103,
+          "value": 0.1708426710000026
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16997692399999664,
+          "seed": 103,
+          "value": 0.16997692399999664
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1708957600000076,
+          "seed": 107,
+          "value": 0.1708957600000076
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.17042805799999883,
+          "seed": 107,
+          "value": 0.17042805799999883
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.17092266399998834,
+          "seed": 107,
+          "value": 0.17092266399998834
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.20522498399998312,
+          "seed": 107,
+          "value": 0.20522498399998312
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1746316619999959,
+          "seed": 107,
+          "value": 0.1746316619999959
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.17338810600000443,
+          "seed": 109,
+          "value": 0.17338810600000443
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.17289917200000104,
+          "seed": 109,
+          "value": 0.17289917200000104
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16957964399998104,
+          "seed": 109,
+          "value": 0.16957964399998104
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16591337899998848,
+          "seed": 109,
+          "value": 0.16591337899998848
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.17078168799997684,
+          "seed": 109,
+          "value": 0.17078168799997684
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.18555877599999349,
+          "seed": 113,
+          "value": 0.18555877599999349
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16822196600000439,
+          "seed": 113,
+          "value": 0.16822196600000439
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1693360989999917,
+          "seed": 113,
+          "value": 0.1693360989999917
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16776434799999151,
+          "seed": 113,
+          "value": 0.16776434799999151
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1713479990000053,
+          "seed": 113,
+          "value": 0.1713479990000053
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.17361825500000805,
+          "seed": 127,
+          "value": 0.17361825500000805
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1686405529999888,
+          "seed": 127,
+          "value": 0.1686405529999888
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.20032629100001031,
+          "seed": 127,
+          "value": 0.20032629100001031
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.1659344700000247,
+          "seed": 127,
+          "value": 0.1659344700000247
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16719606199998793,
+          "seed": 127,
+          "value": 0.16719606199998793
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16827474199999415,
+          "seed": 131,
+          "value": 0.16827474199999415
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.19472793500000307,
+          "seed": 131,
+          "value": 0.19472793500000307
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.2071089190000066,
+          "seed": 131,
+          "value": 0.2071089190000066
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.16863379599999462,
+          "seed": 131,
+          "value": 0.16863379599999462
+        },
+        {
+          "candidate": "python-counter",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.21729129199999875,
+          "seed": 131,
+          "value": 0.21729129199999875
+        }
+      ],
+      "stddev": 0.013532547126752547
+    }
+  ],
+  "target": "/tmp/replay_gen/shell-text"
+}

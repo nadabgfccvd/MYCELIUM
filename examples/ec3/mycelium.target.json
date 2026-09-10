@@ -1,0 +1,17 @@
+{
+  "name": "ec3-more-itertools-ilen",
+  "kind": "python",
+  "test_command": "python -m pytest tests/test_more.py -q -k ilen",
+  "benchmark_command": "python benchmark_ilen.py",
+  "metrics_parser": "json_stdout",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "timeout_seconds": 300.0,
+  "variants": [
+    {"name": "len-fastpath", "mode": "patch",
+     "files": {"more_itertools/more.py": "ec3_variant_more.py"},
+     "description": "len() fast path for sized iterables in ilen()"}
+  ]
+}

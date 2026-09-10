@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mycelium-accel"
+version = "1.4.0"
+description = "MYCELIUM-Accel: paired-statistics acceleration harness for arbitrary projects (no LLM, prime seeds, sandboxed)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Arena.ai Agent Mode" }
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Software Development :: Code Generators",
+]
+
+[project.optional-dependencies]
+# Q1.1: dev/test-only deps. Runtime stays stdlib-only (no install_requires).
+dev = ["pytest", "pytest-xdist", "pytest-cov", "hypothesis", "scipy", "mypy"]
+
+[project.scripts]
+mycelium-accel = "mycelium_accel.__main__:main"
+mycelium = "mycelium_accel.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["mycelium_accel*"]
+
+[tool.pytest.ini_options]
+markers = [
+  "slow: real benchmark sweeps / servers (excluded from the inner loop; CI always runs all)",
+]
+
+[tool.ruff.lint]
+# V3.2: minimal high-signal gate (real bugs, not style).
+# Q3.2: + C901 (complexity hides bugs) + UP (3.11 idioms, autofixed).
+select = ["E9", "F", "C901", "UP"]
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.mypy]
+# Q3.1: pragmatic gate (default strictness, not strictest).
+python_version = "3.11"
+warn_unused_ignores = true
+
+[tool.mutmut]
+# Q4/M1: mutation runs are manual (timeboxed), never in CI.
+source_paths = ["mycelium_accel/"]
+only_mutate = ["mycelium_accel/stats.py"]
+also_copy = ["scripts/"]
+# NOTE: no -n (xdist workers hide trampoline hits from the parent).
+pytest_add_cli_args = ["-p", "no:randomly"]
+pytest_add_cli_args_test_selection = [
+  "tests/test_stats.py",
+  "tests/test_stats_properties.py",
+  "tests/test_stats_scipy.py",
+  "tests/test_numeric_edges.py",
+  "tests/test_verdict_equivalence.py",
+  "tests/test_decide_determinism.py",
+  "tests/test_stats_mutation.py",
+]

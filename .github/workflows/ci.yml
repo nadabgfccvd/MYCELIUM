@@ -1,0 +1,66 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # W3.1: fast signal in ~1 min (same loop as local dev).
+  fast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install package
+        run: pip install .[dev]
+      - name: Lint
+        run: pip install ruff && ruff check mycelium_accel/ tests/ scripts/
+      - name: Typecheck
+        run: pip install mypy && mypy mycelium_accel/
+      - name: Fast tests
+        run: pytest -q -m "not slow"
+
+  # W3.2: docs break releases — verify at push time, not release day.
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build docs
+        run: pip install mkdocs mkdocs-material && mkdocs build --strict
+
+  full:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Fase 3.3: 3 SOs × 2 Pythons. UI smoke pula fora do posix (documentado);
+        # exemplos C rodam só onde há gcc+make (EC2/EC3 são manuais, não CI).
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+      - name: Install package
+        run: pip install .[dev]
+      - name: Run tests
+        # V1.5: xdist green locally (neutral on 2 cores, ~40% faster on 4+);
+        # NOT yet validated on real CI runners (first push will confirm).
+        run: pytest -q -n auto
+        env:
+          HYPOTHESIS_PROFILE: ci  # Q1.1: exhaustive property profiles
+      - name: Smoke test (console script)
+        run: |
+          mycelium-accel run --seed 101 --state-dir smoke_state --rounds 5
+          mycelium-accel growth-regime --state-dir smoke_state

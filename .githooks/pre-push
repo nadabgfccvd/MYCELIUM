@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# W3.4: full suite before push (~30 s). Install: bash scripts/setup-hooks.sh
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+echo "pre-push: ruff + full suite..."
+ruff check mycelium_accel/ tests/ scripts/
+python -m pytest -q
+echo "pre-push: green, pushing."

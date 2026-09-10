@@ -1,0 +1,23 @@
+name: docs
+
+# H0.2: publica o site mkdocs no GitHub Pages a cada push na main.
+# Ativa de verdade no primeiro push do mantenedor (Fase 0 manual).
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install docs deps
+        run: pip install mkdocs
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --strict --force

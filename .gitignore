@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+
+# Local state produced by the engine
+.mycelium_state/
+.mycelium_state_*/
+.mycelium_self_improve/
+.mycelium_benchmarks/
+.mycelium_targets/
+.mycelium_qd/
+.mycelium_environments/
+.mycelium_transfer/
+.mycelium_semantics/
+demo_state/
+
+# Logs and editor files
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# Compiled EC2 example binaries (rebuilt by `make all`)
+examples/c/bench_O*
+
+# mkdocs build output
+site/
+
+# mutmut runs (Q4/M1; regenerable, never committed)
+mutants/
+.mutmut-cache/

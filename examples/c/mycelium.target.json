@@ -1,0 +1,22 @@
+{
+  "name": "ec2-c-flags",
+  "kind": "shell",
+  "build_command": "make all",
+  "test_command": "make check",
+  "benchmark_command": "sh run_bench.sh",
+  "metrics_parser": "regex:seconds=([0-9.]+)",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "timeout_seconds": 120.0,
+  "artifact_paths": ["bench_O2", "bench_O3", "bench_O3native", "bench_O2unroll"],
+  "variants": [
+    {"name": "O3", "mode": "args", "args": ["O3"],
+     "description": "-O3 vs baseline -O2"},
+    {"name": "O3native", "mode": "args", "args": ["O3native"],
+     "description": "-O3 -march=native vs baseline -O2"},
+    {"name": "O2unroll", "mode": "args", "args": ["O2unroll"],
+     "description": "-O2 -funroll-loops vs baseline -O2"}
+  ]
+}

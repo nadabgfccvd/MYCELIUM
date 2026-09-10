@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=MYCELIUM Auto-evolve Control Center
+Comment=Open the professional MYCELIUM Auto-evolve interface
+Exec=python /home/user/mycelium-prototype/scripts/mycelium_ui_server.py
+Terminal=false
+Categories=Development;

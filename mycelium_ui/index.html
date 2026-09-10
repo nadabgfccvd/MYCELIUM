@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MYCELIUM Auto-evolve Control Center</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar card">
+      <div>
+        <div class="eyebrow">MYCELIUM Auto-evolve</div>
+        <h1>Control Center</h1>
+        <p class="muted">Interface mais clara para iniciar, acompanhar, interpretar e parar o projeto com foco em telemetria operacional e uso humano.</p>
+      </div>
+
+      <div class="section">
+        <div class="sectionHeader">
+          <h2>Wizard de início rápido</h2>
+          <span class="helperText">Escolha um caminho e a interface já prepara os parâmetros.</span>
+        </div>
+        <div class="wizardGrid">
+          <button class="wizardCard" data-preset="explore" type="button">
+            <span class="wizardEyebrow">Rápido</span>
+            <strong>Explorar</strong>
+            <small>Run normal para evolução direta com pouca fricção.</small>
+          </button>
+          <button class="wizardCard" data-preset="improve" type="button">
+            <span class="wizardEyebrow">Seguro</span>
+            <strong>Auto melhorar</strong>
+            <small>Testa candidatos com guarda anti-regressão antes de aplicar.</small>
+          </button>
+          <button class="wizardCard" data-preset="deep" type="button">
+            <span class="wizardEyebrow">Profundo</span>
+            <strong>Calibrar a fundo</strong>
+            <small>Execução longa focada em fronteira, diversidade e recombinação.</small>
+          </button>
+        </div>
+        <div id="wizardSummary" class="helperText">Nenhum preset aplicado ainda.</div>
+      </div>
+
+      <div class="section">
+        <h2>Execução</h2>
+
+        <div class="fieldStack">
+          <label for="mode">Modo</label>
+          <select id="mode">
+            <option value="run">Run normal</option>
+            <option value="self-improve">Auto melhoria</option>
+            <option value="focused">Calibração focada</option>
+          </select>
+          <div id="modeHint" class="helperText">Evolução normal para gerar progresso rápido e direto.</div>
+        </div>
+
+        <div class="fieldStack modeField" data-modes="run">
+          <label for="rounds">Rounds (run normal)</label>
+          <input id="rounds" type="number" value="100" min="1" />
+        </div>
+
+        <div class="fieldStack modeField" data-modes="self-improve">
+          <label for="minutes">Minutos (auto melhoria)</label>
+          <input id="minutes" type="number" value="25" min="1" />
+        </div>
+
+        <div class="fieldStack modeField" data-modes="focused">
+          <label for="hours">Horas (calibração focada)</label>
+          <input id="hours" type="number" value="8" min="1" step="0.5" />
+        </div>
+
+        <div class="fieldStack modeField" data-modes="self-improve,focused">
+          <label for="guardWorkers">Workers do guarda</label>
+          <input id="guardWorkers" type="number" value="4" min="1" max="8" />
+          <div class="helperText">Mais workers aceleram comparação de candidatos, mas usam mais RAM.</div>
+        </div>
+
+        <div class="fieldStack">
+          <label for="ramMb">RAM para a próxima execução</label>
+          <select id="ramMb">
+            <option value="1024">1 GB</option>
+            <option value="2048" selected>2 GB</option>
+            <option value="3072">3 GB</option>
+            <option value="4096">4 GB</option>
+            <option value="auto">Auto</option>
+          </select>
+        </div>
+
+        <div class="planBox">
+          <div class="planTitle">Resumo da próxima execução</div>
+          <div id="nextRunSummary" class="planSummary"></div>
+        </div>
+
+        <div class="buttonRow actionRow3">
+          <button id="startBtn" class="primary" type="button">Iniciar</button>
+          <button id="repeatLastBtn" class="ghost" type="button">Repetir última sessão</button>
+          <button id="stopBtn" class="danger" type="button">Parar</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Comandos rápidos</h2>
+        <div class="chipRow">
+          <button class="chip" data-cmd="/help" type="button">/help</button>
+          <button class="chip" data-cmd="/status" type="button">/status</button>
+          <button class="chip" data-cmd="/report" type="button">/report</button>
+          <button class="chip" data-cmd="/focused 8" type="button">/focused 8</button>
+          <button class="chip" data-cmd="/stop" type="button">/stop</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sectionHeader">
+          <h2>Histórico de sessões e relatórios</h2>
+          <button id="refreshHistoryBtn" class="tinyButton ghost" type="button">Atualizar</button>
+        </div>
+        <div id="historyList" class="historyList"></div>
+      </div>
+
+      <div class="section">
+        <h2>Projeto</h2>
+        <pre id="projectTree" class="miniConsole compactConsole"></pre>
+      </div>
+
+      <div class="section">
+        <h2>Perfil default carregado</h2>
+        <pre id="profileSummary" class="miniConsole compactConsole"></pre>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="topbar card">
+        <div class="statusGroup">
+          <div class="statusBadge" id="runBadge">Parado</div>
+          <div class="statusBadge secondary" id="backgroundBadge">Foreground</div>
+          <div class="statusBadge secondary" id="freshnessBadge">Sem telemetria</div>
+        </div>
+        <div class="statusMetaBlock">
+          <div class="statusMeta" id="statusMeta">Aguardando execução.</div>
+          <div class="statusSubMeta" id="statusSubMeta">Sem atualização ainda.</div>
+        </div>
+      </section>
+
+      <section class="card panelCard onboardingCard">
+        <div class="sectionHeader inlineHeader">
+          <div>
+            <h2>O que você quer fazer hoje?</h2>
+            <div class="helperText">Se você não quiser pensar nos detalhes técnicos, use a recomendação automática abaixo.</div>
+          </div>
+          <span id="onboardingBadge" class="statusBadge secondary">Sugestão pronta</span>
+        </div>
+        <div class="onboardingGrid">
+          <div>
+            <div class="onboardingTitle" id="onboardingTitle">Sugestão padrão: Explorar</div>
+            <div class="onboardingText" id="onboardingText">Boa opção para checar se tudo está saudável e gerar progresso rápido.</div>
+            <div class="helperText" id="onboardingRecommendation">A interface vai recomendar um preset automaticamente com base no histórico recente.</div>
+          </div>
+          <div class="onboardingActions">
+            <button id="applyRecommendedBtn" class="primary" type="button">Aplicar sugestão</button>
+            <button id="openHelpPresetBtn" class="ghost" type="button">Ver ajuda rápida</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panelCard">
+        <div class="sectionHeader inlineHeader">
+          <div>
+            <h2>Alertas visuais</h2>
+            <div class="helperText">Mensagens humanas para os eventos mais importantes.</div>
+          </div>
+        </div>
+        <div id="alertFeed" class="alertFeed"></div>
+      </section>
+
+      <section class="dashboardGrid">
+        <div class="card panelCard">
+          <h2>Saúde operacional</h2>
+          <div class="kvGrid">
+            <div><span>Modo</span><strong id="opMode">-</strong></div>
+            <div><span>Fase</span><strong id="opPhase">-</strong></div>
+            <div><span>PID</span><strong id="opPid">-</strong></div>
+            <div><span>Return code</span><strong id="opReturnCode">-</strong></div>
+            <div><span>Ciclo</span><strong id="opCycle">-</strong></div>
+            <div><span>Rounds na sessão</span><strong id="opSessionRounds">-</strong></div>
+            <div><span>Estado do daemon</span><strong id="opDaemonState">-</strong></div>
+            <div><span>Kill-switch</span><strong id="opKill">-</strong></div>
+          </div>
+          <div class="detailBox">
+            <div><span>State dir</span><code id="opStateDir">-</code></div>
+            <div><span>State file</span><code id="opStatePath">-</code></div>
+          </div>
+        </div>
+
+        <div class="card panelCard">
+          <h2>Qualidade ao vivo</h2>
+          <div class="metricGrid metricGridDense">
+            <div><span>Round</span><strong id="metricRound">-</strong></div>
+            <div><span class="labelWithInfo">Best score <button class="infoDot" type="button" data-tooltip="Pontuação geral do melhor programa observado na rodada mais recente. Quanto maior, melhor o desempenho agregado.">?</button></span><strong id="metricScore">-</strong></div>
+            <div><span class="labelWithInfo">Exact rate <button class="infoDot" type="button" data-tooltip="Percentual de casos em que o melhor programa acertou exatamente a saída esperada. É um sinal direto de qualidade.">?</button></span><strong id="metricExact">-</strong></div>
+            <div><span class="labelWithInfo">Capability <button class="infoDot" type="button" data-tooltip="Sinal composto de capacidade recente. Resume a força do sistema combinando qualidade e progresso, útil para comparar tendência geral.">?</button></span><strong id="metricCapability">-</strong></div>
+            <div><span class="labelWithInfo">Solved by best <button class="infoDot" type="button" data-tooltip="Quantidade de desafios que o melhor programa resolveu por completo na última medição visível.">?</button></span><strong id="metricSolved">-</strong></div>
+            <div><span>Clima</span><strong id="metricClimate">-</strong></div>
+          </div>
+          <div class="programBox">
+            <span>Melhor programa observado</span>
+            <pre id="bestProgram" class="miniConsole compactConsole"></pre>
+          </div>
+        </div>
+
+        <div class="card panelCard">
+          <h2>Ecologia / exploração</h2>
+          <div class="metricGrid metricGridDense">
+            <div><span>Macros globais</span><strong id="metricMacros">-</strong></div>
+            <div><span class="labelWithInfo">Macros staging <button class="infoDot" type="button" data-tooltip="Macros candidatas que ainda estão em observação. Elas podem virar macros globais se mostrarem reuso e ganho real.">?</button></span><strong id="metricStaging">-</strong></div>
+            <div><span class="labelWithInfo">Fronteira <button class="infoDot" type="button" data-tooltip="Tamanho do arquivo de fronteira de desafios e soluções úteis. Ajuda a enxergar quantos stepping stones relevantes o sistema mantém.">?</button></span><strong id="metricFrontier">-</strong></div>
+            <div><span>Dificuldade</span><strong id="metricFrontierDifficulty">-</strong></div>
+            <div><span class="labelWithInfo">Nichos ativos <button class="infoDot" type="button" data-tooltip="Quantidade de nichos comportamentais ocupados. Mais nichos ativos normalmente significam busca menos colapsada e mais diversidade útil.">?</button></span><strong id="metricNiches">-</strong></div>
+            <div><span class="labelWithInfo">Diversidade <button class="infoDot" type="button" data-tooltip="Resumo da variedade de comportamentos da população. Valores maiores costumam indicar exploração mais rica.">?</button></span><strong id="metricEntropy">-</strong></div>
+            <div><span class="labelWithInfo">Macro transfer <button class="infoDot" type="button" data-tooltip="Mede quanto as macros aprendidas estão ajudando em outros contextos. Valores maiores sugerem reutilização útil entre nichos ou desafios.">?</button></span><strong id="metricTransfer">-</strong></div>
+            <div><span class="labelWithInfo">Frontier progress <button class="infoDot" type="button" data-tooltip="Mostra se a fronteira recente está aprendendo ou destravando novos pontos. É um termômetro de avanço em áreas difíceis.">?</button></span><strong id="metricFrontierProgress">-</strong></div>
+            <div><span>Histórico métrico</span><strong id="metricHistoryCount">-</strong></div>
+          </div>
+          <div class="statusTriplet">
+            <div><span>Frontier</span><strong id="frontierFrontierCount">-</strong></div>
+            <div><span>Dominated</span><strong id="frontierDominatedCount">-</strong></div>
+            <div><span>Impossible</span><strong id="frontierImpossibleCount">-</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card panelCard">
+          <h2>Desafios ativos / oráculos</h2>
+          <pre id="challengeOracles" class="miniConsole reportPreview"></pre>
+        </div>
+
+        <div class="card panelCard">
+          <h2>Relatórios</h2>
+          <div id="reportPath" class="muted">Nenhum relatório automático ainda.</div>
+          <div class="buttonRow singleActionRow">
+            <button id="openReportBtn" type="button">Abrir relatório mais recente</button>
+          </div>
+          <pre id="reportPreview" class="miniConsole reportPreview"></pre>
+        </div>
+      </section>
+
+      <section class="card terminalCard" id="terminalCard">
+        <div class="terminalHeader">
+          <div>
+            <h2>CMD / Console do projeto</h2>
+            <div class="muted" id="terminalHint">Sem interação, a UI entra em segundo plano após 5 minutos.</div>
+          </div>
+          <div class="terminalActions">
+            <button id="wakeBtn" class="ghost" type="button">Trazer para frente</button>
+          </div>
+        </div>
+        <pre id="terminal" class="terminal"></pre>
+        <div class="commandBar">
+          <input id="commandInput" type="text" placeholder="Digite /help, /status, /self-improve 25, /focused 8..." />
+          <button id="sendCmdBtn" type="button">Enviar</button>
+        </div>
+      </section>
+
+      <section class="card helpCard">
+        <h2>Ajuda humana</h2>
+        <pre id="helpBox" class="miniConsole"></pre>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastStack" class="toastStack" aria-live="polite"></div>
+  <div id="tooltipBubble" class="tooltipBubble" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>

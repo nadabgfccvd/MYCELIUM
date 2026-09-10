@@ -1,0 +1,17 @@
+{
+  "name": "example-python",
+  "kind": "python",
+  "test_command": "python -m pytest -q -x",
+  "benchmark_command": "python benchmark.py",
+  "metrics_parser": "json_stdout",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "variants": [
+    {"name": "fast-mode", "mode": "env", "env": {"EXAMPLE_MODE": "fast"},
+     "description": "smaller workload via env switch"},
+    {"name": "slow-mode", "mode": "env", "env": {"EXAMPLE_MODE": "slow"},
+     "description": "larger workload via env switch (expected to lose)"}
+  ]
+}
