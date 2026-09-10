@@ -46,6 +46,11 @@
   (executable_allowlist) e ecoa valores (repeats/warmup); exemplo
   `examples/go-bench/` (test live pula sem toolchain); README/docstrings
   atualizados. +12 testes (+2 pulos condicionais ao toolchain).
+- **C7 substrato de pesquisa (comportamento default intocado):** telemetria com
+  rotação por tamanho (~1 MB/parte, leitores somem partes em ordem, falha de
+  rotação nunca quebra runs); `self-improve` ganha `screen_trail` por ciclo
+  (variante + diff de perfil + rps + veredito + motivos — o "nenhum candidato"
+  agora é explicável); dogfood gate verde (engine intocado). +10 testes.
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
