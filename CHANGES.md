@@ -23,6 +23,14 @@
   derivação com piso conservador, pinado); orçamento computacional por n em
   `ARCHITECTURE.md` §9 (decisão a n=7 custa 3.2 ms); contrato em
   `API_STABLE_1.0.md` §8. +17 testes, 0 existentes tocados.
+- **C4 robustez (escrita atômica em tudo):** `export_csv/md/html` + `doctor
+  --fix` agora via tmp+rename (`_atomic_write_bytes` novo p/ CSV bit-idêntico
+  incl. CRLF em toda plataforma); falha no meio da escrita = zero arquivo
+  parcial, zero resíduo tmp, rewrite falho preserva bytes anteriores (pinado
+  por injeção ENOSPC nos 4 exports + fix); exports seguem altos em lock
+  (só cache degrada); nomes hostis estendidos (`$ ; \\ \n \t ☃ "` roundtrip
+  JSON/CSV); auditoria runner: timeout exato (1.00/2.00 s medidos), orphans
+  mortos por grupo de processo, OSError→exit 1 + 1 linha no CLI. +7 testes (404 verdes).
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
