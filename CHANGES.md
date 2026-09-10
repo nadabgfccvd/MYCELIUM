@@ -71,9 +71,13 @@
   edições paralelas no mesmo arquivo correm — nunca mais em lote);
   `docs/ROADMAP_NEXT_2.0.md` (propostas pós-contrato-1.x); cadeia de backups
   verificada (ORIGINAL + C1..C10: 11 zips válidos + 10 pushes);
-  pós-PR (CI windows-latest, PR #3): `GOCACHE`/`GOMODCACHE` entram no
-  `ENV_PASSTHROUGH` do harness e o live test go fixa um GOCACHE explícito
-  (sem `%LocalAppData%`, `go build` falhava nos 2 runners windows); +1 teste.
+  pós-PR (CI PR #3, runs 34511785988): (a) `GOCACHE`/`GOMODCACHE` entram
+  no `ENV_PASSTHROUGH` do harness e o live test go fixa um GOCACHE
+  explícito (sem `%LocalAppData%`, `go build` falhava nos 2 runners
+  windows); +1 teste; (b) teste C8 de árvore-do-projetos era flaky —
+  `.index("a")` em STRING renderizada hitava o nome aleatório do temp
+  (fast job: 17 not less than 4) → nome fixo hostil + asserts no
+  formato renderizado (conectores), prova com 8 nomes adversariais.
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 

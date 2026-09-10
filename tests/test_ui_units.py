@@ -55,15 +55,21 @@ class UiPureTests(unittest.TestCase):
         import tempfile
 
         with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp)
+            # Fixed name with 'b' before 'a': the sort assertion must not
+            # depend on the random temp dir name (PR #3 fast-job failure:
+            # `.index("a")` on the rendered STRING hit the temp name).
+            root = Path(temp) / "badroot"
+            root.mkdir()
             (root / "b").mkdir()
             (root / "a").mkdir()
             (root / "a" / "deep").mkdir()
             (root / "a" / "deep" / "deeper").mkdir()
             (root / "a" / "deep" / "deeper" / "deepest").mkdir()
             tree = self.srv.build_project_tree(root, max_depth=3)
-            self.assertLess(tree.index("a"), tree.index("b"))  # sorted
+            self.assertIsInstance(tree, str)  # rendered tree, not a list
+            self.assertLess(tree.index("├── a/"), tree.index("└── b/"))  # sorted
             self.assertNotIn("deepest", tree)  # depth cap honored
+            self.assertIn("deeper/", tree)  # cap keeps the first levels
 
     def test_static_ui_has_no_external_refs(self) -> None:
         ui = ROOT / "mycelium_ui"
