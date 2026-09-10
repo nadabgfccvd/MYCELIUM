@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import resource
+import socketserver
 import subprocess
 import sys
 import threading
@@ -842,11 +843,35 @@ class Handler(BaseHTTPRequestHandler):
         return
 
 
+class UIServer(ThreadingHTTPServer):
+    """ThreadingHTTPServer that never stalls the boot on reverse DNS.
+
+    CPython's ``HTTPServer.server_bind`` fills ``server_name`` via
+    ``socket.getfqdn(host)`` — a blocking PTR+A lookup that runs *before*
+    ``listen()``. On a host with a slow or absent resolver (CI macOS runners,
+    offline laptops) that costs seconds-to-minutes during which the port is
+    bound but not accepting, so every client just times out. The UI silences
+    request logging and never uses ``server_name``, so the numeric host is a
+    truthful, dependency-free substitute.
+    """
+
+    daemon_threads = True  # a wedged keep-alive thread must not outlive shutdown
+
+    def server_bind(self) -> None:
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.server_address[:2]
+        self.server_name = host or "127.0.0.1"
+        self.server_port = port
+
+
 def main() -> None:
     host = os.environ.get("MYCELIUM_UI_HOST", DEFAULT_HOST)
     port = int(os.environ.get("MYCELIUM_UI_PORT", str(DEFAULT_PORT)))
-    server = ThreadingHTTPServer((host, port), Handler)
-    print(f"MYCELIUM Auto-evolve UI listening on http://{host}:{port}")
+    server = UIServer((host, port), Handler)
+    # Report the port actually bound: with MYCELIUM_UI_PORT=0 the OS picks one,
+    # and the smoke test (tests/test_ui_smoke.py) reads it from this banner
+    # instead of racing for a "free" port of its own.
+    print(f"MYCELIUM Auto-evolve UI listening on http://{host}:{server.server_address[1]}", flush=True)
     server.serve_forever()
 
 
