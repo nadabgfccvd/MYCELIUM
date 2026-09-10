@@ -51,6 +51,13 @@
   rotação nunca quebra runs); `self-improve` ganha `screen_trail` por ciclo
   (variante + diff de perfil + rps + veredito + motivos — o "nenhum candidato"
   agora é explicável); dogfood gate verde (engine intocado). +10 testes.
+- **C8 relatórios & UI (offline-first):** `report_html` + `history` ganham
+  dark-mode (`prefers-color-scheme`), CSS de impressão e (report) captions +
+  `scope=col` nas tabelas; BUG REAL corrigido: médias nan/inf envenenavam o
+  SVG do `history` com coordenadas literais "nan" (agora filtradas, seção
+  degradada honestamente); UI server ganha testes unitários puros (labels,
+  matriz de status, árvore com teto, pin anti-DNS-reverso do CI-5) +
+  auditoria "zero refs externas" nos estáticos. +8 testes.
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 

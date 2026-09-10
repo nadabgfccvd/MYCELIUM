@@ -17,6 +17,8 @@ body{font-family:system-ui,sans-serif;max-width:900px;margin:2em auto;padding:0 
 .meta{color:#555;} table{border-collapse:collapse;margin:1em 0;} th,td{border:1px solid #ccc;padding:4px 10px;text-align:right;}
 th:first-child,td:first-child{text-align:left;} .note{color:#666;font-size:13px;}
 h2{margin-top:1.6em;border-bottom:1px solid #ddd;padding-bottom:4px;}
+@media (prefers-color-scheme:dark){body{background:#121212;color:#e0e0e0}th{background:#2a2a2a}td,th{border-color:#555}h2{border-color:#444}.note,.meta{color:#aaa}}
+@media print{body{max-width:100%;margin:0}svg{break-inside:avoid}}
 """
 
 
@@ -38,8 +40,12 @@ def _line_chart(points: list[tuple[float, float, float]], lower_is_better: bool)
     """points = (x_index, mean, stddev). Mean line + ±1 stddev band."""
     import math
 
-    means = [m for _, m, _ in points if math.isfinite(m)]
-    if not means:
+    # C8: broken sweeps (nan/inf means) used to poison the polyline with
+    # literal "nan" coordinates; skip them (the table-free chart only ever
+    # claimed the finite points) and clamp wild stddevs to 0.
+    points = [(x, m, s if math.isfinite(s) else 0.0)
+              for x, m, s in points if math.isfinite(m)]
+    if not points:
         return "<p>No finite means.</p>"
     w, h, pad = 640, 160, 30
     lo = min(m - s for _, m, s in points if math.isfinite(m))
