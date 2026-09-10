@@ -4,15 +4,52 @@ Key = manifest + seeds + race/adaptive settings + python + platform + every
 non-hidden file's bytes under the target root. Any change misses. Stored
 payloads are version-stamped (a new mycelium-accel never trusts an old cache).
 Kill: 1 hit whose verdict differs from a fresh measurement = feature removed.
+
+Concurrency contract (Q2.5): a cache file is *always* valid JSON — writers go
+through tmp+rename, so readers never see halves. On Windows a rename onto a
+file another thread has open is refused outright (no FILE_SHARE_DELETE for
+plain ``open()``, and AV scanning stretches that window to hundreds of ms), so
+``store`` additionally retries with backoff and, once the budget is spent,
+*degrades to a miss* instead of crashing: the valid entry already on disk keeps
+serving, the refresh is simply lost. ``lookup``/``store`` never hide a real
+I/O error (missing dir, ENOSPC, posix permissions) — those still raise.
 """
 from __future__ import annotations
 
+import errno
 import hashlib
 import os
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
+
+# The nt-side "not now" set: Windows also surfaces sharing violations as
+# PermissionError, so that one is classified separately. Everything else
+# propagates immediately — a broken filesystem must not be retried into silence.
+_BUSY_ERRNOS = frozenset({errno.EBUSY, errno.EAGAIN, errno.EPERM})
+# Budget for one rename, not for one store: long enough to outlive a Windows
+# reader/Defender window (hundreds of ms), short enough that a CLI never feels
+# it. Anything still busy after this degrades (cache) or raises (exports).
+REPLACE_BUDGET_SECONDS = 1.5
+
+# Test seam: lets a test inject Windows-style contention without patching the
+# global ``os`` module (which would leak into unrelated tests in the worker).
+_replace = os.replace
+
+
+def _is_lock_contention(exc: OSError) -> bool:
+    """Is this rename failure a transient "someone else is holding it"?
+
+    Only ``EBUSY`` qualifies on posix — a PermissionError there is a real
+    permission problem (read-only cache dir), and staying loud is the
+    documented Q2.2 behavior. Windows answers sharing violations with
+    PermissionError (ERROR_ACCESS_DENIED), which *is* the transient case.
+    """
+    if os.name == "nt":
+        return isinstance(exc, PermissionError) or exc.errno in _BUSY_ERRNOS
+    return exc.errno == errno.EBUSY
 
 
 def _hashable_files(root: Path) -> list[Path]:
@@ -54,26 +91,44 @@ def cache_key(
     return digest.hexdigest()
 
 
-def _replace_with_retry(tmp_name: str, path: Path, attempts: int = 10) -> None:
-    """Windows: os.replace raises PermissionError when another thread holds
-    the destination open (concurrent lookup during store). Bounded retry with
-    linear backoff; a no-op on posix where replace-while-open is legal."""
-    import time as _time  # local: keeps module import light
+def _replace_with_retry(tmp_name: str, path: Path, budget: float | None = None) -> None:
+    """Rename tmp onto path, backing off while another thread holds it open.
 
-    last: OSError | None = None
-    for attempt in range(attempts):
+    Uncontended cost: one syscall, no sleep. Under contention it keeps trying
+    until ``budget`` seconds are spent (1 ms → 50 ms exponential), which clears
+    the real-world windows we hit on CI (reader + antivirus scan) by orders of
+    magnitude. Raises the last lock error if the budget runs out.
+    """
+    if budget is None:
+        budget = REPLACE_BUDGET_SECONDS  # read at call time: tests retune it
+    deadline = time.monotonic() + budget
+    delay = 0.001
+    while True:
         try:
-            os.replace(tmp_name, path)
+            _replace(tmp_name, path)
             return
-        except PermissionError as exc:
-            last = exc
-            _time.sleep(0.005 * (attempt + 1))
-    assert last is not None  # attempts >= 1 always sets last
-    raise last
+        except OSError as exc:
+            if not _is_lock_contention(exc) or time.monotonic() >= deadline:
+                raise
+            time.sleep(delay)
+            delay = min(delay * 2, 0.05)
 
 
-def _atomic_write_text(path: Path, text: str) -> None:
-    """Q2.2: crash- and concurrency-safe write (tmp + rename)."""
+def _discard(path: str) -> None:
+    try:
+        os.unlink(path)
+    except OSError:
+        pass
+
+
+def _atomic_write_text(path: Path, text: str, *, tolerate_lock: bool = False) -> None:
+    """Q2.2: crash- and concurrency-safe write (tmp + rename).
+
+    ``tolerate_lock`` is for cache stores only: a rename still blocked by pure
+    lock contention after the retry budget, *with a valid file already in
+    place*, is swallowed (worst case the next run re-measures). It never
+    tolerates a missing destination — that would silently mean "no cache".
+    """
     import tempfile as _tempfile  # local: keeps module import light
 
     fd, tmp_name = _tempfile.mkstemp(
@@ -81,12 +136,15 @@ def _atomic_write_text(path: Path, text: str) -> None:
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
             handle.write(text)
-        _replace_with_retry(tmp_name, path)
     except BaseException:
-        try:
-            os.unlink(tmp_name)
-        except OSError:
-            pass
+        _discard(tmp_name)
+        raise
+    try:
+        _replace_with_retry(tmp_name, path)
+    except OSError as exc:
+        _discard(tmp_name)
+        if tolerate_lock and _is_lock_contention(exc) and path.is_file():
+            return
         raise
 
 
@@ -98,7 +156,10 @@ def lookup(cache_dir: Path, key: str) -> dict[str, Any] | None:
         return None
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
-    except ValueError:
+    except (ValueError, OSError):
+        # Q1.3: a corrupt cache is a miss, not a crash. OSError joins the list
+        # for CI-5: on Windows a cache file can be mid-scan/mid-replace, and a
+        # momentary read refusal must degrade to a re-measure, never to a red run.
         return None
     if not isinstance(payload, dict):  # Q1.3: corrupt cache is a miss, not a crash
         return None
@@ -115,5 +176,6 @@ def store(cache_dir: Path, key: str, payload: dict[str, Any]) -> Path:
     cache_dir.mkdir(parents=True, exist_ok=True)
     payload = {"key": key, "mycelium_version": __version__, **payload}
     path = cache_dir / f"{key}.json"
-    _atomic_write_text(path, json.dumps(payload, indent=2, sort_keys=True))
+    _atomic_write_text(path, json.dumps(payload, indent=2, sort_keys=True),
+                       tolerate_lock=True)
     return path

@@ -28,6 +28,51 @@
   null_interior_p CI goldens → AlmostEqual places=12 (Apple libm dust);
   shell-text baseline redesigned to one grep (3 ms vs 55 ms, verdict stable
   on msys forks); release.sh + chmod-readonly tests posix-only skips.
+- CI-5 (last 2 red cells — mac×2 = ui_smoke, win×2 = cache concurrency): both
+  were *timing/contract* bugs, not behavior.
+  - **macOS `test_ui_smoke`**: `HTTPServer.server_bind` runs
+    `socket.getfqdn()` — a blocking PTR+A lookup *before* `listen()` — so a slow
+    resolver leaves the port bound-but-not-accepting and every client times out.
+    Reproduced here by injection: 12 s stall → boot 0.3 s→12.34 s; 16 s stall →
+    red with the CI symptom (`server never answered`). Fix: `UIServer.server_bind`
+    skips reverse DNS (+`daemon_threads`); that alone makes boot 0.30 s under a
+    25 s stall. Test hardened too: kernel-picked port read back from the server
+    banner (no free-port race), CI-scaled deadline (120 s vs 15 s) with a 10 s
+    per-attempt timeout (old test also died at exactly 15.18 s on a 20 s starved
+    boot), child pipes drained in threads so their logs land in the failure text.
+  - **Windows `test_concurrent_cache_store_stays_valid`**: the CI-4 retry was
+    10 linear tries ≈ 275 ms — shorter than a Defender re-scan of the file it
+    just renamed. Now: exponential backoff (1→50 ms) bounded by
+    `REPLACE_BUDGET_SECONDS=1.5`, and on exhaustion a cache *refresh* degrades to
+    a miss when a valid entry is already on disk (never halves, never a red run);
+    missing-destination stores, ENOSPC and sweep exports still raise. `lookup`
+    treats a read refusal as a miss like it treats corruption.
+  - +6 tests (0 deleted, 0 weakened): `WindowsLockContentionTests` drives nt
+    semantics by injecting the rename/classifier seams — posix cannot produce a
+    sharing violation, so the platform branch is pinned directly. Harsh model
+    (AV re-lock 150–400 ms on every replace, 4 writers): old retry survived only
+    by luck of timing; new is green with the worst round bounded 50 s→15 s by
+    the smaller budget. Docs: `ARCHITECTURE.md §11` (UI/platform limits + cache
+    concurrency contract). Suite green here: 380 passed + 180 subtests (serial
+    loop 7.4 s fast / 36 s full), ruff+mypy+mkdocs --strict clean.
+- CI-5a (first run on the branch, 34462085940): Windows cache-concurrency cell
+  GREEN (PermissionError gone, both Pythons) and macOS 3.14 GREEN (boot 0.3 s).
+  Two leftovers, both ours:
+  - the new per-platform classifier test hardcoded the posix answer → it was the
+    only red on windows-latest. Now it pins the rule itself: EBUSY transient and
+    ENOSPC fatal everywhere, "rename refused ⇒ transient" iff the platform
+    refuses rename-while-open, plus the opposite branch via `os.name` flip —
+    identical assertions on every OS, nothing skipped.
+  - macOS 3.13 failed on a test that the `--lf` re-run then passed, and the
+    annotate step greps *only* that re-run → the run was red with no name
+    attached anywhere (and raw job logs are unreachable from this sandbox). The
+    obvious fix is a workflow edit (`-rf | tee` + union of both logs) but this
+    App has no `workflows` scope — push is rejected — so the same effect now
+    lives in `tests/conftest.py`: on GITHUB_ACTIONS it emits one
+    `::error title=CI-5 failing test::<nodeid> - <crash line>` per failure from
+    the primary run (works under xdist, silent locally, capped at 30, and it
+    cannot itself fail a suite). Workflow-side improvement left as a note for
+    the mantenedor: name the step's log file and grep both.
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 
