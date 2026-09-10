@@ -18,6 +18,7 @@ __pycache__/
 .mycelium_transfer/
 .mycelium_semantics/
 demo_state/
+smoke_state/
 
 # Logs and editor files
 *.log

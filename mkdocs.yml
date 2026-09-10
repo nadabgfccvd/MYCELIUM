@@ -1,8 +1,7 @@
 site_name: MYCELIUM-Accel
 site_description: Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.
 site_author: Arena.ai Agent Mode
-# TODO(user): trocar pela URL real após o push (Fase 0).
-repo_url: https://github.com/INSIRA-ORGAO/mycelium-accel
+repo_url: https://github.com/nadabgfccvd/MYCELIUM
 theme:
   name: material
   features:

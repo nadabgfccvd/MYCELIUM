@@ -1,5 +1,13 @@
 # CHANGES
 
+## Unreleased — autonomous 10-cycle improvement run (2026-09-10, branch arena/01a08ae0-mycelium)
+
+- **C1 higiene & verdade documental:** README evidencia "118 verdes" →
+  380 passed + 180 subtests; linha v1.4 (QUALIDADE) no estado do roadmap;
+  mkdocs `repo_url` aponta p/ o repositório real; `.gitignore` cobre
+  `smoke_state/`; roadmap dos 10 ciclos em
+  `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`. Zero mudança de código.
+
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
 - mutmut round over bench.py: 562 = 331 killed + 6 no-tests + 225 survived

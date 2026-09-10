@@ -79,7 +79,8 @@ suíte 42→27 s, racing -66%, `--cache` 14×, `--adaptive-repeats` -13–60% ru
 (0 flips no replay), ruff gate, `release.sh` v1.3 (VELOCIDADE R2): suíte 32.5→22.5 s, loop →3.7 s,
 `--sequential-seeds` (OBF, -14% decisivos), `--race-adaptive` (-33% screen),
 `--cache-dir` compartilhado, S2 morto com prova, CI 2 estágios, AGENTS.md ·
-suíte: **204 verdes**
+suíte: **204 verdes** (v1.3) → v1.4 (QUALIDADE): **380 verdes** + 180 subtests,
+mypy gate, mutação stats.py 88.7% kill, CI 3 SOs × 2 Pythons verde
 - Documento-mãe: `docs/ROADMAP_ESTRATEGICO_MYCELIUM_AUTO_EVOLVE_20260909.md` · histórico: `CHANGES.md`
 
 ---
