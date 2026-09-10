@@ -1,5 +1,84 @@
 # CHANGES
 
+## 2026-09-10 — autonomous 10-cycle run: 1.5.0 (release candidate, branch arena/01a08ae0-mycelium)
+
+- **C1 higiene & verdade documental:** README evidencia "118 verdes" →
+  380 passed + 180 subtests; linha v1.4 (QUALIDADE) no estado do roadmap;
+  mkdocs `repo_url` aponta p/ o repositório real; `.gitignore` cobre
+  `smoke_state/`; roadmap dos 10 ciclos em
+  `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`. Zero mudança de código.
+- **C2 velocidade R3 (medir + matar, não adivinhar):** re-baseline por máquina
+  em `VELOCITY_BASELINE.md` (sandbox 2-core: loop 8.0 s, suíte 43.1 s serial /
+  23.0 s xdist); decisão estatística custa 3.2 ms → "otimizar stats" morto 2×;
+  "xdist neutro em 2 cores" morto aqui (-47%); -2.0 s nos dois testes
+  cronometrados isoladamente (timeout 2.01→1.00 s, SIGINT 3.06→2.06 s com piso
+  de sleep provado, 0 asserções mudadas; suíte total 43.1→41.7 s, resto é
+  variância da máquina);
+  nota xdist atualizada em AGENTS.md/README (medir localmente).
+- **C3 rigor estatístico II (advisory, 0 flips por construção):**
+  `stats.paired_power()` (aproximação normal, convenções NaN/inf, null=alfa)
+  + `stats.diagnose_comparison()` (ficha descritiva, chaves estáveis,
+  thresholds em constantes `ADVISORY_*` documentadas); isolamento pinado por
+  teste (decisão nunca lê advisory); fronteira S1/OBF auditada (0.0342 =
+  derivação com piso conservador, pinado); orçamento computacional por n em
+  `ARCHITECTURE.md` §9 (decisão a n=7 custa 3.2 ms); contrato em
+  `API_STABLE_1.0.md` §8. +17 testes, 0 existentes tocados.
+- **C4 robustez (escrita atômica em tudo):** `export_csv/md/html` + `doctor
+  --fix` agora via tmp+rename (`_atomic_write_bytes` novo p/ CSV bit-idêntico
+  incl. CRLF em toda plataforma); falha no meio da escrita = zero arquivo
+  parcial, zero resíduo tmp, rewrite falho preserva bytes anteriores (pinado
+  por injeção ENOSPC nos 4 exports + fix); exports seguem altos em lock
+  (só cache degrada); nomes hostis estendidos (`$ ; \\ \n \t ☃ "` roundtrip
+  JSON/CSV); auditoria runner: timeout exato (1.00/2.00 s medidos), orphans
+  mortos por grupo de processo, OSError→exit 1 + 1 linha no CLI. +7 testes (404 verdes).
+- **C5 UX do CLI (aditivo):** `accelerate --dry-run` (valida sem medir, mesmo
+  schema com nulls, contrato em API_STABLE `§8`); `doctor` ganha `disk_free`
+  (WARN-only) + `tool-version:*` (best-effort, nunca FAIL); BUG REAL
+  corrigido: caminho legado do `accelerate` tracebackava (violação do `§2`)
+  e agora devolve 1 linha + exit 1; catálogo `docs/ERRORS.md` com 10 erros
+  fixados por teste; `history` mantém as flags de engine por estabilidade de
+  contrato (W4 wontfix documentado). +15 testes (6 dry-run, 7 erros, 2 doctor).
+- **C6 alvos & manifestos:** novo kind `go` (GoTarget + scaffold `go test
+  -bench` com métrica `ns_per_op` via regex, `go` no allowlist global como
+  build-tool confiável à la cargo); detecção estendida (`go.mod`,
+  `requirements.txt`/`uv.lock`→python, `deno.json[c]`→node, precedência
+  antiga preservada e fixada); `validate()` agora sugere o fix
+  (executable_allowlist) e ecoa valores (repeats/warmup); exemplo
+  `examples/go-bench/` (test live pula sem toolchain); README/docstrings
+  atualizados. +12 testes (+2 pulos condicionais ao toolchain).
+- **C7 substrato de pesquisa (comportamento default intocado):** telemetria com
+  rotação por tamanho (~1 MB/parte, leitores somem partes em ordem, falha de
+  rotação nunca quebra runs); `self-improve` ganha `screen_trail` por ciclo
+  (variante + diff de perfil + rps + veredito + motivos — o "nenhum candidato"
+  agora é explicável); dogfood gate verde (engine intocado). +10 testes.
+- **C8 relatórios & UI (offline-first):** `report_html` + `history` ganham
+  dark-mode (`prefers-color-scheme`), CSS de impressão e (report) captions +
+  `scope=col` nas tabelas; BUG REAL corrigido: médias nan/inf envenenavam o
+  SVG do `history` com coordenadas literais "nan" (agora filtradas, seção
+  degradada honestamente); UI server ganha testes unitários puros (labels,
+  matriz de status, árvore com teto, pin anti-DNS-reverso do CI-5) +
+  auditoria "zero refs externas" nos estáticos. +8 testes.
+- **C9 release engineering:** `release.sh --dry-run` (guards + checks, zero
+  side effects, auditado ao vivo); teste live de single-source version
+  (pyproject==__init__==CHANGES, falha no bump parcial); nav do mkdocs com
+  teste (18 páginas user-facing linkadas, zero refs pendentes) + `ERRORS.md`
+  no site; quickstart agora fixa o JSON gêmeo do HTML; anúncio cita Go. +5 testes (454 verdes).
+- **C10 consolidação:** mutação amostral manual 8/8 mortos (faults em stats,
+  dry-run, CSV, telemetria, detect, release_check, doctor — todos pegos);
+  suíte 3× serial verde (42–44 s) + 1× xdist (23.6 s); bump 1.5.0
+  (pyproject+__init__+dist rebuildado, twine-PASS, `release.sh v1.5.0
+  --dry-run` verde); README evidências corrigidas (phantom-edit C1 auditado:
+  edições paralelas no mesmo arquivo correm — nunca mais em lote);
+  `docs/ROADMAP_NEXT_2.0.md` (propostas pós-contrato-1.x); cadeia de backups
+  verificada (ORIGINAL + C1..C10: 11 zips válidos + 10 pushes);
+  pós-PR (CI PR #3, runs 34511785988): (a) `GOCACHE`/`GOMODCACHE` entram
+  no `ENV_PASSTHROUGH` do harness e o live test go fixa um GOCACHE
+  explícito (sem `%LocalAppData%`, `go build` falhava nos 2 runners
+  windows); +1 teste; (b) teste C8 de árvore-do-projetos era flaky —
+  `.index("a")` em STRING renderizada hitava o nome aleatório do temp
+  (fast job: 17 not less than 4) → nome fixo hostil + asserts no
+  formato renderizado (conectores), prova com 8 nomes adversariais.
+
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 
 - mutmut round over bench.py: 562 = 331 killed + 6 no-tests + 225 survived

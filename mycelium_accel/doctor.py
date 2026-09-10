@@ -84,7 +84,44 @@ def run_checks(state_dir: str = ".mycelium_state", target: str | None = None) ->
     except ImportError as exc:
         checks.append(Check("import", "FAIL", str(exc)))
 
+    # 9-10. disk + toolchain versions (C5, extracted: keeps run_checks ≤ C901)
+    checks.append(_check_disk_free(state_dir))
+    checks.extend(_check_tool_versions())
+
     return checks
+
+
+def _check_disk_free(state_dir: str) -> Check:
+    """C5: free disk where state/sweeps land (WARN-only, never FAILs doctor)."""
+    try:
+        free_mb = shutil.disk_usage(Path(state_dir)).free / (1024 * 1024)
+    except OSError as exc:
+        return Check("disk_free", "WARN", f"ilegível: {exc}")
+    if free_mb >= 256:
+        return Check("disk_free", "PASS", f"{free_mb:.0f} MB livres")
+    return Check("disk_free", "WARN",
+                 f"só {free_mb:.0f} MB livres — sweeps escrevem em disco")
+
+
+def _check_tool_versions() -> list[Check]:
+    """C5: --version of the tools that ARE present (best-effort, never FAIL)."""
+    import subprocess as _subprocess
+
+    found: list[Check] = []
+    for tool in ("gcc", "cmake", "make", "cargo", "node"):
+        exe = shutil.which(tool)
+        if not exe:
+            continue  # absence already WARNed by the tool: check above
+        try:
+            proc = _subprocess.run([exe, "--version"], capture_output=True,
+                                   text=True, timeout=5)
+            first = (proc.stdout or proc.stderr).strip().splitlines()
+            version = first[0][:100] if first else "versão ilegível"
+            found.append(Check(f"tool-version:{tool}", "PASS", version))
+        except (OSError, _subprocess.SubprocessError):
+            found.append(Check(f"tool-version:{tool}", "WARN",
+                               "presente, versão ilegível"))
+    return found
 
 
 SAFE_FIXES = ("manifest_version stamp (1.0)", "executable_allowlist sort/dedupe")
@@ -128,7 +165,9 @@ def fix_manifest(root: Path) -> list[str]:
         raw["executable_allowlist"] = sorted(set(allow))
         done.append("sorted/deduped executable_allowlist")
     if done:
-        path.write_text(json.dumps(raw, indent=2, sort_keys=True), encoding="utf-8")
+        from .sweep_cache import _atomic_write_text  # C4: crash-safe fix
+
+        _atomic_write_text(path, json.dumps(raw, indent=2, sort_keys=True))
     return done
 
 

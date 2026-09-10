@@ -9,7 +9,7 @@
 
 ## O que é
 
-Um **acelerador estatístico genérico**: você aponta para um projeto (Python, C/CMake, Rust/Cargo, Node —
+Um **acelerador estatístico genérico**: você aponta para um projeto (Python, C/CMake, Rust/Cargo, Node, Go —
 detecção automática via `mycelium.target.json`), ele propõe variantes (flags, env, patches, profiles),
 mede com **benchmarks pareados por seed** e só aplica o que passa na guarda:
 
@@ -35,7 +35,7 @@ pareada completa), então ciclos sempre terminam em minutos.
 
 | Evidência | Número |
 |---|---|
-| Suíte de testes | 118 verdes (pré-rename), meta ≥ 123 pós-fundamentos |
+| Suíte de testes | **454 passed + 276 subtests** (v1.5.0; CI 3 SOs × 2 Pythons, ruff+mypy gates) |
 | Roda 25 min pós-roadmap (2026-09-09) | 73 ciclos em 1.512s (~20,7s/ciclo), **73/73 rejeições honestas** do guard pareado |
 | Screening com futilidade | busca focada de 29 candidatos em ~5s com portão fechado |
 | Library learning (corpus real, 30 rodadas) | 374 → 332 nós (11,3%), 8 abstrações, suporte médio 5,1 |
@@ -52,7 +52,7 @@ mycelium-accel doctor            # checa ambiente: python, gcc, git, toolchain, 
 # acelerar um projeto qualquer (auto-detecção; sem --manifest usa heurística)
 mycelium-accel accelerate --target /caminho/do/projeto --seeds 101,103,107,109,113,127,131
 
-# gerar manifesto para um projeto (auto-detecção python/cmake/cargo/node)
+# gerar manifesto para um projeto (auto-detecção python/cmake/cargo/node/go)
 mycelium-accel accelerate init --target /caminho/do/projeto
 
 # engine evolutivo interno (substrato de pesquisa)
@@ -79,7 +79,12 @@ suíte 42→27 s, racing -66%, `--cache` 14×, `--adaptive-repeats` -13–60% ru
 (0 flips no replay), ruff gate, `release.sh` v1.3 (VELOCIDADE R2): suíte 32.5→22.5 s, loop →3.7 s,
 `--sequential-seeds` (OBF, -14% decisivos), `--race-adaptive` (-33% screen),
 `--cache-dir` compartilhado, S2 morto com prova, CI 2 estágios, AGENTS.md ·
-suíte: **204 verdes**
+suíte: **204 verdes** (v1.3) → v1.4 (QUALIDADE): **380 verdes** + 180 subtests,
+mypy gate, mutação stats.py 88.7% kill, CI 3 SOs × 2 Pythons verde →
+v1.5 (10 ciclos autônomos, `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`):
+**454 verdes** + 276 subtests, kind `go`, `accelerate --dry-run`, advisory
+stats (§8), exports atômicos, telemetria rotativa, `screen_trail`,
+relatórios dark/print, release `--dry-run`
 - Documento-mãe: `docs/ROADMAP_ESTRATEGICO_MYCELIUM_AUTO_EVOLVE_20260909.md` · histórico: `CHANGES.md`
 
 ---
@@ -107,7 +112,7 @@ guardada. O que segue documenta o engine interno — o produto acima é o harnes
 - **Modo daemon de auto melhoria**: loop contínuo com status persistido e parada limpa por kill-switch.
 - **Modo aceleração**: benchmark determinístico, verificação de equivalência e aplicação da escolha de volta ao código.
 - **Relatório honesto de crescimento**: classifica o regime observado como exponencial, linear, sublinear ou estagnado.
-- **Harness genérico** (`mycelium_accel/targets/` + `bench.py`): manifestos `mycelium.target.json`, runner confinado, snapshot/rollback, auto-detecção python/cargo/cmake/node.
+- **Harness genérico** (`mycelium_accel/targets/` + `bench.py`): manifestos `mycelium.target.json`, runner confinado, snapshot/rollback, auto-detecção python/cargo/cmake/node/go.
 - **Estatística pareada** (`stats.py`): deltas por seed, IC BCa, permutação sign-flip, Holm/BH, racing sequencial.
 - **Mutação semântica** (6 operadores), **library learning** (MDL), **ecologia QD**, **coevolução de ambientes**, **métricas de regime** — ver `docs/ROADMAP_EXECUTION_20260909.md`.
 
@@ -378,7 +383,7 @@ pip install -e . pytest pytest-xdist   # uma vez
 pytest -m "not slow" -q               # loop interno (~5 s)
 pytest -q                             # tudo (~24 s, antes de commitar)
 pytest --lf -x -q                     # W1.3: só o que falhou (ciclo vermelho-verde em segundos)
-pytest -q -n auto                     # tudo em paralelo (vale em 4+ cores)
+pytest -q -n auto                     # tudo em paralelo (meça local; sandbox 2-core: 43→23 s)
 ruff check mycelium_accel/ tests/ scripts/   # lint (gate do CI)
 bash scripts/release.sh vX.Y.Z --full # release em 1 comando
 ```

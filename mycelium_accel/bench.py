@@ -390,13 +390,20 @@ class BenchmarkExecutor:
         return path
 
     def export_csv(self, sweep: BenchmarkSweep) -> Path:
+        # C4: atomic + byte-identical (StringIO newline="" keeps csv's \r\n;
+        # _atomic_write_bytes skips text-mode translation on Windows).
+        import io as _io
+
+        from .sweep_cache import _atomic_write_bytes
+
+        buf = _io.StringIO(newline="")
+        writer = csv.writer(buf)
+        writer.writerow(["candidate", "seed", "metric", "value", "seconds", "ok"])
+        for summary in sweep.summaries:
+            for run in summary.runs:
+                writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
         path = self.export_dir / f"{self._stem(sweep)}.csv"
-        with path.open("w", newline="", encoding="utf-8") as handle:
-            writer = csv.writer(handle)
-            writer.writerow(["candidate", "seed", "metric", "value", "seconds", "ok"])
-            for summary in sweep.summaries:
-                for run in summary.runs:
-                    writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
+        _atomic_write_bytes(path, buf.getvalue().encode("utf-8"))
         return path
 
     def export_markdown(self, sweep: BenchmarkSweep) -> Path:
@@ -425,14 +432,17 @@ class BenchmarkExecutor:
                     f"{comparison['ci_low']:.6g} | {comparison['ci_high']:.6g} | "
                     f"{comparison['p_value']:.4f} | {corrected_str} | {comparison['effect_dz']:.3f} |"
                 )
-        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        from .sweep_cache import _atomic_write_text as _atomic_md  # C4: atomic
+
+        _atomic_md(path, "\n".join(lines) + "\n")
         return path
 
     def export_html(self, sweep: BenchmarkSweep, *, verdict: str = "") -> Path:
         from .report_html import html_from_sweep
+        from .sweep_cache import _atomic_write_text as _atomic_html  # C4: atomic
 
         path = self.export_dir / f"{self._stem(sweep)}.html"
-        path.write_text(html_from_sweep(sweep.to_dict(), verdict=verdict), encoding="utf-8")
+        _atomic_html(path, html_from_sweep(sweep.to_dict(), verdict=verdict))
         return path
 
 

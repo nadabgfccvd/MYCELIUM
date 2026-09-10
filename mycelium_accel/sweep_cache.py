@@ -148,6 +148,31 @@ def _atomic_write_text(path: Path, text: str, *, tolerate_lock: bool = False) ->
         raise
 
 
+def _atomic_write_bytes(path: Path, data: bytes) -> None:
+    """C4: byte-exact sibling of _atomic_write_text (for CSV).
+
+    Text mode would translate newlines on Windows (``\\r\\n`` → ``\\r\\r\\n``);
+    the CSV export keeps its csv-module bytes bit-identical on every platform
+    by going through here. Exports are the record itself: never tolerant —
+    any failure raises and the previous file (if any) stays intact.
+    """
+    import tempfile as _tempfile  # local: keeps module import light
+
+    fd, tmp_name = _tempfile.mkstemp(
+        dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(data)
+    except BaseException:
+        _discard(tmp_name)
+        raise
+    try:
+        _replace_with_retry(tmp_name, path)
+    except OSError:
+        _discard(tmp_name)
+        raise
+
+
 def lookup(cache_dir: Path, key: str) -> dict[str, Any] | None:
     from . import __version__
 

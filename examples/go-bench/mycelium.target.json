@@ -1,0 +1,33 @@
+{
+  "benchmark_command": "go test -run XXX -bench BenchmarkFib -benchtime 100x .",
+  "build_command": "go build ./...",
+  "kind": "go",
+  "lower_is_better": true,
+  "manifest_version": "1.0",
+  "metric_name": "ns_per_op",
+  "metrics_parser": "regex:(?P<ns_per_op>[0-9]+)\\s+ns/op",
+  "name": "go-fib-bench",
+  "repeats": 3,
+  "seed_env_var": "MYCELIUM_SEED",
+  "test_command": "go test ./...",
+  "timeout_seconds": 300.0,
+  "variants": [
+    {
+      "description": "single-threaded Go runtime",
+      "env": {
+        "GOMAXPROCS": "1"
+      },
+      "mode": "env",
+      "name": "gomaxprocs1"
+    },
+    {
+      "description": "garbage collector off (allocation-free bench should not care)",
+      "env": {
+        "GOGC": "off"
+      },
+      "mode": "env",
+      "name": "gogc-off"
+    }
+  ],
+  "warmup": 1
+}

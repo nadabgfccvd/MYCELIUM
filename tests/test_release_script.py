@@ -50,6 +50,30 @@ class ReleaseScriptTests(unittest.TestCase):
             self.assertIn("version mismatch", proc.stderr)
             self.assertFalse((root / "dist").exists(), "build must not start")
 
+    def test_dry_run_checks_without_building(self) -> None:
+        # Hermetic like above, but with the REAL version files: the current
+        # tree must always be dry-runnable at its own version.
+        import shutil
+
+        from mycelium_accel import __version__
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            shutil.copytree(ROOT / "scripts", root / "scripts")
+            shutil.copy(ROOT / "pyproject.toml", root / "pyproject.toml")
+            shutil.copy(ROOT / "CHANGES.md", root / "CHANGES.md")
+            pkg = root / "mycelium_accel"
+            pkg.mkdir()
+            shutil.copy(ROOT / "mycelium_accel" / "__init__.py",
+                        pkg / "__init__.py")
+            tag = f"v{__version__}"
+            proc = subprocess.run(
+                ["bash", str(root / "scripts" / "release.sh"), tag, "--dry-run"],
+                capture_output=True, text=True, cwd=root)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertIn(f"DRY-RUN {tag}", proc.stdout)
+            self.assertFalse((root / "dist").exists(), "dry-run builds nothing")
+
 
 class ReleaseCheckTests(unittest.TestCase):
     def _fixture(self, root: Path, *, version: str, init_version: str, changes: str) -> None:
@@ -91,6 +115,17 @@ class ReleaseCheckTests(unittest.TestCase):
                           changes="# CHANGES\n\n## 1.9.9 old\n")
             errors = release_check.check("v2.0.0", root)
             self.assertEqual(errors, ["CHANGES.md has no entry for v2.0.0"])
+
+    def test_live_tree_versions_agree(self) -> None:
+        # The single-source rule, on the real tree: a partial bump reds here.
+        import tomllib
+
+        from mycelium_accel import __version__
+
+        py_version = tomllib.loads(
+            (ROOT / "pyproject.toml").read_bytes().decode())["project"]["version"]
+        self.assertEqual(py_version, __version__)
+        self.assertEqual(release_check.check(f"v{py_version}", ROOT), [])
 
 
 if __name__ == "__main__":

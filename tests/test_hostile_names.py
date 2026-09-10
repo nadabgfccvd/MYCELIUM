@@ -58,6 +58,35 @@ class HostileNameTests(unittest.TestCase):
             md = by_ext[".md"].read_text(encoding="utf-8")
             self.assertIn("slów ünïcode", md)
 
+    def test_shell_metachars_and_controls_roundtrip(self) -> None:
+        # C4: names a shell would interpret ($ ; \ newline tab) stay inert
+        # labels — JSON/CSV roundtrip them, exports never crash on them.
+        extra = ["dollar$BENCH", "semi;colon", "back\\slash", "line\nbreak",
+                 "tab\tname", "snowman☃", 'quote"q']
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "dir com espaço"
+            root.mkdir()
+            _make_python_project(root)
+            manifest = json.loads((root / "mycelium.target.json").read_text())
+            manifest["variants"] = [
+                {"name": name, "mode": "env", "env": {"BENCH_MODE": "fast"}}
+                for name in extra
+            ]
+            (root / "mycelium.target.json").write_text(json.dumps(manifest), encoding="utf-8")
+            out = accelerate_target(root, seeds=[101, 103, 107], apply=False)
+            self.assertIsNotNone(out.sweep_path)
+            exp = root / ".mycelium_benchmarks"
+            by_ext = {}
+            for path in exp.iterdir():
+                by_ext.setdefault(path.suffix, path)
+            self.assertEqual(set(by_ext), {".json", ".csv", ".md", ".html"})
+            sweep = json.loads(by_ext[".json"].read_text(encoding="utf-8"))
+            self.assertEqual([s["candidate"] for s in sweep["summaries"]],
+                             ["baseline", *extra])
+            with by_ext[".csv"].open(encoding="utf-8", newline="") as handle:
+                rows = list(csv.reader(handle))
+            self.assertTrue(set(extra) <= {row[0] for row in rows[1:]})
+
 
 if __name__ == "__main__":
     unittest.main()

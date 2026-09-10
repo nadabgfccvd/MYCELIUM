@@ -28,7 +28,7 @@ iterators take the exact same code path as before (`pytest -k ilen` green).
 - paired Δ +5.11 ms, 95% BCa CI [+4.14; +6.06] (excludes 0), p = 0.0078
 - pure-list microbench: 271.6 µs → 0.1 µs; pure-iterator: no change (1.02×, noise)
 
-Measured with [mycelium-accel](https://github.com/INSIRA-ORGAO/mycelium-accel)
+Measured with [mycelium-accel](https://github.com/nadabgfccvd/MYCELIUM)
 (paired-statistics harness; reproduce: `reproduce_ec3.sh` in that repo).
 Happy to adjust the mix, add a benchmark to the test suite, or drop this if
 you prefer to keep `ilen()` single-path.

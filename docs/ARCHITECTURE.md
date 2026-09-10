@@ -256,6 +256,26 @@ Esse modo ainda não reescreve arbitrariamente o engine. Ele foca primeiro em um
 - variante ativa interna;
 - rollback imediato se o guarda detectar regressão.
 
+### Orçamento computacional da estatística (C3, medido)
+
+Custo por comparação pareada em CPython 3.11.2 / 2-core sandbox (BCa com
+2000 bootstraps = default de `compare_paired_metric`; sign-flip exato em
+7..16 pares, Monte Carlo fora disso):
+
+| n | BCa | sign-flip | compare total |
+|---|---|---|---|
+| 1 | 0.00 ms (degenerado) | 1.48 ms (MC) | 1.49 ms |
+| 3 | 1.59 ms | 2.78 ms (MC) | 4.30 ms |
+| 7 | 3.16 ms | 0.08 ms (exato, 2^7) | 3.25 ms |
+| 16 | 7.52 ms | 69.97 ms (exato, 2^16 — pior caso limitado) | 78.26 ms |
+| 17 | 7.83 ms | 11.12 ms (MC) | 19.34 ms |
+| 32 | 14.99 ms | 19.72 ms (MC) | 35.61 ms |
+
+Leitura: no n operacional (7 seeds) a decisão custa ~3 ms; o pior caso
+absoluto (n=16, enumeração exata) custa <80 ms e é limitado por construção
+(n>16 volta ao MC). A estatística é ~0.2% do sweep — micro-otimizar aqui
+rende centésimos (morto em V2.1, re-morto no C2 com estes números).
+
 ## 10. Honestidade sobre crescimento
 
 O engine nunca afirma crescimento exponencial por vontade. Ele ajusta duas curvas sobre o histórico de `capability_signal`:

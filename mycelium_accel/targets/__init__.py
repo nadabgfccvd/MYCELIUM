@@ -1,6 +1,7 @@
 """Project-agnostic target harness: manifests, runners, variant application.
 
-Auto-detection order: explicit manifest > python > cargo > cmake > node > shell.
+Auto-detection order: explicit manifest > python > cargo > cmake > node >
+go > shell.
 """
 from __future__ import annotations
 
@@ -19,6 +20,7 @@ from .base import (
 )
 from .cargo_target import CargoTarget
 from .cmake_target import CmakeTarget
+from .go_target import GoTarget
 from .node_target import NodeTarget
 from .python_target import PythonTarget
 from .shell_target import ShellTarget
@@ -29,6 +31,7 @@ KIND_TO_TARGET = {
     "cargo": CargoTarget,
     "cmake": CmakeTarget,
     "node": NodeTarget,
+    "go": GoTarget,
 }
 
 KIND_TO_DEFAULT_MANIFEST = {
@@ -37,19 +40,32 @@ KIND_TO_DEFAULT_MANIFEST = {
     "cargo": CargoTarget.default_manifest,
     "cmake": CmakeTarget.default_manifest,
     "node": NodeTarget.default_manifest,
+    "go": GoTarget.default_manifest,
 }
 
 
 def detect_kind(root: Path) -> str:
     """Best-effort project kind detection for a directory."""
-    if (root / "pyproject.toml").exists() or (root / "setup.py").exists() or (root / "benchmark.py").exists():
+    if (
+        (root / "pyproject.toml").exists()
+        or (root / "setup.py").exists()
+        or (root / "benchmark.py").exists()
+        or (root / "requirements.txt").exists()  # C6: weak but true signal
+        or (root / "uv.lock").exists()  # C6
+    ):
         return "python"
     if (root / "Cargo.toml").exists():
         return "cargo"
     if (root / "CMakeLists.txt").exists():
         return "cmake"
-    if (root / "package.json").exists():
+    if (
+        (root / "package.json").exists()
+        or (root / "deno.json").exists()  # C6: node-compatible runtime
+        or (root / "deno.jsonc").exists()  # C6
+    ):
         return "node"
+    if (root / "go.mod").exists():  # C6
+        return "go"
     return "shell"
 
 
@@ -76,6 +92,7 @@ def load_target(root: Path, manifest_path: Path | None = None) -> ProjectTarget:
 __all__ = [
     "CargoTarget",
     "CmakeTarget",
+    "GoTarget",
     "CommandRunner",
     "DEFAULT_EXECUTABLE_ALLOWLIST",
     "FileSnapshot",

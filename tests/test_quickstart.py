@@ -5,6 +5,7 @@ doctor --target, accelerate --no-apply, HTML report exists.
 """
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import tempfile
@@ -38,6 +39,12 @@ class QuickstartTests(unittest.TestCase):
             html = sorted(Path(tmp, ".mycelium_benchmarks").glob("sweep-*.html"))
             self.assertTrue(html, "quickstart must produce an HTML report")
             self.assertIn("mycelium", html[0].read_text(encoding="utf-8").lower())
+            # C9: the JSON twin (machine-readable half of the report) ships too.
+            payloads = sorted(Path(tmp, ".mycelium_benchmarks").glob("sweep-*.json"))
+            self.assertTrue(payloads, "quickstart must persist sweep JSON")
+            payload = json.loads(payloads[0].read_text(encoding="utf-8"))
+            self.assertIn("summaries", payload)
+            self.assertGreaterEqual(len(payload["summaries"]), 1)
         elapsed = time.perf_counter() - started
         self.assertLess(elapsed, BUDGET_SECONDS, f"quickstart took {elapsed:.1f}s")
 
