@@ -18,6 +18,9 @@
   a stdlib); OrphanKillTests skips when pgrep missing (macOS has no procps);
   CLIInterruptTests posix-only (Windows force-kills, no graceful 130);
   new portable runner-timeout test (no pgrep/signals, all platforms).
+- CI-3 (mac/win diagnosis): full job publishes FAILED lines as check
+  annotations on red (re-run last-failed only, zero effect on green);
+  shell-text example skips when sh is missing (Windows runners).
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 

@@ -60,6 +60,18 @@ jobs:
         run: pytest -q -n auto
         env:
           HYPOTHESIS_PROFILE: ci  # Q1.1: exhaustive property profiles
+      - name: Annotate failures
+        # CI-3: on red, re-run only last-failed (fast, single-process) and
+        # publish FAILED lines as check annotations (visible inline + via API).
+        # Zero effect on green runs (if: failure).
+        if: failure()
+        shell: bash
+        env:
+          HYPOTHESIS_PROFILE: ci
+        run: |
+          pytest -q --tb=no -rf --lf --no-header > /tmp/ci_rerun.log 2>&1 || true
+          set -o pipefail
+          grep -E "^(FAILED|ERROR)" /tmp/ci_rerun.log | head -25 | sed -e 's/%/%25/g' -e 's/:/%3A/g' -e 's/,/%2C/g' -e 's/^/::error::/' || echo "::notice::rerun-green-or-unknown"
       - name: Smoke test (console script)
         run: |
           mycelium-accel run --seed 101 --state-dir smoke_state --rounds 5
