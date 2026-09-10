@@ -31,6 +31,13 @@
   (só cache degrada); nomes hostis estendidos (`$ ; \\ \n \t ☃ "` roundtrip
   JSON/CSV); auditoria runner: timeout exato (1.00/2.00 s medidos), orphans
   mortos por grupo de processo, OSError→exit 1 + 1 linha no CLI. +7 testes (404 verdes).
+- **C5 UX do CLI (aditivo):** `accelerate --dry-run` (valida sem medir, mesmo
+  schema com nulls, contrato em API_STABLE `§8`); `doctor` ganha `disk_free`
+  (WARN-only) + `tool-version:*` (best-effort, nunca FAIL); BUG REAL
+  corrigido: caminho legado do `accelerate` tracebackava (violação do `§2`)
+  e agora devolve 1 linha + exit 1; catálogo `docs/ERRORS.md` com 10 erros
+  fixados por teste; `history` mantém as flags de engine por estabilidade de
+  contrato (W4 wontfix documentado). +15 testes (6 dry-run, 7 erros, 2 doctor).
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 

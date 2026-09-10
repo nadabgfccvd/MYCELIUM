@@ -593,6 +593,7 @@ def accelerate_target(
     cache: bool = False,
     cache_dir: Path | None = None,
     sequential_seeds: bool = False,
+    dry_run: bool = False,
 ) -> GenericAccelerationOutcome:
     started = time.perf_counter()
     target = load_target(target_root, manifest_path)
@@ -604,6 +605,24 @@ def accelerate_target(
     target.build()
     test_result = target.test()
     tests_pass = test_result is None or test_result.ok
+
+    if dry_run:  # C5: validate only — no executor, no sweeps, no cache, no apply
+        test_word = "pass" if tests_pass else "FAIL (nothing would be applied)"
+        return GenericAccelerationOutcome(
+            target=str(target.root),
+            baseline="baseline",
+            best_candidate=None,
+            applied=False,
+            decision_reasons=[
+                "dry run: manifest valid "
+                f"({manifest.kind}, {len(manifest.variants)} variant(s), "
+                f"metric '{manifest.metric_name}'); build ok; tests {test_word}; "
+                "no measurements taken.",
+            ],
+            sweep_path=None,
+            comparisons=[],
+            seconds=time.perf_counter() - started,
+        )
 
     # 1b. sweep cache (V4.1: read-only runs only; key computed AFTER build)
     executor = BenchmarkExecutor(target, export_dir=export_dir)

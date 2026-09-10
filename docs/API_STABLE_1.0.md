@@ -113,3 +113,10 @@ alvo quebrado): 1 linha `mycelium-accel: accelerate failed: ...` em stderr.
   referenciam `paired_power`, `diagnose_comparison` ou `ADVISORY_*`. Se um dia
   um veredito quiser ler advisory, isso é mudança de regra de decisão: exige
   pré-registro + simulação + kill, como qualquer outra (§7 vale de modelo).
+- **`accelerate --dry-run` (C5):** valida manifesto+build+testes sem medir:
+  exit 0 + mesmo schema JSON com `best_candidate: null`, `applied: false`,
+  `sweep_path: null`, `comparisons: []` e 1 `decision_reason` começando com
+  `"dry run: …; no measurements taken."`; não cria `.mycelium_benchmarks/`,
+  não toca cache, não aplica. Build quebrado/manifesto inválido = exit 1 +
+  1 linha (catálogo em `docs/ERRORS.md`); testes quebrados = exit 0 com
+  `FAIL` na reason (nada seria aplicado).

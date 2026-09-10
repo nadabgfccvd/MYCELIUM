@@ -53,6 +53,7 @@ def build_parser() -> argparse.ArgumentParser:
     accelerate_parser.add_argument("--cache", action="store_true", help="reuse sweep when target content is unchanged (V4.1; requires --no-apply)")
     accelerate_parser.add_argument("--cache-dir", default=None, help="shared cache directory (default: per-target; share across checkouts/users for CI)")
     accelerate_parser.add_argument("--sequential-seeds", action="store_true", help="S1: group-sequential look at 6/7 seeds with OBF alpha-spending (requires exactly 7 seeds)")
+    accelerate_parser.add_argument("--dry-run", action="store_true", help="C5: validate manifest+build+tests without measuring (no sweeps, no apply)")
     accel_sub = accelerate_parser.add_subparsers(dest="accelerate_action", required=False)
     accel_init = accel_sub.add_parser("init", help="generate mycelium.target.json via auto-detection (B3)")
     accel_init.add_argument("--target", default=".", help="project directory to scaffold a manifest for")
@@ -305,6 +306,7 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
                 cache=args.cache,
                 cache_dir=Path(args.cache_dir) if args.cache_dir else None,
                 sequential_seeds=args.sequential_seeds,
+                dry_run=args.dry_run,
                 )
             except (_SafetyError, ValueError, FileNotFoundError, RuntimeError, OSError) as exc:
                 _sys2.stderr.write(f"mycelium-accel: accelerate failed: {exc}\n")
@@ -322,10 +324,16 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
                     "vs --reference (see decision_reasons)\n")
                 raise SystemExit(1)
             return
-        if args.target == "self":
-            ext_outcome = accelerate_self(Path.cwd())
-        else:
-            ext_outcome = accelerate_external(target_path)
+        import sys as _sys3
+
+        try:
+            if args.target == "self":
+                ext_outcome = accelerate_self(Path.cwd())
+            else:
+                ext_outcome = accelerate_external(target_path)
+        except Exception as exc:  # C5: legacy path honors §2 (no tracebacks)
+            _sys3.stderr.write(f"mycelium-accel: accelerate failed: {exc}\n")
+            raise SystemExit(1)
         print(json.dumps({
             "module": ext_outcome.module_path,
             "baseline": ext_outcome.baseline,
