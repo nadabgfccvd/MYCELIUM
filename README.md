@@ -1,2 +1,0 @@
-# MYCELIUM
-Projeto Auto-Evolutivo
