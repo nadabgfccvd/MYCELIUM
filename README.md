@@ -9,7 +9,7 @@
 
 ## O que é
 
-Um **acelerador estatístico genérico**: você aponta para um projeto (Python, C/CMake, Rust/Cargo, Node —
+Um **acelerador estatístico genérico**: você aponta para um projeto (Python, C/CMake, Rust/Cargo, Node, Go —
 detecção automática via `mycelium.target.json`), ele propõe variantes (flags, env, patches, profiles),
 mede com **benchmarks pareados por seed** e só aplica o que passa na guarda:
 
@@ -52,7 +52,7 @@ mycelium-accel doctor            # checa ambiente: python, gcc, git, toolchain, 
 # acelerar um projeto qualquer (auto-detecção; sem --manifest usa heurística)
 mycelium-accel accelerate --target /caminho/do/projeto --seeds 101,103,107,109,113,127,131
 
-# gerar manifesto para um projeto (auto-detecção python/cmake/cargo/node)
+# gerar manifesto para um projeto (auto-detecção python/cmake/cargo/node/go)
 mycelium-accel accelerate init --target /caminho/do/projeto
 
 # engine evolutivo interno (substrato de pesquisa)
@@ -108,7 +108,7 @@ guardada. O que segue documenta o engine interno — o produto acima é o harnes
 - **Modo daemon de auto melhoria**: loop contínuo com status persistido e parada limpa por kill-switch.
 - **Modo aceleração**: benchmark determinístico, verificação de equivalência e aplicação da escolha de volta ao código.
 - **Relatório honesto de crescimento**: classifica o regime observado como exponencial, linear, sublinear ou estagnado.
-- **Harness genérico** (`mycelium_accel/targets/` + `bench.py`): manifestos `mycelium.target.json`, runner confinado, snapshot/rollback, auto-detecção python/cargo/cmake/node.
+- **Harness genérico** (`mycelium_accel/targets/` + `bench.py`): manifestos `mycelium.target.json`, runner confinado, snapshot/rollback, auto-detecção python/cargo/cmake/node/go.
 - **Estatística pareada** (`stats.py`): deltas por seed, IC BCa, permutação sign-flip, Holm/BH, racing sequencial.
 - **Mutação semântica** (6 operadores), **library learning** (MDL), **ecologia QD**, **coevolução de ambientes**, **métricas de regime** — ver `docs/ROADMAP_EXECUTION_20260909.md`.
 

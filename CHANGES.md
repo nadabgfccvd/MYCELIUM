@@ -38,6 +38,14 @@
   e agora devolve 1 linha + exit 1; catálogo `docs/ERRORS.md` com 10 erros
   fixados por teste; `history` mantém as flags de engine por estabilidade de
   contrato (W4 wontfix documentado). +15 testes (6 dry-run, 7 erros, 2 doctor).
+- **C6 alvos & manifestos:** novo kind `go` (GoTarget + scaffold `go test
+  -bench` com métrica `ns_per_op` via regex, `go` no allowlist global como
+  build-tool confiável à la cargo); detecção estendida (`go.mod`,
+  `requirements.txt`/`uv.lock`→python, `deno.json[c]`→node, precedência
+  antiga preservada e fixada); `validate()` agora sugere o fix
+  (executable_allowlist) e ecoa valores (repeats/warmup); exemplo
+  `examples/go-bench/` (test live pula sem toolchain); README/docstrings
+  atualizados. +12 testes (+2 pulos condicionais ao toolchain).
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 

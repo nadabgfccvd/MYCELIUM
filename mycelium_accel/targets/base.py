@@ -32,6 +32,7 @@ MANIFEST_FILENAME = "mycelium.target.json"
 DEFAULT_EXECUTABLE_ALLOWLIST = {
     "python", "python3", "pip", "pip3",
     "cargo", "rustc", "rustup",
+    "go",  # C6: `go build/test` drive Go targets (same trust as cargo)
     "cmake", "make", "ninja", "ctest",
     "cc", "c++", "gcc", "g++", "clang", "clang++",
     "node", "npm", "npx", "yarn", "pnpm",
@@ -121,7 +122,7 @@ class TargetManifest:
     """Declarative description of how to drive an arbitrary project."""
 
     name: str = ""
-    kind: str = "shell"  # shell | python | cargo | cmake | node
+    kind: str = "shell"  # shell | python | cargo | cmake | node | go
     prepare_command: str | None = None
     build_command: str | None = None
     test_command: str | None = None
@@ -210,7 +211,9 @@ class TargetManifest:
             elif canonical_executable(argv[0].split("/")[-1]) not in allow:
                 errors.append(
                     f"{field_name}: executable {argv[0]!r} is not allowlisted "
-                    "(runs would fail at sandbox time; fix the manifest now)"
+                    "(runs would fail at sandbox time; fix the manifest now — "
+                    "either use an allowlisted tool or add it to "
+                    "'executable_allowlist' in mycelium.target.json)"
                 )
         for variant in self.variants:
             for field_name in ("apply_command", "revert_command"):
@@ -221,9 +224,9 @@ class TargetManifest:
                 if canonical_executable(first) not in allow:
                     errors.append(f"variant {variant.name!r} {field_name}: {first!r} not allowlisted")
         if self.repeats < 1:
-            errors.append("repeats must be >= 1")
+            errors.append(f"repeats must be >= 1 (got {self.repeats})")
         if self.warmup < 0:
-            errors.append("warmup must be >= 0")
+            errors.append(f"warmup must be >= 0 (got {self.warmup})")
         return errors
 
     @classmethod
