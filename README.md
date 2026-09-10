@@ -379,7 +379,7 @@ pip install -e . pytest pytest-xdist   # uma vez
 pytest -m "not slow" -q               # loop interno (~5 s)
 pytest -q                             # tudo (~24 s, antes de commitar)
 pytest --lf -x -q                     # W1.3: só o que falhou (ciclo vermelho-verde em segundos)
-pytest -q -n auto                     # tudo em paralelo (vale em 4+ cores)
+pytest -q -n auto                     # tudo em paralelo (meça local; sandbox 2-core: 43→23 s)
 ruff check mycelium_accel/ tests/ scripts/   # lint (gate do CI)
 bash scripts/release.sh vX.Y.Z --full # release em 1 comando
 ```

@@ -7,6 +7,14 @@
   mkdocs `repo_url` aponta p/ o repositório real; `.gitignore` cobre
   `smoke_state/`; roadmap dos 10 ciclos em
   `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`. Zero mudança de código.
+- **C2 velocidade R3 (medir + matar, não adivinhar):** re-baseline por máquina
+  em `VELOCITY_BASELINE.md` (sandbox 2-core: loop 8.0 s, suíte 43.1 s serial /
+  23.0 s xdist); decisão estatística custa 3.2 ms → "otimizar stats" morto 2×;
+  "xdist neutro em 2 cores" morto aqui (-47%); -2.0 s nos dois testes
+  cronometrados isoladamente (timeout 2.01→1.00 s, SIGINT 3.06→2.06 s com piso
+  de sleep provado, 0 asserções mudadas; suíte total 43.1→41.7 s, resto é
+  variância da máquina);
+  nota xdist atualizada em AGENTS.md/README (medir localmente).
 
 ## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
 

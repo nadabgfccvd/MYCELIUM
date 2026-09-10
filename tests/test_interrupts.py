@@ -182,14 +182,20 @@ class CLIInterruptTests(unittest.TestCase):
                     str(root),
                     "--no-apply",
                     "--seeds",
-                    "101,103,107,109,113,127,131",
+                    "101,103,107,109,113",
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 text=True,
                 cwd=Path(__file__).resolve().parent.parent,
             )
-            time.sleep(3.0)
+            # C2: 5 seeds + SIGINT aos 2.0 s (era 7 seeds + 3.0 s), mesmas
+            # asserções. Piso de sleep do sweep = 5 cand × 5 seeds × 2 reps ×
+            # 0.05 s = 2.5 s > 2.0 s: o SIGINT cai no meio do sweep em
+            # qualquer máquina (spawn rápido não encurta sleep); baseline
+            # (~0.5 s + spawn) já terminou mesmo a 2× slowdown. ~1 s mais
+            # rápido, robustez igual ou melhor nas duas direções.
+            time.sleep(2.0)
             proc.send_signal(signal.SIGINT)
             out, _ = proc.communicate(timeout=120)
             self.assertEqual(proc.returncode, 130, out[-2000:])
@@ -218,9 +224,11 @@ class RunnerTimeoutPortableTests(unittest.TestCase):
             _make_python_project(root)
             runner = load_target(root, None).runner
             started = time.perf_counter()
+            # C2: timeout 1.0 (era 2.0) — mesma propriedade (kill no timeout,
+            # não na conclusão), ~1 s mais rápido; bound elapsed<25 intacto.
             result = runner.run(
                 f'{python} -c "import time; time.sleep(30)"',
-                timeout=2.0,
+                timeout=1.0,
             )
             elapsed = time.perf_counter() - started
         self.assertFalse(result.ok)
