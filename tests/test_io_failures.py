@@ -144,18 +144,28 @@ class WindowsLockContentionTests(unittest.TestCase):
         self._patch_attr(self.sc, "REPLACE_BUDGET_SECONDS", 0.05)
 
     def test_lock_contention_is_judged_per_platform(self) -> None:
+        """Both branches are pinned on every host — the classifying rule, not
+        the host's accident. (CI-5a: the first cut of this test assumed the host
+        was posix and so was red on windows-latest, where PermissionError *is*
+        the transient case.)"""
         import errno as _errno
         import types
 
         denied = PermissionError(_errno.EACCES, "Permission denied")
-        # posix: a refused rename means permissions, not a busy file — stay loud.
-        self.assertFalse(self.sc._is_lock_contention(denied))
+        # Everywhere: a busy inode is transient, a full disk is not.
         self.assertTrue(self.sc._is_lock_contention(OSError(_errno.EBUSY, "busy")))
-        # nt: ERROR_ACCESS_DENIED *is* the busy-file case.
+        self.assertFalse(
+            self.sc._is_lock_contention(OSError(_errno.ENOSPC, "no space")))
+        # A refused rename is transient iff the platform refuses rename-while-open:
+        # nt yes (sharing violation), posix no (there it means permissions).
+        host_says = self.sc._is_lock_contention(denied)
+        self.assertEqual(host_says, os.name == "nt")
+        # Flip the platform, the verdict must flip too.
         real_os = self.sc.os
         self.addCleanup(setattr, self.sc, "os", real_os)
-        self.sc.os = types.SimpleNamespace(name="nt")  # type: ignore[assignment]
-        self.assertTrue(self.sc._is_lock_contention(denied))
+        self.sc.os = types.SimpleNamespace(  # type: ignore[assignment]
+            name="posix" if os.name == "nt" else "nt")
+        self.assertEqual(self.sc._is_lock_contention(denied), not host_says)
 
     def test_store_backs_off_until_the_rename_lands(self) -> None:
         from mycelium_accel.sweep_cache import lookup, store

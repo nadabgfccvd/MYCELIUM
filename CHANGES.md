@@ -55,6 +55,24 @@
     the smaller budget. Docs: `ARCHITECTURE.md §11` (UI/platform limits + cache
     concurrency contract). Suite green here: 380 passed + 180 subtests (serial
     loop 7.4 s fast / 36 s full), ruff+mypy+mkdocs --strict clean.
+- CI-5a (first run on the branch, 34462085940): Windows cache-concurrency cell
+  GREEN (PermissionError gone, both Pythons) and macOS 3.14 GREEN (boot 0.3 s).
+  Two leftovers, both ours:
+  - the new per-platform classifier test hardcoded the posix answer → it was the
+    only red on windows-latest. Now it pins the rule itself: EBUSY transient and
+    ENOSPC fatal everywhere, "rename refused ⇒ transient" iff the platform
+    refuses rename-while-open, plus the opposite branch via `os.name` flip —
+    identical assertions on every OS, nothing skipped.
+  - macOS 3.13 failed on a test that the `--lf` re-run then passed, and the
+    annotate step greps *only* that re-run → the run was red with no name
+    attached anywhere (and raw job logs are unreachable from this sandbox). The
+    obvious fix is a workflow edit (`-rf | tee` + union of both logs) but this
+    App has no `workflows` scope — push is rejected — so the same effect now
+    lives in `tests/conftest.py`: on GITHUB_ACTIONS it emits one
+    `::error title=CI-5 failing test::<nodeid> - <crash line>` per failure from
+    the primary run (works under xdist, silent locally, capped at 30, and it
+    cannot itself fail a suite). Workflow-side improvement left as a note for
+    the mantenedor: name the step's log file and grep both.
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 
