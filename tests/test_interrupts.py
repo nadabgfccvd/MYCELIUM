@@ -5,10 +5,12 @@
   and REFUSES to decide on it (deciding on a lucky subset is survivor bias).
 * The runner kills the whole process group on Ctrl-C/timeout (no orphans).
 """
+
 from __future__ import annotations
 
 import json
 import os
+import shutil
 import signal
 import subprocess
 import sys
@@ -37,7 +39,7 @@ from test_targets import _make_python_project  # noqa: E402
 def _fast_project(root: Path, *, variants: int = 2, sleep: float = 0.05) -> None:
     _make_python_project(root)
     (root / "bench.py").write_text(
-        f"import time; time.sleep({sleep}); print('{{\"seconds\": {sleep}, \"total\": 1}}')",
+        f'import time; time.sleep({sleep}); print(\'{{"seconds": {sleep}, "total": 1}}\')',
         encoding="utf-8",
     )
     if variants != 2:
@@ -48,7 +50,9 @@ def _fast_project(root: Path, *, variants: int = 2, sleep: float = 0.05) -> None
             for i in range(variants)
             for v in base
         ][:variants]
-        (root / "mycelium.target.json").write_text(json.dumps(manifest), encoding="utf-8")
+        (root / "mycelium.target.json").write_text(
+            json.dumps(manifest), encoding="utf-8"
+        )
 
 
 class SweepInterruptTests(unittest.TestCase):
@@ -93,12 +97,17 @@ class SweepInterruptTests(unittest.TestCase):
 
     def test_partial_flag_roundtrip(self) -> None:
         sweep = BenchmarkSweep(
-            target="t", metric="m", lower_is_better=True,
-            summaries=[], comparisons=[], partial=True)
+            target="t",
+            metric="m",
+            lower_is_better=True,
+            summaries=[],
+            comparisons=[],
+            partial=True,
+        )
         self.assertTrue(BenchmarkSweep.from_dict(sweep.to_dict()).partial)
         full = BenchmarkSweep(
-            target="t", metric="m", lower_is_better=True,
-            summaries=[], comparisons=[])
+            target="t", metric="m", lower_is_better=True, summaries=[], comparisons=[]
+        )
         self.assertNotIn("partial", full.to_dict())  # old files stay clean
 
 
@@ -108,8 +117,13 @@ class AccelerateInterruptTests(unittest.TestCase):
             root = Path(temp)
             _make_python_project(root)
             carried = BenchmarkSweep(
-                target=str(root), metric="seconds", lower_is_better=True,
-                summaries=[], comparisons=[], partial=True)
+                target=str(root),
+                metric="seconds",
+                lower_is_better=True,
+                summaries=[],
+                comparisons=[],
+                partial=True,
+            )
 
             def boom(self, *args, **kwargs):  # noqa: ANN001, ANN202
                 raise SweepInterrupted(carried)
@@ -126,7 +140,9 @@ class AccelerateInterruptTests(unittest.TestCase):
             self.assertIsNotNone(out.sweep_path)
             payload = json.loads(Path(str(out.sweep_path)).read_text())
             self.assertTrue(payload["partial"])
-            self.assertTrue(any("no decision on partial data" in r for r in out.decision_reasons))
+            self.assertTrue(
+                any("no decision on partial data" in r for r in out.decision_reasons)
+            )
 
     def test_plain_interrupt_has_no_sweep(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -147,16 +163,30 @@ class AccelerateInterruptTests(unittest.TestCase):
 
 
 @pytest.mark.slow
+@pytest.mark.skipif(
+    os.name != "posix",
+    reason="SIGINT-to-child is posix-only (Windows force-kills: no graceful 130)",
+)
 class CLIInterruptTests(unittest.TestCase):
     def test_cli_ctrl_c_is_130_with_partial(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             _fast_project(root, variants=4, sleep=0.05)
             proc = subprocess.Popen(
-                [sys.executable, "-m", "mycelium_accel", "accelerate",
-                 "--target", str(root), "--no-apply",
-                 "--seeds", "101,103,107,109,113,127,131"],
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                [
+                    sys.executable,
+                    "-m",
+                    "mycelium_accel",
+                    "accelerate",
+                    "--target",
+                    str(root),
+                    "--no-apply",
+                    "--seeds",
+                    "101,103,107,109,113,127,131",
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
                 cwd=Path(__file__).resolve().parent.parent,
             )
             time.sleep(3.0)
@@ -165,7 +195,7 @@ class CLIInterruptTests(unittest.TestCase):
             self.assertEqual(proc.returncode, 130, out[-2000:])
             self.assertIn("interrupted", out)
             self.assertNotIn("Traceback", out)
-            payload = json.loads(out[out.index("{"):out.rindex("}") + 1])
+            payload = json.loads(out[out.index("{") : out.rindex("}") + 1])
             self.assertTrue(payload["interrupted"])
             self.assertIsNone(payload["best_candidate"])
             sweep = json.loads(Path(payload["sweep_path"]).read_text())
@@ -173,16 +203,43 @@ class CLIInterruptTests(unittest.TestCase):
             self.assertGreaterEqual(len(sweep["summaries"]), 1)
 
 
+@pytest.mark.slow
+@pytest.mark.skipif(
+    os.name != "posix",
+    reason="SIGINT-to-child is posix-only (Windows force-kills: no graceful 130)",
+)
+class RunnerTimeoutPortableTests(unittest.TestCase):
+    """Timeout kill without pgrep/signals: runs everywhere incl. Windows/macOS."""
+
+    def test_timeout_returns_promptly_failed(self) -> None:
+        python = "python3" if shutil.which("python3") else "python"
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _make_python_project(root)
+            runner = load_target(root, None).runner
+            started = time.perf_counter()
+            result = runner.run(
+                f'{python} -c "import time; time.sleep(30)"',
+                timeout=2.0,
+            )
+            elapsed = time.perf_counter() - started
+        self.assertFalse(result.ok)
+        self.assertEqual(result.returncode, -signal.SIGKILL)
+        self.assertLess(elapsed, 25.0)
+
+
 @pytest.mark.slow  # Q2 re-tier: timing-based process tests live in slow
 @pytest.mark.skipif(os.name != "posix", reason="process groups are posix-only")
+@pytest.mark.skipif(
+    shutil.which("pgrep") is None, reason="pgrep missing (no procps on macOS runners)"
+)
 class OrphanKillTests(unittest.TestCase):
     def _runner(self, root: Path):  # noqa: ANN202
         _make_python_project(root)
         return load_target(root, None).runner
 
     def _pgrep(self, marker: str) -> bool:
-        proc = subprocess.run(["pgrep", "-f", marker],
-                              capture_output=True, timeout=10)
+        proc = subprocess.run(["pgrep", "-f", marker], capture_output=True, timeout=10)
         return proc.returncode == 0
 
     def test_timeout_kills_subtree(self) -> None:

@@ -13,6 +13,11 @@
   decide_unknown_baseline assume-guard (hostile-name collision on fresh-DB
   runs); docs deploy installs mkdocs-material+ghp-import. Hygiene:
   .gitattributes (LF), .coverage untracked+ignored.
+- CI-2 (matrix red): BCa/compare goldens → assertAlmostEqual (3.14 rewrote
+  statistics.NormalDist.cdf: 1-ULP dust vs 3.13 goldens; exactness would pin
+  a stdlib); OrphanKillTests skips when pgrep missing (macOS has no procps);
+  CLIInterruptTests posix-only (Windows force-kills, no graceful 130);
+  new portable runner-timeout test (no pgrep/signals, all platforms).
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 

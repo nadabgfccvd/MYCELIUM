@@ -167,19 +167,20 @@ class BcaGoldenTests(unittest.TestCase):
     def test_golden_skewed(self) -> None:
         # Integer data -> bootstrap ties at theta_hat, so the z0 '<' vs '<='
         # mutant (bca#35) shifts the proportion and the golden catches it.
-        self.assertEqual(
-            bca_bootstrap_ci(SKEW, n_bootstrap=499, seed=7),
-            (2.5, 11.08779770148638),
-        )
+        low, high = bca_bootstrap_ci(SKEW, n_bootstrap=499, seed=7)
+        # CI-2: statistics.NormalDist.cdf drifted in 3.14 (stdlib accuracy
+        # rewrite) — 1-ULP dust vs the 3.13 golden. Tolerance keeps killing
+        # endpoint mutants (all macroscopic); exactness would pin a stdlib.
+        self.assertAlmostEqual(low, 2.5)
+        self.assertAlmostEqual(high, 11.08779770148638)
 
     def test_golden_symmetric(self) -> None:
         # accel == 0.0 exactly here, so 'denom == 0' -> 'denom == 1' (bca#71)
         # collapses the interval to (min, max) of the bootstraps.
         self.assertEqual(_jackknife_acceleration([float(v) for v in SYM]), 0.0)
-        self.assertEqual(
-            bca_bootstrap_ci(SYM, n_bootstrap=499, seed=7),
-            (-0.720314157793832, 0.7272727272727273),
-        )
+        low, high = bca_bootstrap_ci(SYM, n_bootstrap=499, seed=7)
+        self.assertAlmostEqual(low, -0.720314157793832)  # CI-2: see above
+        self.assertAlmostEqual(high, 0.7272727272727273)
 
     def test_nesting_strict(self) -> None:
         widths = []
@@ -209,9 +210,8 @@ class CompareGoldenTests(unittest.TestCase):
         self.assertEqual(comp.n_pairs, 20)
         self.assertEqual(comp.mean_delta, 0.9358999999999998)
         self.assertEqual(comp.median_delta, 0.9599999999999991)
-        self.assertEqual(
-            (comp.ci_low, comp.ci_high), (0.7840073758448264, 1.080054448286354)
-        )
+        self.assertAlmostEqual(comp.ci_low, 0.7840073758448264)  # CI-2: see above
+        self.assertAlmostEqual(comp.ci_high, 1.080054448286354)
         self.assertEqual(comp.confidence, 0.95)
         self.assertEqual(comp.p_value, 0.001)
         self.assertIsNone(comp.p_value_corrected)
