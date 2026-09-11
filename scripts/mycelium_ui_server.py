@@ -11,6 +11,7 @@ from collections import deque
 from datetime import datetime, UTC
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import socketserver
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
@@ -25,6 +26,16 @@ from mycelium_accel.state import load_state
 UI_ROOT = PROJECT_ROOT / "mycelium_ui"
 DEFAULT_HOST = "0.0.0.0"
 DEFAULT_PORT = 8765
+# Explicit server type used by the pure-unit contract.  HTTPServer's default
+# bind path calls socket.getfqdn(), which is an unnecessary reverse-DNS lookup
+# and can stall startup on an offline runner.  Keep the normal TCP bind while
+# deriving the local name directly from the bound address.
+class UIServer(ThreadingHTTPServer):
+    def server_bind(self) -> None:
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.server_address[:2]
+        self.server_name = host
+        self.server_port = port
 
 HELP_TEXT = """/help
 Mostra esta ajuda em linguagem simples.
@@ -845,7 +856,7 @@ class Handler(BaseHTTPRequestHandler):
 def main() -> None:
     host = os.environ.get("MYCELIUM_UI_HOST", DEFAULT_HOST)
     port = int(os.environ.get("MYCELIUM_UI_PORT", str(DEFAULT_PORT)))
-    server = ThreadingHTTPServer((host, port), Handler)
+    server = UIServer((host, port), Handler)
     print(f"MYCELIUM Auto-evolve UI listening on http://{host}:{port}")
     server.serve_forever()
 

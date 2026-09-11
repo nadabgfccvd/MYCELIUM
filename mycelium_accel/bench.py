@@ -417,16 +417,25 @@ class BenchmarkExecutor:
         return path
 
     def export_csv(self, sweep: BenchmarkSweep) -> Path:
+        from .sweep_cache import _atomic_write_text
+        import io
+
         path = self.export_dir / f"{self._stem(sweep)}.csv"
-        with path.open("w", newline="", encoding="utf-8") as handle:
-            writer = csv.writer(handle)
-            writer.writerow(["candidate", "seed", "metric", "value", "seconds", "ok"])
-            for summary in sweep.summaries:
-                for run in summary.runs:
-                    writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
+        # StringIO(newline="") preserves csv.writer's CRLF dialect on every
+        # platform; the completed bytes then cross the same atomic rename
+        # boundary as JSON/Markdown/HTML exports.
+        buffer = io.StringIO(newline="")
+        writer = csv.writer(buffer)
+        writer.writerow(["candidate", "seed", "metric", "value", "seconds", "ok"])
+        for summary in sweep.summaries:
+            for run in summary.runs:
+                writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
+        _atomic_write_text(path, buffer.getvalue())
         return path
 
     def export_markdown(self, sweep: BenchmarkSweep) -> Path:
+        from .sweep_cache import _atomic_write_text
+
         path = self.export_dir / f"{self._stem(sweep)}.md"
         lines = [f"# Benchmark sweep — {sweep.target}", ""]
         lines.append(f"Metric: `{sweep.metric}` ({'lower' if sweep.lower_is_better else 'higher'} is better)")
@@ -452,14 +461,15 @@ class BenchmarkExecutor:
                     f"{comparison['ci_low']:.6g} | {comparison['ci_high']:.6g} | "
                     f"{comparison['p_value']:.4f} | {corrected_str} | {comparison['effect_dz']:.3f} |"
                 )
-        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        _atomic_write_text(path, "\n".join(lines) + "\n")
         return path
 
     def export_html(self, sweep: BenchmarkSweep, *, verdict: str = "") -> Path:
         from .report_html import html_from_sweep
+        from .sweep_cache import _atomic_write_text
 
         path = self.export_dir / f"{self._stem(sweep)}.html"
-        path.write_text(html_from_sweep(sweep.to_dict(), verdict=verdict), encoding="utf-8")
+        _atomic_write_text(path, html_from_sweep(sweep.to_dict(), verdict=verdict))
         return path
 
 

@@ -34,7 +34,7 @@ DEFAULT_EXECUTABLE_ALLOWLIST = {
     "cargo", "rustc", "rustup",
     "cmake", "make", "ninja", "ctest",
     "cc", "c++", "gcc", "g++", "clang", "clang++",
-    "node", "npm", "npx", "yarn", "pnpm",
+    "node", "npm", "npx", "yarn", "pnpm", "go",
     "sh", "bash", "env", "echo", "true",
     "git", "tar", "patch",
 }
@@ -58,6 +58,7 @@ ENV_PASSTHROUGH = {
     "PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "TEMP", "TMP",
     "CARGO_HOME", "RUSTUP_HOME", "NODE_ENV", "VIRTUAL_ENV",
     "CC", "CXX", "CFLAGS", "CXXFLAGS", "LDFLAGS", "MAKEFLAGS",
+    "GOCACHE", "GOMODCACHE",
 }
 
 
@@ -253,7 +254,8 @@ class TargetManifest:
             elif canonical_executable(argv[0].split("/")[-1]) not in allow:
                 errors.append(
                     f"{field_name}: executable {argv[0]!r} is not allowlisted "
-                    "(runs would fail at sandbox time; fix the manifest now)"
+                    "(add it to executable_allowlist in mycelium.target.json; "
+                    "runs would fail at sandbox time)"
                 )
         for variant in self.variants:
             for field_name in ("apply_command", "revert_command"):
@@ -264,9 +266,9 @@ class TargetManifest:
                 if canonical_executable(first) not in allow:
                     errors.append(f"variant {variant.name!r} {field_name}: {first!r} not allowlisted")
         if self.repeats < 1:
-            errors.append("repeats must be >= 1")
+            errors.append(f"repeats must be >= 1 (got {self.repeats})")
         if self.warmup < 0:
-            errors.append("warmup must be >= 0")
+            errors.append(f"warmup must be >= 0 (got {self.warmup})")
         return errors
 
     @classmethod

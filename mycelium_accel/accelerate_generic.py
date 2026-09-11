@@ -624,12 +624,33 @@ def accelerate_target(
     cache: bool = False,
     cache_dir: Path | None = None,
     sequential_seeds: bool = False,
+    dry_run: bool = False,
 ) -> GenericAccelerationOutcome:
     started = time.perf_counter()
     target = load_target(target_root, manifest_path)
     manifest = target.manifest
     seeds = _default_seeds(seeds)
     policy = policy or AcceptancePolicy()
+
+    # A dry run validates the real target lifecycle but deliberately does not
+    # construct an executor (which would create an artifacts directory), run a
+    # benchmark, or write any reports.
+    if dry_run:
+        target.build()  # build failures remain actionable RuntimeErrors
+        test_result = target.test()
+        test_status = "PASS" if test_result is None or test_result.ok else "FAIL"
+        return GenericAccelerationOutcome(
+            target=str(target.root),
+            baseline="baseline",
+            best_candidate=None,
+            applied=False,
+            decision_reasons=[
+                f"dry run: manifest valid; metric '{manifest.metric_name}'; "
+                f"tests {test_status}; no measurements taken."
+            ],
+            sweep_path=None,
+            seconds=time.perf_counter() - started,
+        )
 
     # 1. build + test gate
     target.build()

@@ -14,6 +14,12 @@ import sys
 from pathlib import Path
 from typing import Any
 
+# Shared atomic replacement boundary used by exports, cache writes, and tests.
+# Keep this as a wrapper rather than a captured alias so monkeypatching either
+# the public boundary or ``os.replace`` exercises the retry path.
+def _replace(src: str, dst: str | Path) -> None:
+    os.replace(src, dst)
+
 
 def _hashable_files(root: Path) -> list[Path]:
     files = []
@@ -63,7 +69,7 @@ def _replace_with_retry(tmp_name: str, path: Path, attempts: int = 10) -> None:
     last: OSError | None = None
     for attempt in range(attempts):
         try:
-            os.replace(tmp_name, path)
+            _replace(tmp_name, path)
             return
         except PermissionError as exc:
             last = exc

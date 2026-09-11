@@ -43,6 +43,7 @@ def build_parser() -> argparse.ArgumentParser:
     accelerate_parser.add_argument("--manifest", default=None, help="path to mycelium.target.json (generic harness, Phase 1)")
     accelerate_parser.add_argument("--seeds", default="101,103,107,109,113,127,131", help="comma-separated prime seeds for paired benchmarking")
     accelerate_parser.add_argument("--no-apply", action="store_true", help="measure only; do not persist any variant")
+    accelerate_parser.add_argument("--dry-run", action="store_true", help="validate target/build/tests without measuring or writing artifacts")
     accelerate_parser.add_argument("--race", action="store_true", help="racing screen: drop futile candidates before the full sweep")
     accelerate_parser.add_argument("--race-seeds", type=int, default=3, help="seeds for the racing screen (>=2; 2 is faster but may drop close winners)")
     accelerate_parser.add_argument("--race-margin", type=float, default=0.0, help="eliminate when screen CI_high < margin")
@@ -339,9 +340,9 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
             import sys as _sys_missing_target
 
             _sys_missing_target.stderr.write(
-                f"mycelium-accel: accelerate failed: target not found: {target_path}\n"
-                "Pass an existing project directory or benchmark module, or run\n"
-                "'mycelium-accel accelerate init --target <dir>' to scaffold one.\n"
+                "mycelium-accel: accelerate failed: target not found: "
+                f"{target_path}; pass an existing project directory or benchmark "
+                "module, or run 'mycelium-accel accelerate init --target <dir>'.\n"
             )
             raise SystemExit(1)
         use_generic_harness = (
@@ -371,9 +372,11 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
                 cache=args.cache,
                 cache_dir=Path(args.cache_dir) if args.cache_dir else None,
                 sequential_seeds=args.sequential_seeds,
+                dry_run=args.dry_run,
                 )
             except (_SafetyError, ValueError, FileNotFoundError, RuntimeError, OSError) as exc:
-                _sys2.stderr.write(f"mycelium-accel: accelerate failed: {exc}\n")
+                detail = " ".join(str(exc).splitlines())
+                _sys2.stderr.write(f"mycelium-accel: accelerate failed: {detail}\n")
                 raise SystemExit(1)
             print(json.dumps(outcome.to_dict(), indent=2))
             if outcome.interrupted:

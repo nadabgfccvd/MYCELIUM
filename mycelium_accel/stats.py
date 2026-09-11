@@ -20,6 +20,13 @@ from collections.abc import Callable, Sequence
 
 _NORM = NormalDist()
 
+# Advisory diagnostics deliberately live in this module and are never imported
+# by the decision path.  They describe evidence quality without changing a
+# verdict or acceptance threshold.
+ADVISORY_POWER_TARGET = 0.80
+ADVISORY_THIN_MARGIN_RATIO = 0.10
+ADVISORY_NOISY_CI_RATIO = 2.0
+
 
 @lru_cache(maxsize=64)
 def _bootstrap_index_matrix(
@@ -213,8 +220,10 @@ def percentile_ci(
         return data[0], data[0]
     boot_means: list[float] = []
     for indices in _bootstrap_index_matrix(n, n_bootstrap, seed):
-        # mirror the previous generator-sum exactly (sum starts at int 0)
-        boot_means.append(sum(data[j] for j in indices) / n)
+        # ``fsum`` preserves the pre-memoization percentile values (notably
+        # 0.1 rather than 0.09999999999999999 for decimal fixtures) while the
+        # index matrix still supplies the exact historical draw sequence.
+        boot_means.append(math.fsum(data[j] for j in indices) / n)
     boot_means.sort()
     alpha = (1.0 - confidence) / 2.0
     return _quantile(boot_means, alpha), _quantile(boot_means, 1.0 - alpha)
@@ -475,5 +484,95 @@ def sequential_racing(
         rounds_run=rounds_run,
         comparisons=comparisons,
     )
+
+
+def paired_power(
+    effect_dz: float,
+    n_pairs: int,
+    *,
+    alpha: float = 0.05,
+) -> float:
+    """Approximate one-sided paired-test power for a standardized effect.
+
+    This is an advisory normal approximation, not part of any acceptance
+    decision.  At a null effect it returns ``alpha``; positive effects gain
+    power as pairs increase, while negative effects lose it.  Invalid inputs
+    are rejected explicitly so a diagnostic cannot silently manufacture a
+    reassuring number.
+    """
+    if isinstance(n_pairs, bool) or not isinstance(n_pairs, int) or n_pairs <= 0:
+        raise ValueError(f"n_pairs must be a positive integer, got {n_pairs!r}.")
+    if not isinstance(effect_dz, (int, float)) or isinstance(effect_dz, bool):
+        raise ValueError(f"effect_dz must be numeric, got {effect_dz!r}.")
+    if not isinstance(alpha, (int, float)) or isinstance(alpha, bool):
+        raise ValueError(f"alpha must be numeric, got {alpha!r}.")
+    alpha = float(alpha)
+    if not math.isfinite(alpha) or not 0.0 < alpha < 1.0:
+        raise ValueError(f"alpha must be in (0, 1), got {alpha!r}.")
+    effect = float(effect_dz)
+    if math.isnan(effect) or effect == float("-inf"):
+        return 0.0
+    if effect == float("inf"):
+        return 1.0
+    critical = _NORM.inv_cdf(1.0 - alpha)
+    power = _NORM.cdf(effect * math.sqrt(n_pairs) - critical)
+    return min(1.0, max(0.0, power))
+
+
+def diagnose_comparison(comparison: PairedComparison) -> dict[str, Any]:
+    """Return descriptive evidence-quality diagnostics for one comparison.
+
+    The returned sheet is intentionally stable and contains no verdict field.
+    It can be displayed in reports or used to explain why a result is noisy,
+    underpowered, or close to its decision boundary without affecting the
+    registered statistical decision path.
+    """
+    n_pairs = int(comparison.n_pairs)
+    ci_width = float(comparison.ci_high - comparison.ci_low)
+    margin_above_zero = max(0.0, float(comparison.ci_low))
+    if comparison.mean_delta == 0.0:
+        rel_margin: float | None = None
+    else:
+        rel_margin = margin_above_zero / abs(float(comparison.mean_delta))
+
+    approx_power = paired_power(comparison.effect_dz, n_pairs)
+    notes: list[str] = []
+    min_pairs = AcceptancePolicy().min_pairs
+    if n_pairs < min_pairs:
+        notes.append(
+            f"n_pairs={n_pairs} is below the policy min_pairs={min_pairs}; "
+            "the comparison is descriptive only."
+        )
+    elif n_pairs < 7:
+        notes.append(
+            "Monte-Carlo permutation resolution is limited below 7 paired seeds."
+        )
+    if approx_power < ADVISORY_POWER_TARGET:
+        notes.append(
+            f"approximate power {approx_power:.3f} is below the "
+            f"{ADVISORY_POWER_TARGET:.2f} advisory target."
+        )
+    if rel_margin is not None and 0.0 < rel_margin < ADVISORY_THIN_MARGIN_RATIO:
+        notes.append(
+            f"thin margin: the CI lower bound is only {rel_margin:.1%} of the mean effect."
+        )
+    if comparison.mean_delta != 0.0 and ci_width / abs(float(comparison.mean_delta)) > ADVISORY_NOISY_CI_RATIO:
+        notes.append(
+            f"noisy CI: width/effect ratio exceeds {ADVISORY_NOISY_CI_RATIO:.1f}."
+        )
+
+    exact_p_floor = 1.0 / (2 ** n_pairs) if 7 <= n_pairs <= 16 else None
+    return {
+        "metric": comparison.metric,
+        "n_pairs": n_pairs,
+        "effect_dz": comparison.effect_dz,
+        "approx_power_one_sided": approx_power,
+        "power_alpha": 1.0 - comparison.confidence,
+        "ci_width": ci_width,
+        "margin_above_zero": margin_above_zero,
+        "rel_margin": rel_margin,
+        "exact_p_floor": exact_p_floor,
+        "notes": notes,
+    }
 
 

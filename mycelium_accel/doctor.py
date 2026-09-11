@@ -128,7 +128,9 @@ def fix_manifest(root: Path) -> list[str]:
         raw["executable_allowlist"] = sorted(set(allow))
         done.append("sorted/deduped executable_allowlist")
     if done:
-        path.write_text(json.dumps(raw, indent=2, sort_keys=True), encoding="utf-8")
+        from .sweep_cache import _atomic_write_text
+
+        _atomic_write_text(path, json.dumps(raw, indent=2, sort_keys=True))
     return done
 
 

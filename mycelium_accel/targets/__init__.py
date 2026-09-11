@@ -1,6 +1,6 @@
 """Project-agnostic target harness: manifests, runners, variant application.
 
-Auto-detection order: explicit manifest > python > cargo > cmake > node > shell.
+Auto-detection order: explicit manifest > python > cargo > cmake > node > go > shell.
 """
 from __future__ import annotations
 
@@ -19,6 +19,7 @@ from .base import (
 )
 from .cargo_target import CargoTarget
 from .cmake_target import CmakeTarget
+from .go_target import GoTarget
 from .node_target import NodeTarget
 from .python_target import PythonTarget
 from .shell_target import ShellTarget
@@ -28,6 +29,7 @@ KIND_TO_TARGET = {
     "python": PythonTarget,
     "cargo": CargoTarget,
     "cmake": CmakeTarget,
+    "go": GoTarget,
     "node": NodeTarget,
 }
 
@@ -36,20 +38,29 @@ KIND_TO_DEFAULT_MANIFEST = {
     "python": PythonTarget.default_manifest,
     "cargo": CargoTarget.default_manifest,
     "cmake": CmakeTarget.default_manifest,
+    "go": GoTarget.default_manifest,
     "node": NodeTarget.default_manifest,
 }
 
 
 def detect_kind(root: Path) -> str:
-    """Best-effort project kind detection for a directory."""
-    if (root / "pyproject.toml").exists() or (root / "setup.py").exists() or (root / "benchmark.py").exists():
+    """Best-effort project kind detection for a directory.
+
+    Preserve the established precedence for polyglot projects while covering
+    common lock/config-only roots that have no source file yet.
+    """
+    if any((root / name).exists() for name in (
+        "pyproject.toml", "setup.py", "benchmark.py", "requirements.txt", "uv.lock",
+    )):
         return "python"
     if (root / "Cargo.toml").exists():
         return "cargo"
     if (root / "CMakeLists.txt").exists():
         return "cmake"
-    if (root / "package.json").exists():
+    if any((root / name).exists() for name in ("package.json", "deno.json", "deno.jsonc")):
         return "node"
+    if (root / "go.mod").exists():
+        return "go"
     return "shell"
 
 
@@ -76,6 +87,7 @@ def load_target(root: Path, manifest_path: Path | None = None) -> ProjectTarget:
 __all__ = [
     "CargoTarget",
     "CmakeTarget",
+    "GoTarget",
     "CommandRunner",
     "DEFAULT_EXECUTABLE_ALLOWLIST",
     "FileSnapshot",
