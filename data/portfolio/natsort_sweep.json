@@ -1,0 +1,455 @@
+{
+  "comparisons": [
+    {
+      "baseline": "baseline",
+      "candidate": "pythonoptimize-1",
+      "ci_high": -0.013739180559969099,
+      "ci_low": -0.13731060180009083,
+      "confidence": 0.95,
+      "deltas": [
+        -0.015013074399575999,
+        -0.10317469300043736,
+        0.020965428599993174,
+        -0.11657911420024902,
+        -0.17511004379975936
+      ],
+      "direction": -1,
+      "effect_dz": -0.9777606756645844,
+      "mean_delta": -0.07778229936000572,
+      "median_delta": -0.10317469300043736,
+      "metric": "seconds",
+      "n_pairs": 5,
+      "p_value": 0.934906509349065,
+      "p_value_corrected": 0.934906509349065,
+      "prob_superior": 0.2
+    }
+  ],
+  "lower_is_better": true,
+  "metric": "seconds",
+  "started_at": 1789083246.1291783,
+  "summaries": [
+    {
+      "candidate": "baseline",
+      "flaky": false,
+      "maximum": 0.974274988999241,
+      "mean": 0.8302888221199828,
+      "median": 0.7880591490002189,
+      "minimum": 0.7539826430001995,
+      "runs": [
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0099405890005073,
+          "seed": 101,
+          "value": 0.974274988999241
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9856037400004425,
+          "seed": 101,
+          "value": 0.9502710780006964
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8213632610004424,
+          "seed": 101,
+          "value": 0.7848055740005293
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8044756740000594,
+          "seed": 101,
+          "value": 0.7740977520006709
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7845544150004571,
+          "seed": 101,
+          "value": 0.7539826430001995
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7894392049993257,
+          "seed": 103,
+          "value": 0.7586143389999052
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7897160619995702,
+          "seed": 103,
+          "value": 0.7598100949999207
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7993977750002159,
+          "seed": 103,
+          "value": 0.7694215619994793
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8314843919997656,
+          "seed": 103,
+          "value": 0.7993303639996157
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9519941309999922,
+          "seed": 103,
+          "value": 0.9149832269995386
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9642398850000973,
+          "seed": 107,
+          "value": 0.9282842860002347
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9359102560001702,
+          "seed": 107,
+          "value": 0.9014107180000792
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7938368579998496,
+          "seed": 107,
+          "value": 0.7638603470004455
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9199197759999151,
+          "seed": 107,
+          "value": 0.8875101759995232
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9888118079998094,
+          "seed": 107,
+          "value": 0.9518862499999159
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9771827629992913,
+          "seed": 109,
+          "value": 0.9405976379994172
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9455854559992076,
+          "seed": 109,
+          "value": 0.909393504000036
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8273292229996514,
+          "seed": 109,
+          "value": 0.7954753300000448
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7934801309993418,
+          "seed": 109,
+          "value": 0.7617897959999027
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8497656690005897,
+          "seed": 109,
+          "value": 0.8181346639994445
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8037882759999775,
+          "seed": 113,
+          "value": 0.7722262120005325
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8194065679999767,
+          "seed": 113,
+          "value": 0.7880591490002189
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7951004569995348,
+          "seed": 113,
+          "value": 0.7643622710002091
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.791139543999634,
+          "seed": 113,
+          "value": 0.7600613189997603
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8065318910003043,
+          "seed": 113,
+          "value": 0.7745772700000089
+        }
+      ],
+      "stddev": 0.07833311049592881
+    },
+    {
+      "candidate": "pythonoptimize-1",
+      "flaky": false,
+      "maximum": 0.9784043790004944,
+      "mean": 0.9080711214799885,
+      "median": 0.9344577909996588,
+      "minimum": 0.7571345709993693,
+      "runs": [
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7877577720000772,
+          "seed": 101,
+          "value": 0.7571345709993693
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8010416940005598,
+          "seed": 101,
+          "value": 0.7705360210002254
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9704111669998383,
+          "seed": 101,
+          "value": 0.9344577909996588
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9665507750005418,
+          "seed": 101,
+          "value": 0.9304892529999051
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9551492519995008,
+          "seed": 101,
+          "value": 0.9198797720000584
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9584537270002329,
+          "seed": 103,
+          "value": 0.9223664760002066
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9381879560005473,
+          "seed": 103,
+          "value": 0.9030798869998762
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9863344790001065,
+          "seed": 103,
+          "value": 0.9511902599997484
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9771118350008692,
+          "seed": 103,
+          "value": 0.9407212060004895
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8347539099995629,
+          "seed": 103,
+          "value": 0.8006752230003258
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7944383859994559,
+          "seed": 107,
+          "value": 0.7632112540004528
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7921294369998577,
+          "seed": 107,
+          "value": 0.7606401720004214
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9637579159998495,
+          "seed": 107,
+          "value": 0.9279194029995779
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9759757950005223,
+          "seed": 107,
+          "value": 0.9402988809997623
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9724846559993239,
+          "seed": 107,
+          "value": 0.9360549240000182
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9837511890000314,
+          "seed": 109,
+          "value": 0.9477534909992755
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9974937260003571,
+          "seed": 109,
+          "value": 0.9602703159998782
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9973475340002551,
+          "seed": 109,
+          "value": 0.9615230569997948
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0010477509995326,
+          "seed": 109,
+          "value": 0.9634426280008483
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0117228380004235,
+          "seed": 109,
+          "value": 0.9752970110002934
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9915063649996227,
+          "seed": 113,
+          "value": 0.9547473929997068
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9698773819991402,
+          "seed": 113,
+          "value": 0.931945037999867
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9918533780000871,
+          "seed": 113,
+          "value": 0.9563269009995565
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9498488270000962,
+          "seed": 113,
+          "value": 0.9134127289999014
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0142103839998526,
+          "seed": 113,
+          "value": 0.9784043790004944
+        }
+      ],
+      "stddev": 0.07287398831416173
+    }
+  ],
+  "target": "/tmp/mycelium_p7/natsort"
+}

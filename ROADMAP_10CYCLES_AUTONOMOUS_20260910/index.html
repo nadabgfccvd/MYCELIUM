@@ -1,0 +1,1738 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Roadmap autônomo — 10 ciclos (2026-09-10, sessão noturna sem supervisão) - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roadmap-autonomo-10-ciclos-2026-09-10-sessao-noturna-sem-supervisao" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Roadmap autônomo — 10 ciclos (2026-09-10, sessão noturna sem supervisão)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PERFORMANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-diagnostico-honesto-medido-nao-estimado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Diagnóstico honesto (medido, não estimado)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-contrato-de-nao-regressao-vale-para-os-10-ciclos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Contrato de não-regressão (vale para os 10 ciclos)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-os-10-ciclos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Os 10 ciclos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Os 10 ciclos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c1-higiene-verdade-documental-141-unreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C1 — Higiene &amp; verdade documental → 1.4.1 (Unreleased)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c2-velocidade-r3-medir-re-baseline-matar-tempo-morto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C2 — Velocidade R3: medir, re-baseline, matar tempo morto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c3-rigor-estatistico-ii-advisory-veredito-intocado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C3 — Rigor estatístico II (advisory, veredito intocado)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c4-robustez-portabilidade-escrita-atomica-em-tudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C4 — Robustez &amp; portabilidade: escrita atômica em tudo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c5-ux-do-cli-clareza-sem-quebrar-contrato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C5 — UX do CLI: clareza sem quebrar contrato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c6-alvos-manifestos-deteccao-mais-esperta-erros-mais-gentis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C6 — Alvos &amp; manifestos: detecção mais esperta, erros mais gentis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c7-substrato-de-pesquisa-observar-melhor-feder-menos-medido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C7 — Substrato de pesquisa: observar melhor, feder menos (medido)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c8-relatorios-ui-acessivel-imprimivel-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C8 — Relatórios &amp; UI: acessível, imprimível, offline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c9-release-engineering-a-prova-de-sandbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C9 — Release engineering à prova de sandbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c10-consolidacao-o-melhor-release-candidato-possivel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C10 — Consolidação: o melhor release candidato possível
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-protocolo-de-backup-por-ciclo-automatizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Protocolo de backup (por ciclo, automatizado)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-metricas-de-sucesso-manha-seguinte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Métricas de sucesso (manhã seguinte)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-risco-conhecido-filebinnet-inalcancavel-desta-sandbox-evidencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Risco conhecido: filebin.net inalcançável desta sandbox (EVIDÊNCIA)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="roadmap-autonomo-10-ciclos-2026-09-10-sessao-noturna-sem-supervisao">Roadmap autônomo — 10 ciclos (2026-09-10, sessão noturna sem supervisão)</h1>
+<blockquote>
+<p><strong>Status:</strong> EM EXECUÇÃO AUTÔNOMA. Mantenedor dormindo; agente executa C1→C10 sem
+paradas, sem perguntas, sem regressão. Cada ciclo termina com: suíte 100% verde
++ ruff + mypy + commit + push + zip validado + tentativa filebin.net.</p>
+</blockquote>
+<h2 id="0-diagnostico-honesto-medido-nao-estimado">0. Diagnóstico honesto (medido, não estimado)</h2>
+<p><strong>Baseline desta máquina (2026-09-10, Python 3.11.2, 2 CPUs):</strong>
+<code>380 passed + 180 subtests in 44.13s</code> · ruff limpo · mypy limpo (49 arquivos).
+Commit-âncora: <code>29f6c86</code> (= <code>main</code>, branch <code>arena/01a08ae0-mycelium</code>).</p>
+<p><strong>Forças (não quebrar):</strong> harness pareado com corpus de replay e equivalência de
+veredito; API 1.x congelada (<code>API_STABLE_1.0.md</code>); runtime stdlib-only; CI 3 SOs ×
+2 Pythons; cultura documentada de kills honestos (<code>AGENTS.md</code>, <code>CHANGES.md</code>).</p>
+<p><strong>Fraquezas reais encontradas por leitura de código (cada uma vira trabalho):</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Achado</th>
+<th>Evidência</th>
+<th>Ciclo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W1</td>
+<td>README cita "204 verdes" (suíte tem 380) — drift docs↔código</td>
+<td><code>README.md</code> vs <code>pytest collect-only</code></td>
+<td>C1</td>
+</tr>
+<tr>
+<td>W2</td>
+<td>Exports CSV/MD/HTML não-atômicos (só JSON é) — crash corrompe artefato</td>
+<td><code>bench.py: export_csv/markdown/html</code> vs <code>export_json</code></td>
+<td>C4</td>
+</tr>
+<tr>
+<td>W3</td>
+<td><code>fix_manifest</code> escreve manifesto sem atomicidade</td>
+<td><code>doctor.py: fix_manifest</code></td>
+<td>C4</td>
+</tr>
+<tr>
+<td>W4</td>
+<td><code>history</code> carrega ~40 flags de engine que ignora (confusão UX)</td>
+<td><code>__main__.py: history_parser</code> + <code>_add_common_args</code></td>
+<td>C5</td>
+</tr>
+<tr>
+<td>W5</td>
+<td>Sem <code>accelerate dry-run</code> (validar sem medir)</td>
+<td><code>__main__.py: accelerate_parser</code></td>
+<td>C5</td>
+</tr>
+<tr>
+<td>W6</td>
+<td><code>doctor</code> sem cheques de disco/cache/versões de toolchain</td>
+<td><code>doctor.py: run_checks</code> (8 grupos)</td>
+<td>C5</td>
+</tr>
+<tr>
+<td>W7</td>
+<td>Telemetria JSONL ilimitada; <code>read_metrics</code> carrega tudo</td>
+<td><code>telemetry.py</code> (sem rotação)</td>
+<td>C7</td>
+</tr>
+<tr>
+<td>W8</td>
+<td><code>detect_kind</code> não conhece go/make/deno/uv; heurística <code>benchmark.py</code> frágil</td>
+<td><code>targets/__init__.py</code></td>
+<td>C6</td>
+</tr>
+<tr>
+<td>W9</td>
+<td>HTML sem dark-mode/print/a11y além de <code>role=img</code></td>
+<td><code>report_html.py</code>, <code>history.py</code></td>
+<td>C8</td>
+</tr>
+<tr>
+<td>W10</td>
+<td>Hot paths estatísticos sem orçamento documentado (BCa 2000×n, jackknife O(n²), exact 2^n)</td>
+<td><code>stats.py</code></td>
+<td>C2/C3</td>
+</tr>
+<tr>
+<td>W11</td>
+<td>Suíte 44s aqui vs 22.5s do baseline — sem re-baseline por máquina</td>
+<td><code>VELOCITY_BASELINE.md</code></td>
+<td>C2</td>
+</tr>
+<tr>
+<td>W12</td>
+<td><code>UI server</code> 37KB em 1 arquivo, 1 smoke test</td>
+<td><code>scripts/mycelium_ui_server.py</code></td>
+<td>C8</td>
+</tr>
+<tr>
+<td>W13</td>
+<td>Sem diagnóstico advisory de poder estatístico / largura de CI</td>
+<td><code>stats.py</code> (só decisão)</td>
+<td>C3</td>
+</tr>
+<tr>
+<td>W14</td>
+<td>Versão em 2 lugares (<code>pyproject</code> + <code>__init__</code>) + <code>dist/</code> trackado</td>
+<td><code>pyproject.toml</code>, <code>__init__.py</code></td>
+<td>C9</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-contrato-de-nao-regressao-vale-para-os-10-ciclos">1. Contrato de não-regressão (vale para os 10 ciclos)</h2>
+<ol>
+<li><strong>Suíte 100% verde, 0 testes deletados/enfraquecidos</strong> (regra AGENTS.md §5).</li>
+<li><strong>Equivalência de veredito:</strong> replay corpus 0 flips (<code>test_verdict_equivalence.py</code>).</li>
+<li><strong>API 1.x congelada:</strong> nada some/muda de tipo; adições só aditivas + documentadas
+   em <code>API_STABLE_1.0.md</code> quando contratuais.</li>
+<li><strong>Estatística antes do código:</strong> nenhuma regra de decisão muda sem pré-registro +
+   simulação + kill documentado. Ciclos só adicionam <em>advisory</em> (nunca muda veredito).</li>
+<li><strong>Runtime continua stdlib-only</strong> (sem <code>install_requires</code>).</li>
+<li><strong><code>main</code> nunca quebra:</strong> todo trabalho nesta branch; push por ciclo = restore point.</li>
+<li><strong>Backup por ciclo:</strong> <code>backup_cycle.sh CYCLE-NN</code> (zip via <code>git archive</code> + <code>unzip -t</code></li>
+<li>sha256 em <code>manifest.jsonl</code> + POST filebin.net com verificação; link impresso
+   SOMENTE com sucesso verificado).</li>
+</ol>
+<h2 id="2-os-10-ciclos">2. Os 10 ciclos</h2>
+<h3 id="c1-higiene-verdade-documental-141-unreleased">C1 — Higiene &amp; verdade documental → <code>1.4.1</code> (Unreleased)</h3>
+<p>Escopo: W1 + drift geral (README/VELOCITY/CHANGES números), <code>mkdocs --strict</code>,
+<code>.gitignore</code> (<code>.mycelium_benchmarks/</code>, <code>smoke_state/</code>, <code>*.egg-info</code>), help-text
+consistente, <code>CHANGES.md</code> Unreleased curado. <strong>Gate:</strong> suite+ruff+mypy+mkdocs.
+Risco: mínimo (docs/config).</p>
+<h3 id="c2-velocidade-r3-medir-re-baseline-matar-tempo-morto">C2 — Velocidade R3: medir, re-baseline, matar tempo morto</h3>
+<p>Escopo: W10/W11. Perfis honestos (<code>cProfile</code> do harness vs sweep; <code>pytest --durations</code>);
+re-baseline por máquina em <code>VELOCITY_BASELINE.md</code>; acelerar SUÍTE (não produto):
+re-tier <code>slow</code> honesto, fusões sem perder asserts, <code>benchmarks</code> menores com números
+re-medidos; micro-otimizações no produto SOMENTE com 0 flips + números antes/depois.
+<strong>Kill esperado:</strong> "harness precisa otimizar" (já está &lt;5% do sweep — provar e matar).
+<strong>Gate:</strong> suite verde + replay 0 flips + tabela antes/depois em CHANGES.</p>
+<h3 id="c3-rigor-estatistico-ii-advisory-veredito-intocado">C3 — Rigor estatístico II (advisory, veredito intocado)</h3>
+<p>Escopo: W13 + auditoria W10. Novos helpers <em>advisory</em>: <code>power_diagnostic()</code>
+(poder aproximado do n atual), <code>ci_width_warning()</code>; boundary audit do S1/OBF com
+teste trava; fuzz de <code>paired_deltas</code>/<code>effect_size</code> em bordas (±inf, n=1..17);
+documentar orçamento computacional por n em <code>ARCHITECTURE.md</code>. Nada muda
+<code>decide_best_candidate</code>. <strong>Gate:</strong> suite + properties + doc pré-registrando que os
+novos helpers são advisory.</p>
+<h3 id="c4-robustez-portabilidade-escrita-atomica-em-tudo">C4 — Robustez &amp; portabilidade: escrita atômica em tudo</h3>
+<p>Escopo: W2/W3 + auditoria de runners (timeout honrado? órfãos mortos? ENOSPC
+amigável?) + nomes hostis estendidos (unicode, espaços, <code>;</code>, <code>$()</code>). Trocar
+<code>export_csv/markdown/html</code> e <code>fix_manifest</code> por <code>_atomic_write_text</code> (+ <code>tolerate_lock</code>
+onde faz sentido); teste de crash-simulation (falha no meio da escrita → original
+intacto). <strong>Gate:</strong> suite (incl. novos testes de atomicidade) + <code>test_concurrency</code>.</p>
+<h3 id="c5-ux-do-cli-clareza-sem-quebrar-contrato">C5 — UX do CLI: clareza sem quebrar contrato</h3>
+<p>Escopo: W4/W5/W6 (aditivo!). <code>dry-run</code> em <code>accelerate</code> (valida manifesto+build+test
+sem medir, exit codes do contrato); <code>doctor</code> ganha cheques aditivos
+(disco livre, saúde do cache, versões gcc/cmake/cargo/node quando presentes);
+<code>history compact</code>? (NÃO remover flags — contrato); catálogo de mensagens de erro
+(<code>docs/ERRORS.md</code>) + teste que âncoras de stderr continuam 1-linha. <strong>Gate:</strong>
+suite + <code>test_docs_parser</code> + B3 acceptance manual (<code>scripts/acceptance_b3.sh</code>).</p>
+<h3 id="c6-alvos-manifestos-deteccao-mais-esperta-erros-mais-gentis">C6 — Alvos &amp; manifestos: detecção mais esperta, erros mais gentis</h3>
+<p>Escopo: W8. <code>detect_kind</code> ganha <code>go.mod</code>→? (decisão: mapear p/ shell+template OU
+novo kind <code>go</code> com <code>default_manifest</code> — spike medido, kill se não pagar),
+<code>Makefile</code>→cmake? NÃO — shell com dica; <code>deno.json</code>/<code>bun</code>→node; mensagens de
+<code>TargetManifest.validate()</code> com sugestão de fix (<code>doctor --fix</code> cobre); +1 exemplo
+mínimo que rode sem toolchain externa (shell-text já existe — novo: <code>python-nan</code>?
+decidir no ciclo); teste de matriz detect×kind. <strong>Gate:</strong> suite + exemplo novo verde
+no CI-posix.</p>
+<h3 id="c7-substrato-de-pesquisa-observar-melhor-feder-menos-medido">C7 — Substrato de pesquisa: observar melhor, feder menos (medido)</h3>
+<p>Escopo: W7 + observabilidade do <code>self-improve</code>. Rotação de telemetria
+(<code>metrics.jsonl</code> → <code>metrics-YYYYMMDD.jsonl</code> por tamanho, leitores somem janelas,
+<code>full_history</code> inalterado p/ ≤1 arquivo); <code>self-improve explain</code>? (aditivo:
+despeja candidatos+guardas em JSONL — decidir no ciclo); QD/library métricas de
+custo; <strong>dogfood gate verde obrigatório</strong> (engine intocado em comportamento default).
+<strong>Gate:</strong> suite + dogfood + replay 0 flips + doc de custo.</p>
+<h3 id="c8-relatorios-ui-acessivel-imprimivel-offline">C8 — Relatórios &amp; UI: acessível, imprimível, offline</h3>
+<p>Escopo: W9/W12. <code>report_html</code>: dark-mode (<code>prefers-color-scheme</code>), CSS print,
+<code>lang</code>, <code>&lt;caption&gt;</code>, contraste; <code>history</code>: multi-candidato + legenda; UI server:
+refactor mínimo testável (extrair <code>build_app()</code> pura?) OU +3 smoke tests sem refactor
+(decidir pelo menor risco); auditoria offline (nenhum fetch externo — teste grep).
+<strong>Gate:</strong> suite + ui_smoke + teste "zero URLs externas" em HTML gerado.</p>
+<h3 id="c9-release-engineering-a-prova-de-sandbox">C9 — Release engineering à prova de sandbox</h3>
+<p>Escopo: W14. Teste single-source version (pyproject==<code>__init__</code>, falha cedo);
+<code>release.sh dry-run</code> audit + teste; <code>dist/</code> rebuild reproduzível documentado;
+<code>mkdocs nav</code> completeness test (toda página no nav? toda doc linkada?);
+<code>QUICKSTART.md</code> executado por teste (já existe <code>test_quickstart</code>? — apertar);
+<code>docs/RELEASE.md</code> + <code>ANNOUNCEMENT_DRAFT.md</code> atualizados p/ 1.5.0. <strong>Gate:</strong>
+suite + <code>bash scripts/release.sh vX dry-run</code> verde (se existir) + mkdocs strict.</p>
+<h3 id="c10-consolidacao-o-melhor-release-candidato-possivel">C10 — Consolidação: o melhor release candidato possível</h3>
+<p>Escopo: suíte 3× serial (anti-flake) + 1× <code>-n auto</code>; mutation spot-check nos
+módulos tocados (amostral, timeboxed, nunca CI); re-baseline final de performance;
+<code>CHANGES.md</code> 1.5.0 curado + bump <code>pyproject</code>+<code>__init__</code> p/ 1.5.0 + rebuild <code>dist/</code>;
+<code>docs/ROADMAP_NEXT_2.0.md</code> (propostas p/ 2.0, fora do contrato 1.x);
+verificação da cadeia de backups (11 zips válidos + manifest + pushes).
+<strong>Gate:</strong> TUDO verde; se algo falhar, fix ou revert do ciclo culpado (nunca ship red).</p>
+<h2 id="3-protocolo-de-backup-por-ciclo-automatizado">3. Protocolo de backup (por ciclo, automatizado)</h2>
+<p><code>backup_cycle.sh &lt;LABEL&gt;</code>: <code>git archive HEAD</code> → zip → <code>unzip -t</code> → sha256 →
+<code>manifest.jsonl</code> → POST filebin.net (<code>bin:</code>=16hex do sha, <code>filename:</code>) → GET de
+verificação → imprime <code>Link to download: …</code> SOMENTE se verificado.
+Falha de rede documentada com <code>curl rc</code> + <code>http</code> + stderr (egress filtrado p/
+filebin nesta sandbox — ver §5); backups duráveis reais = zip local + push git.</p>
+<h2 id="4-metricas-de-sucesso-manha-seguinte">4. Métricas de sucesso (manhã seguinte)</h2>
+<ul>
+<li>380→<strong>400+</strong> testes, 0 deletados, 0 pulos novos sem motivo, suite &lt;60s serial.</li>
+<li>ruff + mypy + mkdocs strict limpos; replay 0 flips; dogfood verde.</li>
+<li>10 commits + 10 pushes + 11 zips válidos (ORIGINAL + C1..C10) + manifest íntegro.</li>
+<li><code>CHANGES.md</code> conta a história completa; <code>1.5.0</code> pronto p/ tag do mantenedor.</li>
+<li>Zero mudanças de veredito, zero quebras de API 1.x, zero dependências novas.</li>
+</ul>
+<h2 id="5-risco-conhecido-filebinnet-inalcancavel-desta-sandbox-evidencia">5. Risco conhecido: filebin.net inalcançável desta sandbox (EVIDÊNCIA)</h2>
+<ul>
+<li>TCP conecta em <code>135.181.128.167:443</code>, mas o handshake TLS recebe EOF
+  (<code>curl: (35) SSL_ERROR_SYSCALL</code>; <code>openssl s_client</code>: <code>read 0 bytes</code>).</li>
+<li>HTTP puro: <code>Empty reply from server</code>. DNS OK (A + AAAA resolvem).</li>
+<li>Egress allowlist aparente: só <code>github.com/api.github.com/pypi</code> respondem 200;
+  <code>google/transfer.sh/0x0.st/temp.sh/catbox</code> falham igual.</li>
+<li><code>fetch_page</code> (fetcher externo da Arena) ALCANÇA filebin.net — prova de que o
+  bloqueio é só o egress do sandbox bash, não o serviço.</li>
+<li>Mitigação: tentativa real a cada ciclo (se o filtro abrir, o link sai no chat
+  no formato exigido) + cadeia de backups git+zip íntegra e verificável.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

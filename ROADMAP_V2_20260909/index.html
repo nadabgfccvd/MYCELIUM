@@ -1,0 +1,1568 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Roadmap pós-1.0 — como melhorar o MYCELIUM mais ainda - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roadmap-pos-10-como-melhorar-o-mycelium-mais-ainda" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Roadmap pós-1.0 — como melhorar o MYCELIUM mais ainda
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PERFORMANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-tese-central-leia-primeiro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A tese central (leia primeiro)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#horizonte-0-destravar-distribuicao-dias-mantenedor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Horizonte 0 — Destravar distribuição (dias, mantenedor)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#horizonte-1-v1x-a-partir-do-uso-real-semanas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Horizonte 1 — v1.x a partir do uso real (semanas)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#horizonte-2-apostas-v20-meses-cada-uma-com-gate-proprio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Horizonte 2 — apostas v2.0 (meses, cada uma com gate próprio)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trilha-pesquisa-gated-so-abre-com-o-gate-da-fase-4-verde" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trilha pesquisa (GATED — só abre com o gate da Fase 4 verde)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saude-continua-todo-horizonte-todo-mes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saúde contínua (todo horizonte, todo mês)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ordem-de-execucao-resumo-de-bolso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ordem de execução (resumo de bolso)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="roadmap-pos-10-como-melhorar-o-mycelium-mais-ainda">Roadmap pós-1.0 — como melhorar o MYCELIUM mais ainda</h1>
+<p>Data: 2026-09-09 · Parte de: <code>v1.0.0</code> (Fases 1–3 completas, Fase 4 fechada — ver <code>docs/GATE_FASE4_20260909.md</code>).</p>
+<h2 id="a-tese-central-leia-primeiro">A tese central (leia primeiro)</h2>
+<p>A v1.0.0 é uma ferramenta <strong>terminada com zero usuários</strong>. O gargalo do projeto
+não é feature — é <strong>distribuição e validação</strong>. Todo item deste roadmap está
+ordenado por uma pergunta: <em>"isso aumenta a chance de alguém real usar e dar
+feedback?"</em>. Features sem usuário são estoque parado; feedback sem ferramenta
+estável é ruído. A 1.0 resolveu a segunda metade. Este roadmap resolve a primeira.</p>
+<p><strong>Se só fizer 3 coisas:</strong> Fase 0 → PR EC3 → <code>init</code> wizard. Todo o resto é opcional.</p>
+<hr />
+<h2 id="horizonte-0-destravar-distribuicao-dias-mantenedor">Horizonte 0 — Destravar distribuição (dias, mantenedor)</h2>
+<p>Sem isto, nada abaixo importa. É o único horizonte sem gate — é pré-requisito.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Esforço</th>
+<th>Pronto quando</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H0.1</td>
+<td>Fase 0: upload PyPI + push GitHub + CI real verde</td>
+<td>1–2 h</td>
+<td><code>pip install mycelium-accel</code> funciona numa máquina limpa</td>
+</tr>
+<tr>
+<td>H0.2</td>
+<td>Publicar docs site (gh-pages ou ReadTheDocs)</td>
+<td>1 h</td>
+<td>URL pública no README</td>
+</tr>
+<tr>
+<td>H0.3</td>
+<td>Abrir PR EC3 (<code>docs/EC3_PR_PACK.md</code>) + anúncio (<code>docs/ANNOUNCEMENT_DRAFT.md</code>)</td>
+<td>1 h</td>
+<td>links registrados</td>
+</tr>
+<tr>
+<td>H0.4</td>
+<td>Registrar feedback externo (meta: 3)</td>
+<td>dias</td>
+<td>3 entradas datadas (issue/comentário/email)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Métrica de saída do H0:</strong> instalação limpa OK + CI real verde + ≥1 reação externa.
+<strong>Se H0 falhar</strong> (ex.: PyPI bloqueia o nome, CI quebra no macOS real): corrigir é
+a prioridade absoluta; H1 nem começa.</p>
+<h2 id="horizonte-1-v1x-a-partir-do-uso-real-semanas">Horizonte 1 — v1.x a partir do uso real (semanas)</h2>
+<p>Só priorizar <strong>depois</strong> do H0. Ordem sugerida — cada item responde a uma fricção
+que usuários reais vão encontrar nos primeiros 30 minutos:</p>
+<ul>
+<li><strong>v1.1 — onboarding (fricção: "como começo?")</strong></li>
+<li><code>mycelium-accel init</code>: gera <code>mycelium.target.json</code> + 1 variante-exemplo a
+    partir de perguntas (comando de benchmark? métrica?).</li>
+<li>Quickstart &lt; 5 min cronometrado: do <code>pip install</code> ao primeiro HTML.</li>
+<li><code>doctor</code> sugere correções (<code>--fix</code> para o trivial: seed_env, allowlist).</li>
+<li><strong>v1.1 — generalidade (fricção: "funciona no MEU caso?")</strong></li>
+<li>+2 alvos-exemplo realistas e distintos (ex.: lib Python pura; projeto C com
+    Makefile). Cada exemplo novo é um teste de fumaça da generalidade — se o
+    harness não serve para ele sem gambiarra, o bug é do harness.</li>
+<li>Meta honesta: 2º caso externo replicado (EC4 — outro projeto real, outro
+    speed-up medido com o mesmo rigor do EC3).</li>
+<li><strong>v1.2 — robustez estatística (fricção: "posso confiar?")</strong></li>
+<li>Detector de flakiness: variância entre seeds anômala → aviso no relatório
+    ("repetir com mais seeds antes de aplicar").</li>
+<li>Regra de warmup adaptativo <strong>pré-registrada</strong> (cuidado: nada de p-hacking —
+    a regra entra no doc de API antes de entrar no código).</li>
+<li><strong>v1.2 — HTML histórico (fricção: "melhorei ou piorei desde o mês passado?")</strong></li>
+<li>Comparar sweeps ao longo do tempo (mesmo alvo, N datas): small multiples +
+    linha de tendência. Reaproveita <code>export_html</code>.</li>
+<li><strong>v1.3 — modo CI/regressão (vira outro produto: guarda de performance)</strong></li>
+<li><code>accelerate --fail-on-regression 5%</code>: exit ≠ 0 se o candidato atual perde
+    &gt;5% do baseline registrado. É o caso de uso que mais gera adoção recorrente
+    (roda todo PR, não uma vez).</li>
+</ul>
+<p><strong>Métrica de saída do H1:</strong> instalações/semana &gt; 0 consistente + ≥3 issues
+qualificadas + EC4 publicado. <strong>Kill:</strong> se após H0+H1 ninguém além do mantenedor
+rodou o <code>accelerate</code>, o problema é posicionamento, não feature — parar H2 e
+reescrever o anúncio/README antes de codar mais.</p>
+<h2 id="horizonte-2-apostas-v20-meses-cada-uma-com-gate-proprio">Horizonte 2 — apostas v2.0 (meses, cada uma com gate próprio)</h2>
+<p>Regra: uma aposta H2 só começa se <strong>≥3 usuários pediram ou 1 pagaria/usaria em
+produção</strong>. Sem isso, é invenção de roadmap — o projeto já matou C1/C3 por menos.</p>
+<table>
+<thead>
+<tr>
+<th>Aposta</th>
+<th>O que muda</th>
+<th>Risco principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. Sugestão automática de variantes</strong></td>
+<td>produto passa de "mede" para "propõe + mede". Começar por heurísticas estáticas (flags de compilador, <code>-O</code> sweep, env knobs); LLM opcional depois, sempre atrás do sandbox+allowlist existentes</td>
+<td>virar gerador de ruído: sugestões ruins queimam a confiança que a 1.0 construiu</td>
+</tr>
+<tr>
+<td><strong>B. Sweep distribuído</strong></td>
+<td>workers remotos (SSH/containers) para matrizes grandes</td>
+<td>complexidade operacional &gt;&gt; ganho para 95% dos usuários; só com demanda provada</td>
+</tr>
+<tr>
+<td><strong>C. Plugin API estável</strong></td>
+<td>entry points para <code>metrics_parser</code> e variant modes de terceiros</td>
+<td>API prematura congela o design errado — esperar 2–3 parsers reais antes</td>
+</tr>
+<tr>
+<td><strong>D. Limpeza 2.0 (prometida)</strong></td>
+<td>remover alias <code>mycelium</code>, dropar Pythons EOL</td>
+<td>baixo — é obrigação assumida em <code>API_STABLE_1.0.md</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Anti-metas explícitas (não fazer):</strong>
+- Não virar framework de ML/AutoML — o diferencial é medir honestamente, não adivinhar.
+- Não suportar Windows além do CI sem demanda real (custo de manutenção &gt; benefício hoje).
+- Não reescrever em Rust/C "por performance" sem profiling: o custo está nos
+  benchmarks do usuário, não no harness (dogfood: 75 rps no harness vs segundos
+  por benchmark real).
+- Não adicionar telemetria de uso sem opt-in explícito (quebra a confiança do nicho).</p>
+<h2 id="trilha-pesquisa-gated-so-abre-com-o-gate-da-fase-4-verde">Trilha pesquisa (GATED — só abre com o gate da Fase 4 verde)</h2>
+<p>Nada aqui executa antes de: 1.0 publicado + ≥3 externos + sobra de horas
+(<code>docs/GATE_FASE4_20260909.md</code>). Quando abrir, a ordem é por "pista mais quente":</p>
+<ol>
+<li><strong>R0. Replicação de C3 com poder</strong> — o <code>p=0.076</code> inconclusivo é a pista mais
+   quente do projeto. Pré-registrar N para poder 0.8 no efeito observado, rodar
+   uma vez, aceitar o veredito (vida ou morte, sem re-análise).</li>
+<li><strong>R1. C-a e C-b</strong> — já pré-registrados com kill definido (ver gate doc).</li>
+<li><strong>R2. Scaling study</strong> (capability × compute) — só se R0 ou R1 viverem.</li>
+<li><strong>Regra permanente:</strong> 1 claim por experimento, kill pré-definido, mortes
+   arquivadas e documentadas (ADR-0002/R8 continua valendo).</li>
+</ol>
+<h2 id="saude-continua-todo-horizonte-todo-mes">Saúde contínua (todo horizonte, todo mês)</h2>
+<ul>
+<li>Deps atualizadas + <code>ci_local.sh</code> verde; Pythons suportados acompanham upstream.</li>
+<li>Segurança: allowlist/sandbox revisados a cada feature que toca execução.</li>
+<li>Docs vivas: cada feature nova atualiza site + API doc (nunca "depois").</li>
+<li>Dogfood permanente: gate ≥70 rps roda sempre; queda &gt;10% bloqueia release.</li>
+<li>Revisão deste roadmap: mensal, 30 min — matar itens sem tração é sucesso, não fracasso.</li>
+</ul>
+<h2 id="ordem-de-execucao-resumo-de-bolso">Ordem de execução (resumo de bolso)</h2>
+<pre><code>H0 (dias)      Fase 0 → docs site → PR EC3 + anúncio → 3 feedbacks
+   │ gate: instalação limpa OK + CI real verde + ≥1 reação externa
+H1 (semanas)   init wizard → +2 exemplos/EC4 → flakiness → HTML histórico → modo CI
+   │ gate: uso real consistente; senão, reposicionar antes de codar
+H2 (meses)     A/B/C só com demanda provada · D quando sair a 2.0
+   ║
+Pesquisa       FECHADA até o gate da Fase 4 — R0 primeiro quando abrir
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

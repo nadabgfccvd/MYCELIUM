@@ -1,0 +1,3635 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Roadmap profundo — aceleração genérica, comparação estatística pareada, mutações semânticas e crescimento de longo horizonte - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roadmap-profundo-aceleracao-generica-comparacao-estatistica-pareada-mutacoes-semanticas-e-crescimento-de-longo-horizonte" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Roadmap profundo — aceleração genérica, comparação estatística pareada, mutações semânticas e crescimento de longo horizonte
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PERFORMANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-leitura-profunda-do-codigo-atual-onde-estamos-fortes-e-onde-ainda-falta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Leitura profunda do código atual: onde estamos fortes e onde ainda falta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-aceleracao-externa-hoje-ainda-e-estreita" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Aceleração externa hoje ainda é estreita
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Aceleração externa hoje ainda é estreita">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conclusao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-o-guarda-estatistico-atual-e-melhor-que-o-normal-mas-ainda-nao-e-estatistica-forte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 O guarda estatístico atual é melhor que o normal, mas ainda não é estatística forte
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 O guarda estatístico atual é melhor que o normal, mas ainda não é estatística forte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conclusao_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-as-mutacoes-atuais-continuam-majoritariamente-sintaticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 As mutações atuais continuam majoritariamente sintáticas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 As mutações atuais continuam majoritariamente sintáticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conclusao_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-o-mecanismo-de-crescimento-composto-existe-mas-ainda-nao-e-ecologia-aberta-forte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 O mecanismo de crescimento composto existe, mas ainda não é ecologia aberta forte
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 O mecanismo de crescimento composto existe, mas ainda não é ecologia aberta forte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conclusao_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-o-que-a-literatura-sugere-como-direcao-mais-promissora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. O que a literatura sugere como direção mais promissora
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-para-aceleracao-generica-nao-comecar-por-reescrita-livre-de-codigo-e-sim-por-camadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Para aceleração genérica: não começar por reescrita livre de código, e sim por camadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 Para aceleração genérica: não começar por reescrita livre de código, e sim por camadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintese-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Síntese prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-para-comparacao-estatistica-pareamento-bootstrap-bca-e-testes-por-permutacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Para comparação estatística: pareamento, bootstrap BCa e testes por permutação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Para comparação estatística: pareamento, bootstrap BCa e testes por permutação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintese-pratica_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Síntese prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-para-mutacoes-semanticas-controlar-comportamento-nao-so-sintaxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Para mutações semânticas: controlar comportamento, não só sintaxe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Para mutações semânticas: controlar comportamento, não só sintaxe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintese-pratica_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Síntese prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-para-crescimento-de-longo-horizonte-qd-competicao-local-e-coevolucao-de-ambientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Para crescimento de longo horizonte: QD, competição local e coevolução de ambientes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Para crescimento de longo horizonte: QD, competição local e coevolução de ambientes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintese-pratica_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Síntese prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-north-star-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. North Star arquitetural
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. North Star arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#camada-a-harness-generico-de-projetos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada A — Harness genérico de projetos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#camada-b-busca-multi-nivel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada B — Busca multi-nível
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#camada-c-verificacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada C — Verificação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#camada-d-ecologia-aberta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada D — Ecologia aberta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#camada-e-estatistica-e-decisao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada E — Estatística e decisão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-roadmap-recomendado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Roadmap recomendado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-1-generalizar-o-contrato-de-aceleracao-sem-tentar-ser-compilador-universal-cedo-demais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 1 — Generalizar o contrato de aceleração sem tentar ser “compilador universal” cedo demais
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 1 — Generalizar o contrato de aceleração sem tentar ser “compilador universal” cedo demais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entregaveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entregáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mudancas-no-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mudanças no repositório
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observacao-estrategica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observação estratégica
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-2-elevar-a-comparacao-para-estatistica-pareada-seria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2 — Elevar a comparação para estatística pareada séria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 2 — Elevar a comparação para estatística pareada séria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entregaveis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entregáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regras-praticas-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regras práticas recomendadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#por-que-esta-fase-vem-cedo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Por que esta fase vem cedo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-3-criar-mutacao-semantica-profunda-em-vez-de-so-misturar-arvores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 3 — Criar mutação semântica profunda em vez de só misturar árvores
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 3 — Criar mutação semântica profunda em vez de só misturar árvores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entregaveis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entregáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mutacoes-concretas-a-implementar-primeiro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutações concretas a implementar primeiro
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mutações concretas a implementar primeiro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-mutacao-guiada-por-contraexemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Mutação guiada por contraexemplo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-substituicao-por-vizinhanca-semantica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Substituição por vizinhança semântica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-block-mutation-variavel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Block mutation variável
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-simplificacao-por-equivalencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Simplificação por equivalência
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extensao-arquitetural-necessaria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extensão arquitetural necessária
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-4-library-learning-de-verdade-para-transformar-stepping-stones-em-alavancas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 4 — Library learning de verdade para transformar stepping stones em alavancas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 4 — Library learning de verdade para transformar stepping stones em alavancas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entregaveis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entregáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificativa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificativa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-5-abrir-a-aceleracao-para-irs-e-ecossistemas-reais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 5 — Abrir a aceleração para IRs e ecossistemas reais
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 5 — Abrir a aceleração para IRs e ecossistemas reais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#51-trilha-a-adaptadores-caixa-preta-uteis-imediatamente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Trilha A — Adaptadores caixa-preta úteis imediatamente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 Trilha A — Adaptadores caixa-preta úteis imediatamente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escopo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-possiveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operadores possíveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52-trilha-b-astsource-to-source-por-linguagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Trilha B — AST/source-to-source por linguagem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Trilha B — AST/source-to-source por linguagem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escopo-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escopo inicial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operadores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-trilha-c-llvmmlir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Trilha C — LLVM/MLIR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.3 Trilha C — LLVM/MLIR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escopo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escopo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ferramentasconceitos-a-incorporar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ferramentas/conceitos a incorporar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estrategia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54-trilha-d-superoptimization-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Trilha D — Superoptimization local
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4 Trilha D — Superoptimization local">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ferramentas-alvo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ferramentas-alvo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estrategia_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite-geral-da-fase-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite geral da Fase 5
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-6-substituir-o-frontier-linear-por-ecologia-de-qualidade-diversidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 6 — Substituir o frontier linear por ecologia de qualidade-diversidade
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 6 — Substituir o frontier linear por ecologia de qualidade-diversidade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entregaveis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entregáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificativa_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificativa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-7-coevolucao-explicita-de-tarefas-e-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 7 — Coevolução explícita de tarefas e soluções
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 7 — Coevolução explícita de tarefas e soluções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entregaveis_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entregáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificativa_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificativa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fase-8-medir-crescimento-aberto-com-metricas-mais-honestas-que-um-unico-capability_signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 8 — Medir crescimento aberto com métricas mais honestas que um único capability_signal
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fase 8 — Medir crescimento aberto com métricas mais honestas que um único capability_signal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivo_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-recomendadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas recomendadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nova-classificacao-de-regime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nova classificação de regime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criterio-de-aceite_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de aceite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ordem-exata-recomendada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Ordem exata recomendada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Ordem exata recomendada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prioridade-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prioridade 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prioridade-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prioridade 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prioridade-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prioridade 3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prioridade-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prioridade 4
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-estrutura-concreta-de-implementacao-no-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Estrutura concreta de implementação no repositório
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#61-novos-modulos-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Novos módulos recomendados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-novos-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Novos scripts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-novos-artefatos-persistidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Novos artefatos persistidos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-plano-de-experimentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Plano de experimentação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimento-a-harness-generico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimento A — Harness genérico
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimento A — Harness genérico">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suite-minima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suite mínima
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-esperada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saída esperada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimento-b-estatistica-pareada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimento B — Estatística pareada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimento B — Estatística pareada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esperado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Esperado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimento-c-mutacoes-semanticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimento C — Mutações semânticas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimento C — Mutações semânticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimento-d-qd-coevolucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimento D — QD + coevolução
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimento D — QD + coevolução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meta_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meta
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-riscos-e-contramedidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Riscos e contramedidas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risco-1-explosao-de-complexidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risco 1 — Explosão de complexidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risco-2-estatistica-cara-demais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risco 2 — Estatística cara demais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risco-3-operadores-semanticos-gerarem-bloat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risco 3 — Operadores semânticos gerarem bloat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risco-4-qd-virar-arquivo-enorme-sem-progresso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risco 4 — QD virar arquivo enorme sem progresso
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risco-5-coevolucao-criar-so-tarefas-impossiveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risco 5 — Coevolução criar só tarefas impossíveis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risco-6-generalizacao-ilusoria-por-seed-leakage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risco 6 — Generalização ilusória por seed leakage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-minha-recomendacao-final-em-linguagem-direta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Minha recomendação final, em linguagem direta
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Minha recomendação final, em linguagem direta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tese-central" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tese central
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#em-uma-frase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Em uma frase
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-o-veredito-mais-honesto-possivel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. O veredito mais honesto possível
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="roadmap-profundo-aceleracao-generica-comparacao-estatistica-pareada-mutacoes-semanticas-e-crescimento-de-longo-horizonte">Roadmap profundo — aceleração genérica, comparação estatística pareada, mutações semânticas e crescimento de longo horizonte</h1>
+<h2 id="0-objetivo">0. Objetivo</h2>
+<p>Este documento traduz o estado atual do código do MYCELIUM Auto-evolve e a literatura mais relevante em um roadmap concreto para quatro metas maiores:</p>
+<ol>
+<li><strong>Aceleração genérica de projetos arbitrários</strong>, além do contrato Python atual.</li>
+<li><strong>Comparação estatística pareada</strong> entre regras/candidatos em muitas seeds.</li>
+<li><strong>Mutações semânticas mais profundas</strong>, sem reintroduzir mutação cega.</li>
+<li><strong>Mecanismos mais fortes para sustentar crescimento realmente exponencial</strong> por horizontes longos.</li>
+</ol>
+<p>O roadmap abaixo respeita as restrições do projeto:</p>
+<ul>
+<li>sem LLM;</li>
+<li>seeds primas;</li>
+<li>desafios procedurais;</li>
+<li>evolução estrutural permitida;</li>
+<li>segurança por sandbox/rollback/kill-switch;</li>
+<li>prioridade em <strong>funcionar com velocidade</strong> sem perder qualidade.</li>
+</ul>
+<hr />
+<h2 id="1-leitura-profunda-do-codigo-atual-onde-estamos-fortes-e-onde-ainda-falta">1. Leitura profunda do código atual: onde estamos fortes e onde ainda falta</h2>
+<h2 id="11-aceleracao-externa-hoje-ainda-e-estreita">1.1 Aceleração externa hoje ainda é estreita</h2>
+<p>Hoje, o caminho de aceleração externa está concentrado em <code>mycelium_accel/acceleration.py</code>:</p>
+<ul>
+<li><code>accelerate_self(...)</code> apenas escolhe entre variantes internas de <code>aggregate_scores</code>.</li>
+<li><code>accelerate_external(...)</code> carrega <strong>um módulo Python</strong>, exige um <code>BENCHMARK_SPEC</code>, executa funções listadas nesse spec, verifica equivalência <strong>somente nos casos fornecidos</strong>, e reescreve uma variável como <code>ACTIVE_VARIANT</code>.</li>
+</ul>
+<p>Na prática, isso significa:</p>
+<ul>
+<li>ainda não há aceleração de <strong>projetos arbitrários</strong> orientada por <code>build/test/benchmark</code>;</li>
+<li>ainda não há adaptadores nativos para C/C++/Rust/JS/JVM/Wasm;</li>
+<li>ainda não há camada explícita de <strong>perfilamento</strong>, <strong>captura de hot paths</strong>, <strong>aplicação de patches</strong> ou <strong>validação por IR</strong>.</li>
+</ul>
+<h3 id="conclusao">Conclusão</h3>
+<p>O acelerador atual é um <strong>contrato de benchmark intra-Python com rewrite simples</strong>. Ele é bom como MVP, mas ainda não é um sistema projeto-agnóstico.</p>
+<hr />
+<h2 id="12-o-guarda-estatistico-atual-e-melhor-que-o-normal-mas-ainda-nao-e-estatistica-forte">1.2 O guarda estatístico atual é melhor que o normal, mas ainda não é estatística forte</h2>
+<p>Hoje o <code>self_improve.py</code> já faz algo importante:</p>
+<ul>
+<li>usa seeds pareadas para baseline e candidato;</li>
+<li>agrega multi-seed;</li>
+<li>protege múltiplas métricas;</li>
+<li>evita aceitar ganho de throughput com regressão grosseira de qualidade.</li>
+</ul>
+<p>Mas a decisão de aceitação ainda é essencialmente baseada em:</p>
+<ul>
+<li>médias agregadas;</li>
+<li>thresholds fixos;</li>
+<li>comparação determinística de tolerâncias.</li>
+</ul>
+<p>Ainda faltam:</p>
+<ul>
+<li>intervalos de confiança pareados;</li>
+<li>teste de hipótese não paramétrico sobre os deltas por seed;</li>
+<li>correção para múltiplas comparações quando muitos candidatos concorrem;</li>
+<li>stopping rule adaptativo para economizar compute sem perder rigor.</li>
+</ul>
+<h3 id="conclusao_1">Conclusão</h3>
+<p>O sistema já está no caminho certo conceitualmente, mas ainda <strong>não tem uma camada estatística do nível que o próprio <code>PROMPT.md</code> pede</strong>.</p>
+<hr />
+<h2 id="13-as-mutacoes-atuais-continuam-majoritariamente-sintaticas">1.3 As mutações atuais continuam majoritariamente sintáticas</h2>
+<p>O <code>engine.py</code> já melhorou bastante em relação ao MVP:</p>
+<ul>
+<li><code>gene_splice</code></li>
+<li>injeção de macro</li>
+<li><code>shrink</code></li>
+<li>staging/promoção de macros</li>
+<li>desafios composicionais</li>
+<li>nichos comportamentais</li>
+</ul>
+<p>Mas a mutação ainda age, em sua maior parte, sobre:</p>
+<ul>
+<li>subárvores aleatórias;</li>
+<li>combinação estrutural;</li>
+<li>operadores com noção limitada do efeito semântico exato.</li>
+</ul>
+<p>O que ainda não existe de forma forte:</p>
+<ul>
+<li>mutação guiada pelo <strong>erro residual</strong> do organismo em contraexemplos;</li>
+<li>mutação guiada por <strong>assinaturas semânticas de subárvores</strong>;</li>
+<li>geração de candidatos semanticamente próximos porém funcionalmente melhores;</li>
+<li>uso sistemático de contraexemplos para esculpir o training set dinâmico;</li>
+<li>simplificação/refatoração semântica global após evolução local.</li>
+</ul>
+<h3 id="conclusao_2">Conclusão</h3>
+<p>A busca atual já não é totalmente cega, mas ainda está mais perto de <strong>GP estrutural com heurísticas úteis</strong> do que de um sistema de <strong>mutação semântica profunda</strong>.</p>
+<hr />
+<h2 id="14-o-mecanismo-de-crescimento-composto-existe-mas-ainda-nao-e-ecologia-aberta-forte">1.4 O mecanismo de crescimento composto existe, mas ainda não é ecologia aberta forte</h2>
+<p>Hoje o projeto já tem:</p>
+<ul>
+<li><code>macro_staging</code></li>
+<li><code>macro_library</code></li>
+<li><code>frontier_archive</code></li>
+<li>entropia de diversidade</li>
+<li>nichos ativos</li>
+<li>desafios composicionais</li>
+<li>transferência horizontal via bancos de genes/macros</li>
+</ul>
+<p>Isso é muito melhor que um loop puramente convergente. Mas, olhando friamente, ainda falta quase tudo o que costuma diferenciar um sistema <strong>sublinear com bons truques</strong> de um sistema com chances reais de <strong>crescimento sustentado de longo prazo</strong>:</p>
+<ul>
+<li>coevolução explícita entre tarefas e solucionadores;</li>
+<li>arquivo QD mais rico que um frontier archive linear;</li>
+<li>competição local mais forte e mais adaptativa;</li>
+<li>descoberta de abstrações por compressão corpus-wide;</li>
+<li>transferência entre nichos medida como grafo explícito;</li>
+<li>mecanismos anti-esquecimento e anti-colapso de repertório;</li>
+<li>métricas melhores para detectar regime aberto em vez de só regressão linear/log em <code>capability_signal</code>.</li>
+</ul>
+<h3 id="conclusao_3">Conclusão</h3>
+<p>O código atual já contém os <strong>germes corretos</strong>. O salto agora é sair de “bons mecanismos locais” para uma <strong>ecologia evolutiva multiescala</strong>.</p>
+<hr />
+<h2 id="2-o-que-a-literatura-sugere-como-direcao-mais-promissora">2. O que a literatura sugere como direção mais promissora</h2>
+<h2 id="21-para-aceleracao-generica-nao-comecar-por-reescrita-livre-de-codigo-e-sim-por-camadas">2.1 Para aceleração genérica: não começar por reescrita livre de código, e sim por camadas</h2>
+<p>Para benchmark de comandos arbitrários, ferramentas como Hyperfine já mostram um padrão útil: benchmark estatístico de qualquer comando shell, com warmup, prepare hooks e export de resultados <a href="https://github.com/sharkdp/hyperfine">3</a>. Isso sugere que o primeiro passo de generalização do MYCELIUM Auto-evolve não deve ser “reescrever qualquer linguagem”, mas sim <strong>controlar, medir e comparar qualquer projeto como caixa-preta reproduzível</strong>.</p>
+<p>Para aceleração orientada a compiladores, o caminho moderno mais promissor passa por <strong>IRs intermediárias e transformações controláveis</strong>. O MLIR Transform Dialect foi proposto justamente para expor transformações finas de compilador como IR controlável, permitindo compor e reutilizar transformações existentes sem escrever novos passes <a href="https://arxiv.org/html/2409.03864v2">4</a>. Em paralelo, o mlirSynth mostra que é possível <strong>erguer código de IRs mais baixos para dialetos mais altos de MLIR automaticamente</strong> e então explorar pipelines especializados com grandes speedups <a href="https://arxiv.org/pdf/2310.04196">2</a>.</p>
+<p>Para otimização global por reescrita, e-graphs/equality saturation continuam sendo uma das bases mais fortes: o trabalho clássico de equality saturation enfatiza que a abordagem evita o problema de phase ordering porque representa muitas versões equivalentes ao mesmo tempo e só decide depois qual extrair <a href="https://www.cs.cornell.edu/~ross/publications/eqsat/eqsat_tate_popl09.pdf">3</a>. A biblioteca <code>egg</code> tornou isso rápido e extensível com <strong>rebuilding</strong> e <strong>e-class analyses</strong> <a href="https://dl.acm.org/doi/pdf/10.1145/3434304">7</a>, e trabalhos mais recentes como DialEgg levam isso para MLIR em modo dialect-agnostic <a href="https://dl.acm.org/doi/pdf/10.1145/3696443.3708957">10</a>.</p>
+<p>Para verificação de correção em LLVM IR, o Alive2 oferece <strong>bounded translation validation</strong> automática com SMT, sem alterar o LLVM, e encontrou dezenas de bugs reais <a href="https://web.ist.utl.pt/nuno.lopes/pubs.php?id=alive2-pldi21">2</a>. Para superotimização, Souper mostrou que é viável sintetizar peepholes equivalentes em LLVM IR <a href="https://ar5iv.labs.arxiv.org/html/1711.04422">6</a>, e Minotaur amplia essa ideia para cortes mais ricos e SIMD <a href="https://dl.acm.org/doi/10.1145/3689766">3</a>. Em bytecode de pilha, SuperStack mostra que a ideia também faz sentido para Wasm/EVM, com combinações de busca gulosa e SAT <a href="https://dl.acm.org/doi/10.1145/3656435">4</a>.</p>
+<h3 id="sintese-pratica">Síntese prática</h3>
+<p>A literatura sugere uma escada clara:</p>
+<ol>
+<li><strong>caixa-preta reprodutível por comandos</strong>;</li>
+<li><strong>adaptadores por ecossistema</strong>;</li>
+<li><strong>IRs comuns e verificadores formais</strong>;</li>
+<li><strong>equality saturation + superoptimization em janelas quentes</strong>.</li>
+</ol>
+<p>Não faz sentido tentar pular direto para o degrau 4 em todos os projetos.</p>
+<hr />
+<h2 id="22-para-comparacao-estatistica-pareamento-bootstrap-bca-e-testes-por-permutacao">2.2 Para comparação estatística: pareamento, bootstrap BCa e testes por permutação</h2>
+<p>Uma recomendação muito alinhada ao seu <code>PROMPT.md</code> é a de comparar <strong>baseline e variante sob as mesmas seeds e condições</strong>, e analisar os <strong>deltas por seed</strong>, não apenas médias agregadas. O protocolo proposto em “When +1% Is Not Enough” usa exatamente isso: execução multi-seed pareada, intervalos BCa bootstrap e teste de permutação por sign-flip sobre os deltas <a href="https://arxiv.org/html/2511.19794">2</a>.</p>
+<p>Para dados pareados não ideais, trabalhos sobre bootstrap/permutação para pares mostram que vale a pena preservar explicitamente a dependência do pareamento em vez de fingir amostras independentes <a href="https://link.springer.com/article/10.1007/s11222-012-9370-4">9</a> <a href="https://link.springer.com/article/10.1007/s00181-025-02779-0">8</a>.</p>
+<h3 id="sintese-pratica_1">Síntese prática</h3>
+<p>Seu sistema deve deixar de aceitar/rejeitar candidatos apenas por thresholds fixos de média e passar a operar com:</p>
+<ul>
+<li>deltas por seed;</li>
+<li>IC pareado;</li>
+<li>p-valor não paramétrico;</li>
+<li>regra de aceitação conservadora.</li>
+</ul>
+<hr />
+<h2 id="23-para-mutacoes-semanticas-controlar-comportamento-nao-so-sintaxe">2.3 Para mutações semânticas: controlar comportamento, não só sintaxe</h2>
+<p>A família de Geometric Semantic GP foi proposta justamente para mover a busca da pura sintaxe para o espaço semântico/comportamental <a href="https://www.researchgate.net/publication/235352211_Geometric_Semantic_Genetic_Programming">1</a>. O lado ruim é conhecido: operadores semânticos ingênuos tendem a inflar programas muito rapidamente; o problema de crescimento de tamanho é explícito em análises e variantes posteriores <a href="https://link.springer.com/article/10.1007/s10710-024-09482-6">6</a>.</p>
+<p>Há duas lições fortes aqui.</p>
+<p><strong>Primeira:</strong> operadores semânticos competentes melhoram desempenho, generalização e tamanho quando comparados a GP sintático puro <a href="https://dl.acm.org/doi/abs/10.1162/evco_a_00205">1</a>.</p>
+<p><strong>Segunda:</strong> operadores semânticos precisam vir acompanhados de mecanismos anti-bloat, como mutações normalizadas/standardizadas que reduzem o tamanho da perturbação e podem gerar modelos menores <a href="https://link.springer.com/article/10.1007/s10710-024-09479-1">10</a>.</p>
+<p>Além disso, CDGP/informal CDGP mostra um caminho extremamente compatível com MYCELIUM Auto-evolve: usar <strong>contraexemplos</strong> para expandir o conjunto de avaliação e acelerar a busca com menos execuções que GP padrão <a href="https://link.springer.com/chapter/10.1007/978-3-031-56957-9_2">4</a>. E trabalhos recentes mostram que mutações explicitamente semânticas podem ser várias vezes mais eficientes que operadores não semânticos em domínios booleanos <a href="https://link.springer.com/article/10.1007/s10710-023-09476-w">6</a>.</p>
+<p>A teoria mais recente também alerta para um detalhe importante: certas mutações semânticas fixas generalizam mal, enquanto <strong>block mutations variáveis</strong> e atualização periódica da base de mutação melhoram a generalização <a href="https://dl.acm.org/doi/10.1145/3677124">8</a>.</p>
+<h3 id="sintese-pratica_2">Síntese prática</h3>
+<p>A lição não é “troque tudo por GSGP”. A lição é:</p>
+<ul>
+<li>introduzir operadores que <strong>saibam qual comportamento querem mudar</strong>;</li>
+<li>manter simplificação e compactação sempre ativas;</li>
+<li>atualizar dinamicamente a base semântica usada pela mutação.</li>
+</ul>
+<hr />
+<h2 id="24-para-crescimento-de-longo-horizonte-qd-competicao-local-e-coevolucao-de-ambientes">2.4 Para crescimento de longo horizonte: QD, competição local e coevolução de ambientes</h2>
+<p>MAP-Elites abriu a via de buscar não só um ótimo, mas um <strong>repertório de soluções de alta qualidade e diversidade</strong> <a href="https://arxiv.org/abs/1504.04909">1</a> <a href="https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2016.00040/pdf">3</a>. POET empurrou isso para geração contínua de desafios, coevolução tarefa-solução e transferência entre ambientes <a href="https://dl.acm.org/doi/10.1145/3321707.3321799">2</a>. Enhanced POET reforçou justamente quatro pontos que batem com o seu caso: novidade significativa de desafios, melhor política de transferência, codificações de ambiente mais expressivas e uma medida mais geral de inovação aberta <a href="https://proceedings.mlr.press/v119/wang20l/wang20l.pdf">2</a>.</p>
+<p>A literatura mais nova também mostra a limitação central dos arquivos em grade fixa. Dominated Novelty Search argumenta que grids e bounds pré-definidos impõem restrições artificiais, e propõe competição local por transformações dinâmicas de fitness, funcionando melhor em espaços de descritores complexos, não limitados, de alta dimensão ou não supervisionados <a href="https://arxiv.org/html/2502.00593v1">6</a> <a href="https://dl.acm.org/doi/pdf/10.1145/3712256.3726310">1</a>.</p>
+<p>Há ainda uma lição importante para abstrações reutilizáveis: Stitch mostra que <strong>library learning por compressão de corpus</strong> pode aprender abstrações novas muito mais eficientemente do que abordagens dedutivas anteriores, com grande ganho de tempo/memória <a href="https://mlb2251.github.io/stitch.pdf">2</a>. Isso combina quase perfeitamente com a ideia de transformar padrões úteis em blocos reutilizáveis sem depender de LLM.</p>
+<h3 id="sintese-pratica_3">Síntese prática</h3>
+<p>Para ter alguma chance real de crescimento sustentado, o MYCELIUM Auto-evolve precisa migrar de:</p>
+<ul>
+<li>um único escalar de dificuldade + frontier linear</li>
+</ul>
+<p>para</p>
+<ul>
+<li>uma <strong>ecologia de arquivos de tarefas, arquivos de soluções, competição local adaptativa, transferência entre nichos e compressão progressiva de abstrações</strong>.</li>
+</ul>
+<hr />
+<h2 id="3-north-star-arquitetural">3. North Star arquitetural</h2>
+<p>A arquitetura-alvo que faz mais sentido para o MYCELIUM Auto-evolve é esta:</p>
+<h3 id="camada-a-harness-generico-de-projetos">Camada A — Harness genérico de projetos</h3>
+<p>Trata qualquer projeto como sistema observável com:</p>
+<ul>
+<li>preparação</li>
+<li>build</li>
+<li>teste</li>
+<li>benchmark</li>
+<li>coleta de métricas</li>
+<li>aplicação/reversão de variantes</li>
+</ul>
+<h3 id="camada-b-busca-multi-nivel">Camada B — Busca multi-nível</h3>
+<p>Busca em quatro níveis:</p>
+<ol>
+<li>flags/parâmetros;</li>
+<li>refactors sintáticos seguros;</li>
+<li>rewrites em IR/e-graphs;</li>
+<li>superotimização local de trechos quentes.</li>
+</ol>
+<h3 id="camada-c-verificacao">Camada C — Verificação</h3>
+<p>Combina:</p>
+<ul>
+<li>testes do projeto;</li>
+<li>equivalência comportamental por casos/metamorfismos;</li>
+<li>tradução/validação em IR quando disponível.</li>
+</ul>
+<h3 id="camada-d-ecologia-aberta">Camada D — Ecologia aberta</h3>
+<p>Mantém:</p>
+<ul>
+<li>arquivo de tarefas</li>
+<li>arquivo de soluções</li>
+<li>biblioteca de abstrações</li>
+<li>mapa/grafo de transferência</li>
+<li>métricas de regime de crescimento</li>
+</ul>
+<h3 id="camada-e-estatistica-e-decisao">Camada E — Estatística e decisão</h3>
+<p>Toda decisão importante é tomada por:</p>
+<ul>
+<li>comparação pareada;</li>
+<li>intervalo de confiança;</li>
+<li>teste não paramétrico;</li>
+<li>política conservadora de aceitação.</li>
+</ul>
+<hr />
+<h2 id="4-roadmap-recomendado">4. Roadmap recomendado</h2>
+<h2 id="fase-1-generalizar-o-contrato-de-aceleracao-sem-tentar-ser-compilador-universal-cedo-demais">Fase 1 — Generalizar o contrato de aceleração sem tentar ser “compilador universal” cedo demais</h2>
+<h3 id="objetivo">Objetivo</h3>
+<p>Transformar o acelerador atual em um <strong>harness projeto-agnóstico</strong>, mesmo antes de existirem adaptadores profundos por linguagem.</p>
+<h3 id="entregaveis">Entregáveis</h3>
+<ol>
+<li><strong><code>TargetManifest</code> / <code>mycelium.target.json</code></strong></li>
+<li><code>prepare_command</code></li>
+<li><code>build_command</code></li>
+<li><code>test_command</code></li>
+<li><code>benchmark_command</code></li>
+<li><code>clean_command</code></li>
+<li><code>artifact_paths</code></li>
+<li><code>seed_env_var</code></li>
+<li><code>metrics_parser</code></li>
+<li>
+<p><code>variant_application_mode</code></p>
+</li>
+<li>
+<p><strong>Novo pacote <code>mycelium_accel/targets/</code></strong></p>
+</li>
+<li><code>base.py</code></li>
+<li><code>shell_target.py</code></li>
+<li><code>python_target.py</code></li>
+<li><code>cargo_target.py</code></li>
+<li><code>cmake_target.py</code></li>
+<li>
+<p><code>node_target.py</code></p>
+</li>
+<li>
+<p><strong>Executor reprodutível de benchmarks</strong></p>
+</li>
+<li>warmup</li>
+<li>repeats</li>
+<li>prepare hook</li>
+<li>limpeza entre runs</li>
+<li>export JSON/CSV/Markdown</li>
+<li>
+<p>afinidade/limites opcionais</p>
+</li>
+<li>
+<p><strong>Camada de variantes</strong></p>
+</li>
+<li>variante por arquivo patch</li>
+<li>variante por flag/env var</li>
+<li>variante por profile/manifest</li>
+<li>variante por script de transformação</li>
+</ol>
+<h3 id="mudancas-no-repositorio">Mudanças no repositório</h3>
+<ul>
+<li>substituir a dependência rígida em <code>BENCHMARK_SPEC</code> por um contrato V2;</li>
+<li>manter compatibilidade retroativa com o contrato Python atual;</li>
+<li>criar CLI do tipo:</li>
+<li><code>mycelium-accel accelerate --target path --manifest mycelium.target.json</code></li>
+</ul>
+<h3 id="criterio-de-aceite">Critério de aceite</h3>
+<p>O mesmo motor deve conseguir, com zero LLM:</p>
+<ul>
+<li>otimizar um projeto Python de CLI;</li>
+<li>comparar variantes de um projeto Rust/Cargo;</li>
+<li>comparar variantes de um projeto C/C++ com CMake;</li>
+<li>comparar variantes de um projeto Node baseado em comando.</li>
+</ul>
+<h3 id="observacao-estrategica">Observação estratégica</h3>
+<p>Esta fase entrega <strong>generalidade útil</strong> sem ainda tentar reescrever código arbitrário.</p>
+<hr />
+<h2 id="fase-2-elevar-a-comparacao-para-estatistica-pareada-seria">Fase 2 — Elevar a comparação para estatística pareada séria</h2>
+<h3 id="objetivo_1">Objetivo</h3>
+<p>Substituir o atual “guard por médias + thresholds” por um <strong>motor estatístico conservador</strong>.</p>
+<h3 id="entregaveis_1">Entregáveis</h3>
+<ol>
+<li><strong><code>mycelium_accel/stats.py</code></strong></li>
+<li><code>paired_deltas(...)</code></li>
+<li><code>bca_bootstrap_ci(...)</code></li>
+<li><code>sign_flip_permutation_test(...)</code></li>
+<li><code>effect_size(...)</code></li>
+<li><code>sequential_racing(...)</code></li>
+<li>
+<p><code>multiple_testing_correction(...)</code></p>
+</li>
+<li>
+<p><strong>Formato persistido de benchmark por seed</strong></p>
+</li>
+<li>uma linha por <code>(candidate, seed, metric)</code></li>
+<li>seeds sempre primas</li>
+<li>
+<p>baseline e candidato sob mesmas seeds/mesmos dados/mesmo orçamento</p>
+</li>
+<li>
+<p><strong>Nova política de aceitação</strong></p>
+</li>
+<li>throughput: IC inferior &gt; 0 OU margem mínima configurada</li>
+<li>qualidade: IC inferior &gt;= tolerância negativa</li>
+<li>p-valor &lt;= alpha</li>
+<li>
+<p>decisão final baseada em interseção das guardas</p>
+</li>
+<li>
+<p><strong>Stopping adaptativo</strong></p>
+</li>
+<li>encerrar candidato cedo se ele já perdeu com alta confiança;</li>
+<li>estender apenas candidatos perto da fronteira.</li>
+</ol>
+<h3 id="regras-praticas-recomendadas">Regras práticas recomendadas</h3>
+<ul>
+<li>guardar os deltas por seed, não só as médias;</li>
+<li>distinguir decisão de <strong>aceitar para produção</strong> vs <strong>registrar como promissor</strong>;</li>
+<li>aplicar correção para múltiplas comparações quando dezenas de candidatos forem testados no mesmo ciclo.</li>
+</ul>
+<h3 id="criterio-de-aceite_1">Critério de aceite</h3>
+<ul>
+<li>todo relatório de self-improve passa a incluir IC, p-valor e efeito por métrica;</li>
+<li>candidatos marginais deixam de ser aceitos apenas por ruído favorável de poucas seeds.</li>
+</ul>
+<h3 id="por-que-esta-fase-vem-cedo">Por que esta fase vem cedo</h3>
+<p>Sem isso, todo o restante vira overfitting a ruído experimental.</p>
+<hr />
+<h2 id="fase-3-criar-mutacao-semantica-profunda-em-vez-de-so-misturar-arvores">Fase 3 — Criar mutação semântica profunda em vez de só misturar árvores</h2>
+<h3 id="objetivo_2">Objetivo</h3>
+<p>Fazer com que as mutações respondam a <strong>onde e como</strong> o organismo falha.</p>
+<h3 id="entregaveis_2">Entregáveis</h3>
+<ol>
+<li><strong>Banco semântico de subárvores</strong></li>
+<li>cada subárvore recebe assinatura em um conjunto canônico de probes;</li>
+<li>
+<p>armazenar vetor de outputs, delta local, complexidade, reutilização e histórico de sucesso.</p>
+</li>
+<li>
+<p><strong>Blame map / residual map</strong></p>
+</li>
+<li>para cada organismo elite, mapear contraexemplos relevantes;</li>
+<li>
+<p>identificar subestruturas mais associadas aos erros.</p>
+</li>
+<li>
+<p><strong>Novos operadores de mutação</strong></p>
+</li>
+<li><code>semantic_nearest_subtree_replace</code></li>
+<li><code>counterexample_patch_mutation</code></li>
+<li><code>behavior_preserving_simplify</code></li>
+<li><code>semantic_block_mutation</code></li>
+<li><code>library_instantiation_mutation</code></li>
+<li>
+<p><code>residual_fit_mutation</code></p>
+</li>
+<li>
+<p><strong>Contraexemplos ativos</strong></p>
+</li>
+<li>desafio/teste expandido dinamicamente com casos onde baseline e candidato divergem;</li>
+<li>
+<p>esses contraexemplos passam a pressionar a próxima geração.</p>
+</li>
+<li>
+<p><strong>Compactação obrigatória pós-mutação</strong></p>
+</li>
+<li>shrink semântico;</li>
+<li>deduplicação estrutural;</li>
+<li>refatoração para macros quando houver compressão real.</li>
+</ol>
+<h3 id="mutacoes-concretas-a-implementar-primeiro">Mutações concretas a implementar primeiro</h3>
+<h4 id="31-mutacao-guiada-por-contraexemplo">3.1 Mutação guiada por contraexemplo</h4>
+<p>Escolher inputs onde o campeão falha e gerar variantes cujo objetivo local explícito é corrigir esse subconjunto sem destruir o restante.</p>
+<h4 id="32-substituicao-por-vizinhanca-semantica">3.2 Substituição por vizinhança semântica</h4>
+<p>Trocar uma subárvore por outra com comportamento próximo no conjunto de probes, porém mais promissora para reduzir o residual.</p>
+<h4 id="33-block-mutation-variavel">3.3 Block mutation variável</h4>
+<p>Inspirada na ideia de mudar a “base” da mutação semântica ao longo do tempo, para evitar ficar presa a uma partição ruim do espaço <a href="https://dl.acm.org/doi/10.1145/3677124">8</a>.</p>
+<h4 id="34-simplificacao-por-equivalencia">3.4 Simplificação por equivalência</h4>
+<p>Após mutação bem-sucedida, passar por um estágio de simplificação por regras equivalentes e custo global.</p>
+<h3 id="extensao-arquitetural-necessaria">Extensão arquitetural necessária</h3>
+<p>Criar algo como:</p>
+<ul>
+<li><code>mycelium_accel/semantics.py</code></li>
+<li><code>mycelium_accel/mutation_semantic.py</code></li>
+<li><code>mycelium_accel/counterexamples.py</code></li>
+<li><code>mycelium_accel/library_learning.py</code></li>
+</ul>
+<h3 id="criterio-de-aceite_2">Critério de aceite</h3>
+<ul>
+<li>aumento mensurável da taxa de melhorias aceitas por unidade de compute;</li>
+<li>aumento do reuso de abstrações;</li>
+<li>redução do tamanho médio de soluções equivalentes após simplificação.</li>
+</ul>
+<hr />
+<h2 id="fase-4-library-learning-de-verdade-para-transformar-stepping-stones-em-alavancas">Fase 4 — Library learning de verdade para transformar stepping stones em alavancas</h2>
+<h3 id="objetivo_3">Objetivo</h3>
+<p>Tornar a biblioteca de macros uma <strong>biblioteca aprendida por compressão e transferência</strong>, não apenas por promoção local de motivos.</p>
+<h3 id="entregaveis_3">Entregáveis</h3>
+<ol>
+<li><strong>Corpus periódico de programas elites</strong></li>
+<li>
+<p>coletar elites, near-elites e vencedores por nicho.</p>
+</li>
+<li>
+<p><strong>Aprendizagem de abstrações por compressão</strong></p>
+</li>
+<li>descobrir funções/motivos que maximizem compressão total do corpus;</li>
+<li>
+<p>usar MDL/custo total: <code>custo_biblioteca + custo_corpus_reescrito</code>.</p>
+</li>
+<li>
+<p><strong>Reescrita do corpus com abstrações novas</strong></p>
+</li>
+<li>
+<p>só manter abstrações que realmente reduzam custo e aumentem reuso.</p>
+</li>
+<li>
+<p><strong>Promoção multiescala</strong></p>
+</li>
+<li>micro-macro: subárvore curta</li>
+<li>meso-macro: função/motivo recorrente</li>
+<li>meta-regra: template de transformação recorrente</li>
+</ol>
+<h3 id="justificativa">Justificativa</h3>
+<p>Stitch mostra que library learning por compressão de corpus pode escalar muito melhor que abordagens dedutivas antigas <a href="https://mlb2251.github.io/stitch.pdf">2</a>. Para MYCELIUM Auto-evolve, isso é especialmente importante porque abstrações reutilizáveis são um dos poucos mecanismos plausíveis de transformar progresso local em <strong>expansão combinatória do espaço acessível</strong>.</p>
+<h3 id="criterio-de-aceite_3">Critério de aceite</h3>
+<ul>
+<li>crescimento do reuso médio por abstração;</li>
+<li>queda do custo descritivo do corpus de elites;</li>
+<li>maior taxa de solução de desafios composicionais com o mesmo orçamento.</li>
+</ul>
+<hr />
+<h2 id="fase-5-abrir-a-aceleracao-para-irs-e-ecossistemas-reais">Fase 5 — Abrir a aceleração para IRs e ecossistemas reais</h2>
+<h3 id="objetivo_4">Objetivo</h3>
+<p>Fazer o salto de “benchmarka comandos arbitrários” para “otimiza código arbitrário em camadas”.</p>
+<h2 id="51-trilha-a-adaptadores-caixa-preta-uteis-imediatamente">5.1 Trilha A — Adaptadores caixa-preta úteis imediatamente</h2>
+<h3 id="escopo">Escopo</h3>
+<ul>
+<li>Python CLI</li>
+<li>Rust/Cargo</li>
+<li>C/C++/CMake</li>
+<li>Node</li>
+</ul>
+<h3 id="operadores-possiveis">Operadores possíveis</h3>
+<ul>
+<li>flags de compilação;</li>
+<li>níveis de otimização;</li>
+<li>parâmetros de runtime;</li>
+<li>troca de perfis;</li>
+<li>seleção de algoritmos já existentes;</li>
+<li>micro-refactors pré-registrados.</li>
+</ul>
+<h3 id="criterio-de-aceite_4">Critério de aceite</h3>
+<ul>
+<li>encontrar e aplicar melhorias reais de projeto sem tocar manualmente no código.</li>
+</ul>
+<h2 id="52-trilha-b-astsource-to-source-por-linguagem">5.2 Trilha B — AST/source-to-source por linguagem</h2>
+<h3 id="escopo-inicial">Escopo inicial</h3>
+<ul>
+<li>Python AST</li>
+<li>Rust syn/prettyplease-like path</li>
+<li>C/C++ via Clang tooling quando disponível</li>
+</ul>
+<h3 id="operadores">Operadores</h3>
+<ul>
+<li>inline/extract function;</li>
+<li>constante hoisting;</li>
+<li>loop refactors simples;</li>
+<li>troca de estruturas equivalentes;</li>
+<li>memoization/local caching onde contrato permitir;</li>
+<li>reorderings semânticos seguros.</li>
+</ul>
+<h3 id="validacao">Validação</h3>
+<ul>
+<li>testes do projeto;</li>
+<li>benchmark pareado;</li>
+<li>diff do AST reformatado;</li>
+<li>invariantes/metamorfismos opcionais.</li>
+</ul>
+<h2 id="53-trilha-c-llvmmlir">5.3 Trilha C — LLVM/MLIR</h2>
+<h3 id="escopo_1">Escopo</h3>
+<p>Projetos que já chegam a LLVM IR/MLIR ou podem ser levantados para lá.</p>
+<h3 id="ferramentasconceitos-a-incorporar">Ferramentas/conceitos a incorporar</h3>
+<ul>
+<li>Alive2 para translation validation em LLVM IR <a href="https://web.ist.utl.pt/nuno.lopes/pubs.php?id=alive2-pldi21">2</a></li>
+<li>Transform dialect para orquestrar pipelines finos <a href="https://arxiv.org/html/2409.03864v2">4</a></li>
+<li>mlirSynth para elevar código a dialetos mais ricos quando possível <a href="https://arxiv.org/pdf/2310.04196">2</a></li>
+<li>DialEgg/egglog/eqsat para rewrites globais dialect-agnostic <a href="https://dl.acm.org/doi/pdf/10.1145/3696443.3708957">10</a></li>
+</ul>
+<h3 id="estrategia">Estratégia</h3>
+<ul>
+<li>extrair kernels/hotspots;</li>
+<li>tentar lifting para dialeto mais alto;</li>
+<li>saturar rewrites locais/globais;</li>
+<li>extrair programa de menor custo;</li>
+<li>validar equivalência e benchmarkar.</li>
+</ul>
+<h2 id="54-trilha-d-superoptimization-local">5.4 Trilha D — Superoptimization local</h2>
+<h3 id="ferramentas-alvo">Ferramentas-alvo</h3>
+<ul>
+<li>Souper para peepholes LLVM <a href="https://ar5iv.labs.arxiv.org/html/1711.04422">6</a></li>
+<li>Minotaur para cortes mais ricos e SIMD <a href="https://dl.acm.org/doi/10.1145/3689766">3</a></li>
+<li>SuperStack para bytecodes de pilha como Wasm/EVM <a href="https://dl.acm.org/doi/10.1145/3656435">4</a></li>
+</ul>
+<h3 id="estrategia_1">Estratégia</h3>
+<p>Não superotimizar o programa todo. Superotimizar apenas:</p>
+<ul>
+<li>blocos quentes pequenos;</li>
+<li>kernels sem efeitos colaterais pesados;</li>
+<li>janelas com verificação forte disponível.</li>
+</ul>
+<h3 id="criterio-de-aceite-geral-da-fase-5">Critério de aceite geral da Fase 5</h3>
+<ul>
+<li>ao menos uma cadeia completa de otimização em cada classe de alvo:</li>
+<li>caixa-preta;</li>
+<li>AST-aware;</li>
+<li>IR-aware.</li>
+</ul>
+<hr />
+<h2 id="fase-6-substituir-o-frontier-linear-por-ecologia-de-qualidade-diversidade">Fase 6 — Substituir o frontier linear por ecologia de qualidade-diversidade</h2>
+<h3 id="objetivo_5">Objetivo</h3>
+<p>Sair de “um campeão por rodada + frontier archive linear” para um sistema que mantém <strong>muitos stepping stones úteis em paralelo</strong>.</p>
+<h3 id="entregaveis_4">Entregáveis</h3>
+<ol>
+<li><strong>Archive QD de soluções</strong></li>
+<li>elites por descritores comportamentais/composicionais;</li>
+<li>
+<p>múltiplos ocupantes opcionais por nicho.</p>
+</li>
+<li>
+<p><strong>Archive de ambientes/desafios</strong></p>
+</li>
+<li>
+<p>tarefas indexadas por dificuldade, composição, novidade e transferibilidade.</p>
+</li>
+<li>
+<p><strong>Competição local adaptativa</strong></p>
+</li>
+<li>
+<p>em vez de depender só de bins fixos, usar competição local dinâmica em torno de proximidade comportamental.</p>
+</li>
+<li>
+<p><strong>Emissores especializados</strong></p>
+</li>
+<li>explorador de novidade</li>
+<li>refinador de qualidade</li>
+<li>recombinador de abstrações</li>
+<li>simplificador/compressor</li>
+<li>
+<p>transferidor entre nichos</p>
+</li>
+<li>
+<p><strong>Transfer graph</strong></p>
+</li>
+<li>aresta <code>A -&gt; B</code> quando solução/abstração de A melhora B;</li>
+<li>peso baseado em frequência, magnitude e custo de transferência.</li>
+</ol>
+<h3 id="justificativa_1">Justificativa</h3>
+<p>MAP-Elites/QD mostrou o valor de manter repertórios diversos <a href="https://arxiv.org/abs/1504.04909">1</a> <a href="https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2016.00040/pdf">3</a>. Mas grades fixas sofrem em espaços complexos; DNS mostra uma alternativa mais adaptativa para competição local <a href="https://arxiv.org/html/2502.00593v1">6</a>.</p>
+<h3 id="criterio-de-aceite_5">Critério de aceite</h3>
+<ul>
+<li>aumento de cobertura do archive;</li>
+<li>aumento de QD-score;</li>
+<li>aumento de QD-score AUC como medida de eficiência de descoberta <a href="https://btjanaka.net/static/qd-auc/qd-auc-paper.pdf">1</a>;</li>
+<li>mais transferências úteis entre nichos.</li>
+</ul>
+<hr />
+<h2 id="fase-7-coevolucao-explicita-de-tarefas-e-solucoes">Fase 7 — Coevolução explícita de tarefas e soluções</h2>
+<h3 id="objetivo_6">Objetivo</h3>
+<p>Fazer a dificuldade crescer por <strong>invenção de novas tarefas</strong> e não só por ajuste de um escalar de dificuldade.</p>
+<h3 id="entregaveis_5">Entregáveis</h3>
+<ol>
+<li><strong>Population of environments/challenge families</strong></li>
+<li>cada família de desafios possui genótipo próprio;</li>
+<li>
+<p>ela evolui sob critérios de novidade, solvabilidade marginal e valor de transferência.</p>
+</li>
+<li>
+<p><strong>Minimal criterion band</strong></p>
+</li>
+<li>desafios muito fáceis morrem;</li>
+<li>desafios impossíveis persistentes morrem;</li>
+<li>
+<p>sobrevive o que está na zona fértil de aprendizagem.</p>
+</li>
+<li>
+<p><strong>Cross-transfer trials</strong></p>
+</li>
+<li>soluções de um ambiente tentam resolver outros;</li>
+<li>
+<p>ambientes que desbloqueiam novas rotas de transferência ganham prioridade.</p>
+</li>
+<li>
+<p><strong>Curriculum graph, não só sequência</strong></p>
+</li>
+<li>tarefas não formam fila linear;</li>
+<li>formam grafo de predecessores úteis e atalhos de transferência.</li>
+</ol>
+<h3 id="justificativa_2">Justificativa</h3>
+<p>POET e Enhanced POET mostraram que progresso aberto depende de <strong>desafios novos + transferência entre ambientes + stepping stones indiretos</strong> <a href="https://dl.acm.org/doi/10.1145/3321707.3321799">2</a> <a href="https://proceedings.mlr.press/v119/wang20l/wang20l.pdf">2</a>.</p>
+<h3 id="criterio-de-aceite_6">Critério de aceite</h3>
+<ul>
+<li>desafios relevantes continuam surgindo sem colapsar para trivialidade ou impossibilidade;</li>
+<li>novas soluções aparecem via transferência indireta que não seria encontrada por otimização direta.</li>
+</ul>
+<hr />
+<h2 id="fase-8-medir-crescimento-aberto-com-metricas-mais-honestas-que-um-unico-capability_signal">Fase 8 — Medir crescimento aberto com métricas mais honestas que um único <code>capability_signal</code></h2>
+<h3 id="objetivo_7">Objetivo</h3>
+<p>Criar uma camada de métricas que realmente diga se o sistema está acumulando alavancas ou só girando no mesmo lugar.</p>
+<h3 id="metricas-recomendadas">Métricas recomendadas</h3>
+<ol>
+<li><strong>Archive coverage</strong></li>
+<li><strong>QD-score</strong></li>
+<li><strong>QD-score AUC</strong> <a href="https://btjanaka.net/static/qd-auc/qd-auc-paper.pdf">1</a></li>
+<li><strong>Taxa de abstrações úteis novas por 1000 rounds</strong></li>
+<li><strong>Reuso médio por abstração</strong></li>
+<li><strong>Ganho médio de transferência cross-niche</strong></li>
+<li><strong>Profundidade composicional efetiva</strong></li>
+<li><strong>Tempo para resolver desafios de fronteira</strong></li>
+<li><strong>Half-life de habilidade</strong></li>
+<li><strong>Taxa de regressão após transferência/refatoração</strong></li>
+<li><strong>Taxa de expansão do grafo tarefa-solução</strong></li>
+<li><strong>Slope e curvature de métricas cumulativas</strong>, não só do score instantâneo</li>
+</ol>
+<h3 id="nova-classificacao-de-regime">Nova classificação de regime</h3>
+<p>Em vez de olhar só <code>capability_signal</code> e ajuste linear/log, classificar o sistema por:</p>
+<ul>
+<li><strong>estagnação local</strong></li>
+<li><strong>crescimento por exploração sem acumulação</strong></li>
+<li><strong>crescimento por compressão/reuso</strong></li>
+<li><strong>crescimento por transferência</strong></li>
+<li><strong>crescimento aberto composto</strong></li>
+</ul>
+<h3 id="criterio-de-aceite_7">Critério de aceite</h3>
+<p>O projeto só poderá alegar aproximação de crescimento exponencial quando houver simultaneamente:</p>
+<ul>
+<li>expansão sustentada do archive de tarefas/soluções;</li>
+<li>aumento de reuso/abstração;</li>
+<li>aumento de transferência cross-niche;</li>
+<li>tendência positiva em janelas longas, não só surto curto.</li>
+</ul>
+<hr />
+<h2 id="5-ordem-exata-recomendada">5. Ordem exata recomendada</h2>
+<p>Se o objetivo é <strong>maior retorno por unidade de tempo</strong>, eu faria nesta ordem:</p>
+<h3 id="prioridade-1">Prioridade 1</h3>
+<p><strong>Fase 1 + Fase 2</strong></p>
+<p>Porque sem harness genérico e sem estatística forte:</p>
+<ul>
+<li>você não acelera projetos arbitrários com confiança;</li>
+<li>você não sabe se uma regra realmente venceu.</li>
+</ul>
+<h3 id="prioridade-2">Prioridade 2</h3>
+<p><strong>Fase 3 + Fase 4</strong></p>
+<p>Porque sem mutação semântica e library learning:</p>
+<ul>
+<li>a busca continuará encontrando melhorias locais caras e frágeis;</li>
+<li>o espaço acessível não se expande combinatoriamente.</li>
+</ul>
+<h3 id="prioridade-3">Prioridade 3</h3>
+<p><strong>Fase 6 + Fase 7</strong></p>
+<p>Porque aí nasce a chance real de horizonte longo:</p>
+<ul>
+<li>vários nichos vivos;</li>
+<li>vários ambientes vivos;</li>
+<li>transferência entre eles.</li>
+</ul>
+<h3 id="prioridade-4">Prioridade 4</h3>
+<p><strong>Fase 5 em trilhas paralelas</strong></p>
+<p>A parte IR-aware é extremamente valiosa, mas deve crescer em paralelo por ecossistema, não bloquear o restante.</p>
+<hr />
+<h2 id="6-estrutura-concreta-de-implementacao-no-repositorio">6. Estrutura concreta de implementação no repositório</h2>
+<h2 id="61-novos-modulos-recomendados">6.1 Novos módulos recomendados</h2>
+<pre><code class="language-text">mycelium/
+  targets/
+    base.py
+    shell_target.py
+    python_target.py
+    cargo_target.py
+    cmake_target.py
+    node_target.py
+  stats.py
+  semantics.py
+  mutation_semantic.py
+  counterexamples.py
+  library_learning.py
+  qd_archive.py
+  environment_ecology.py
+  transfer_graph.py
+  validators/
+    behavioral.py
+    metamorphic.py
+    llvm_alive2.py
+    mlir_eqsat.py
+</code></pre>
+<h2 id="62-novos-scripts">6.2 Novos scripts</h2>
+<pre><code class="language-text">scripts/
+  benchmark_paired.py
+  benchmark_project_target.py
+  learn_macro_library.py
+  run_qd_experiment.py
+  run_environment_coevolution.py
+  summarize_growth_regime.py
+</code></pre>
+<h2 id="63-novos-artefatos-persistidos">6.3 Novos artefatos persistidos</h2>
+<pre><code class="language-text">.mycelium_benchmarks/
+.mycelium_targets/
+.mycelium_qd/
+.mycelium_environments/
+.mycelium_transfer/
+.mycelium_semantics/
+</code></pre>
+<hr />
+<h2 id="7-plano-de-experimentacao">7. Plano de experimentação</h2>
+<h2 id="experimento-a-harness-generico">Experimento A — Harness genérico</h2>
+<h3 id="meta">Meta</h3>
+<p>Provar que o MYCELIUM Auto-evolve consegue otimizar projetos de classes diferentes sem contrato Python ad hoc.</p>
+<h3 id="suite-minima">Suite mínima</h3>
+<ul>
+<li>1 projeto Python</li>
+<li>1 projeto Rust</li>
+<li>1 projeto C/C++</li>
+<li>1 projeto Node</li>
+</ul>
+<h3 id="saida-esperada">Saída esperada</h3>
+<ul>
+<li>benchmark reproduzível;</li>
+<li>pelo menos um caso de ganho confirmado por projeto;</li>
+<li>rollback seguro.</li>
+</ul>
+<hr />
+<h2 id="experimento-b-estatistica-pareada">Experimento B — Estatística pareada</h2>
+<h3 id="meta_1">Meta</h3>
+<p>Comparar o guard antigo vs novo.</p>
+<h3 id="esperado">Esperado</h3>
+<ul>
+<li>o novo aceita menos falsos positivos;</li>
+<li>a decisão fica mais estável quando se reroda a mesma competição.</li>
+</ul>
+<hr />
+<h2 id="experimento-c-mutacoes-semanticas">Experimento C — Mutações semânticas</h2>
+<h3 id="meta_2">Meta</h3>
+<p>Medir ganho por compute frente ao operador atual.</p>
+<h3 id="metricas">Métricas</h3>
+<ul>
+<li>aceitação por 1000 candidatos;</li>
+<li>melhoria média por candidato aceito;</li>
+<li>tamanho pós-simplificação;</li>
+<li>generalização em seeds não vistas.</li>
+</ul>
+<hr />
+<h2 id="experimento-d-qd-coevolucao">Experimento D — QD + coevolução</h2>
+<h3 id="meta_3">Meta</h3>
+<p>Testar se a ecologia multiescala sustenta crescimento mais longo que o frontier atual.</p>
+<h3 id="metricas_1">Métricas</h3>
+<ul>
+<li>coverage</li>
+<li>QD-score</li>
+<li>QD-score AUC</li>
+<li>transfer edges úteis</li>
+<li>taxa de desafios férteis novos</li>
+<li>regressão/forgetting rate</li>
+</ul>
+<hr />
+<h2 id="8-riscos-e-contramedidas">8. Riscos e contramedidas</h2>
+<h2 id="risco-1-explosao-de-complexidade">Risco 1 — Explosão de complexidade</h2>
+<p><strong>Contramedida:</strong> fazer por camadas; primeiro harness genérico, depois adaptadores, depois IR.</p>
+<h2 id="risco-2-estatistica-cara-demais">Risco 2 — Estatística cara demais</h2>
+<p><strong>Contramedida:</strong> racing sequencial, futility stopping e tiers de avaliação.</p>
+<h2 id="risco-3-operadores-semanticos-gerarem-bloat">Risco 3 — Operadores semânticos gerarem bloat</h2>
+<p><strong>Contramedida:</strong> simplificação obrigatória, custo explícito de descrição, deflate/shrink, reextração por e-graph.</p>
+<h2 id="risco-4-qd-virar-arquivo-enorme-sem-progresso">Risco 4 — QD virar arquivo enorme sem progresso</h2>
+<p><strong>Contramedida:</strong> competição local adaptativa, poda por valor de transferência e AUC de melhoria.</p>
+<h2 id="risco-5-coevolucao-criar-so-tarefas-impossiveis">Risco 5 — Coevolução criar só tarefas impossíveis</h2>
+<p><strong>Contramedida:</strong> banda de critério mínimo; descartar extremos fácil/impossível persistentes.</p>
+<h2 id="risco-6-generalizacao-ilusoria-por-seed-leakage">Risco 6 — Generalização ilusória por seed leakage</h2>
+<p><strong>Contramedida:</strong> separação entre seeds de busca, seeds de guarda e seeds de auditoria final.</p>
+<hr />
+<h2 id="9-minha-recomendacao-final-em-linguagem-direta">9. Minha recomendação final, em linguagem direta</h2>
+<p>Se o objetivo é maximizar a chance de o MYCELIUM Auto-evolve realmente virar um sistema mais geral, mais rápido e menos sujeito a estagnação, eu recomendo a seguinte tese operacional:</p>
+<h3 id="tese-central">Tese central</h3>
+<p><strong>O próximo grande salto não é “mais mutação”. O próximo grande salto é combinar quatro coisas ao mesmo tempo:</strong></p>
+<ol>
+<li><strong>harness genérico de projetos</strong>;</li>
+<li><strong>decisão estatística pareada forte</strong>;</li>
+<li><strong>mutação guiada por semântica e contraexemplos</strong>;</li>
+<li><strong>ecologia QD/POET-like com library learning e transferência explícita</strong>.</li>
+</ol>
+<h3 id="em-uma-frase">Em uma frase</h3>
+<ul>
+<li><strong>Fase 1+2</strong> tornam o sistema confiável para otimizar projetos arbitrários.</li>
+<li><strong>Fase 3+4</strong> tornam o sistema capaz de acumular abstrações em vez de só tentar variantes locais.</li>
+<li><strong>Fase 6+7+8</strong> tornam o sistema capaz de buscar crescimento de longo horizonte sem colapsar para convergência simples.</li>
+</ul>
+<hr />
+<h2 id="10-o-veredito-mais-honesto-possivel">10. O veredito mais honesto possível</h2>
+<p>O código atual já tem uma base muito melhor do que um simples GP de brinquedo.</p>
+<p>Mas, se a pergunta for:</p>
+<blockquote>
+<p>“O que falta para chegar perto da visão ambiciosa do <code>PROMPT.md</code>?”</p>
+</blockquote>
+<p>A resposta honesta é:</p>
+<ul>
+<li>falta um <strong>harness verdadeiramente projeto-agnóstico</strong>;</li>
+<li>falta um <strong>motor estatístico realmente conservador</strong>;</li>
+<li>falta uma <strong>camada de mutação semântica guiada por erro</strong>;</li>
+<li>e falta trocar a ideia de “rodada + campeão” por uma <strong>ecologia aberta de repertórios, ambientes e abstrações</strong>.</li>
+</ul>
+<p>É exatamente isso que o roadmap acima prioriza.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

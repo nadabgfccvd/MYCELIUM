@@ -1,0 +1,1588 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Avaliação do projeto + Roda de 25 minutos (2026-09-09) - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#avaliacao-do-projeto-roda-de-25-minutos-2026-09-09" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Avaliação do projeto + Roda de 25 minutos (2026-09-09)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PERFORMANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="avaliacao-do-projeto-roda-de-25-minutos-2026-09-09">Avaliação do projeto + Roda de 25 minutos (2026-09-09)</h1>
+<p>Dois entregáveis neste documento: <strong>(A)</strong> avaliação pós-roadmap do <code>mycelium-accel 0.2.0</code>;
+<strong>(B)</strong> relatório da roda de 25 minutos (réplica do protocolo legado, código novo).</p>
+<hr />
+<h1 id="a-avaliacao-do-projeto">A. Avaliação do projeto</h1>
+<h2 id="a1-saude-medido-nesta-sessao">A.1 Saúde (medido nesta sessão)</h2>
+<table>
+<thead>
+<tr>
+<th>Sinal</th>
+<th>Valor</th>
+<th>Veredito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Suíte</td>
+<td>134/134 verdes (6,9s)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>doctor</code></td>
+<td>14 checks, 0 FAIL</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Dependências runtime</td>
+<td>100% stdlib (0 third-party)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Empacotamento</td>
+<td>sdist+wheel, twine PASS, venv limpo OK</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>CI</td>
+<td><code>ci_local.sh</code> verde; Actions em 3.13/3.14 (acende no push)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>14 docs + 2 ADRs + 2 cases + 3 runbooks</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>6 commits, tag v0.2.0, árvore limpa, states ignorados</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a2-o-que-o-roadmap-mudou-antes-depois">A.2 O que o roadmap mudou (antes → depois)</h2>
+<ul>
+<li><strong>Identidade:</strong> protótipo <code>mycelium</code> impubliável → produto <code>mycelium-accel</code> (nome verificado livre).</li>
+<li><strong>Medida:</strong> histórico truncado em 512 → telemetria durável completa (esta roda: 3.660/3.660 rounds).</li>
+<li><strong>Confiança:</strong> afirmações → 2 estudos de caso reproduzíveis (EC1 negativo-honesto, EC2 +23,7% aceito).</li>
+<li><strong>DX:</strong> flags cruas → <code>doctor</code>, <code>accelerate init</code>, auto-relatórios, acceptance de 5 comandos.</li>
+<li><strong>Pesquisa:</strong> "será que cresce?" → NÃO com 4 evidências + 3 condições de reentrada (ADR-0002).</li>
+</ul>
+<h2 id="a3-pontos-fortes">A.3 Pontos fortes</h2>
+<ol>
+<li><strong>Honestidade como arquitetura:</strong> guard pareado que rejeita (366/366 nesta roda), <code>skipped</code>
+   em vez de prova falsa, kills executados sem reinterpretação. É o diferencial real do produto.</li>
+<li><strong>Custo por decisão:</strong> 4,1 s/ciclo (era 20,7 s) — screening com futilidade funciona em produção.</li>
+<li><strong>Zero dependências:</strong> instala em qualquer lugar, inclusive offline via wheel.</li>
+<li><strong>Rastreabilidade:</strong> todo número do README tem artefato (JSONL, sweep, relatório).</li>
+</ol>
+<h2 id="a4-fraquezas-e-riscos-honestos-com-acao">A.4 Fraquezas e riscos (honestos, com ação)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Achado</th>
+<th>Severidade</th>
+<th>Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>growth-regime</code> mistura artefatos ambientes obsoletos (<code>.mycelium_qd/</code> de outra run) e mudou o rótulo para <code>transfer_growth</code>; dado limpo diz <code>local_stagnation</code></td>
+<td><strong>média</strong></td>
+<td>registrar proveniência/staleness dos artefatos (backlog)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Binários <code>examples/c/bench_*</code> commitados no git</td>
+<td>baixa</td>
+<td><code>make clean</code> + gitignore (higiene)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PyPI/TestPyPI ainda sem upload (token do mantenedor)</td>
+<td>média</td>
+<td><code>docs/RELEASE.md</code> (2 comandos)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>UI server (<code>mycelium_ui_server.py</code>) sem testes automatizados</td>
+<td>baixa</td>
+<td>smoke test ou marcar experimental</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Daemon <code>status.json</code> não ecoa <code>time_budget_seconds</code> (mostra null)</td>
+<td>baixa</td>
+<td>cosmético; parada por orçamento funciona</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a5-notas-por-dimensao-010">A.5 Notas por dimensão (0–10)</h2>
+<table>
+<thead>
+<tr>
+<th>Dimensão</th>
+<th>Nota</th>
+<th>Justificativa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Corretude testada</td>
+<td>9</td>
+<td>134 verdes, 0 flakys observados; falta teste da UI</td>
+</tr>
+<tr>
+<td>Honestidade estatística</td>
+<td>10</td>
+<td>CI+permuta+Holm por padrão; rejeições documentadas</td>
+</tr>
+<tr>
+<td>DX / operabilidade</td>
+<td>8</td>
+<td>doctor/init/relatórios ótimos; site de docs cortado (B7)</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>8</td>
+<td>4,1 s/ciclo; engine ~65 rps; sem profiling além do dogfood</td>
+</tr>
+<tr>
+<td>Pronto p/ publicar</td>
+<td>7</td>
+<td>wheel perfeito; trava só no token + push GitHub</td>
+</tr>
+<tr>
+<td>Tese de pesquisa</td>
+<td>3</td>
+<td>refutada 4× — mas <strong>responder NÃO com dados é a entrega</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Veredito geral: produto B pronto para publicar; pesquisa C corretamente encerrada neste substrato.</strong></p>
+<hr />
+<h1 id="b-roda-de-25-minutos-relatorio">B. Roda de 25 minutos — relatório</h1>
+<h2 id="b1-protocolo-replica-fiel-codigo-novo">B.1 Protocolo (réplica fiel, código novo)</h2>
+<pre><code class="language-bash">python -m mycelium_accel self-improve-daemon --seed 101 \
+  --state-dir .mycelium_state_eval_25min \
+  --rounds-per-cycle 10 --benchmark-rounds 8 \
+  --benchmark-seeds 101,103,107,109,113,127,131 \
+  --guard-workers 4 --time-budget-seconds 1500 --semantic-mutation-rate 0.3
+</code></pre>
+<p>Estado zerado, mutação semântica 0.3 — idêntico à roda legada de 2026-09-09.</p>
+<h2 id="b2-resultado-cabeca-a-cabeca-legado-atual">B.2 Resultado cabeça-a-cabeça (legado × atual)</h2>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Legada (09-09, código antigo)</th>
+<th>Esta roda (código 0.2.0)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ciclos em ~1.500 s</td>
+<td>73 (~20,7 s/ciclo)</td>
+<td><strong>366 (~4,1 s/ciclo)</strong></td>
+</tr>
+<tr>
+<td>Aplicações / rejeições</td>
+<td>0 / 73 honestas</td>
+<td><strong>0 / 366 honestas</strong></td>
+</tr>
+<tr>
+<td>Parada</td>
+<td>orçamento</td>
+<td><strong>orçamento (<code>stopped_by_time_budget=true</code>)</strong></td>
+</tr>
+<tr>
+<td>Exceções / stderr</td>
+<td>0</td>
+<td><strong>0 / vazio</strong></td>
+</tr>
+<tr>
+<td>Engine rounds</td>
+<td>~1.352 (state legado)</td>
+<td><strong>3.660 (1→3660, contínuos)</strong></td>
+</tr>
+<tr>
+<td>Telemetria</td>
+<td>truncada em 512</td>
+<td><strong>3.660/3.660 linhas JSONL</strong></td>
+</tr>
+<tr>
+<td>Capability pico</td>
+<td>8.33</td>
+<td><strong>8.46 (@round 2.983)</strong></td>
+</tr>
+<tr>
+<td>Capability fim</td>
+<td>2.85</td>
+<td><strong>1.29 (média últ.100: 3.22)</strong></td>
+</tr>
+<tr>
+<td>Fronteira máx</td>
+<td>7</td>
+<td><strong>7</strong></td>
+</tr>
+<tr>
+<td>Nichos (máx/fim)</td>
+<td>39 / —</td>
+<td><strong>57 / 39</strong></td>
+</tr>
+<tr>
+<td>Macros no cap 24</td>
+<td>congeladas desde ~round 51</td>
+<td><strong>0/3.660 rounds saturados (fim: 4 macros)</strong></td>
+</tr>
+<tr>
+<td>Regime (dado limpo)</td>
+<td><code>local_stagnation</code></td>
+<td><strong><code>local_stagnation</code></strong> (regressão 0.505, slope +0.011, curvatura −0.005)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="b3-leitura">B.3 Leitura</h2>
+<ol>
+<li><strong>Cadência 5× sem perder rigor:</strong> 366 ciclos com guarda pareada completa (não é "modo rápido" —
+   é o screening podando candidatos fúteis no estágio barato). O fix pós-"8h" validado em escala real.</li>
+<li><strong>Sistema imune íntegro em volume:</strong> 366/366 rejeições com 0 aplicações. O baseline continua
+   num ótimo local; o harness continua não carimbando.</li>
+<li><strong>Transientes recorrem, regime não muda:</strong> pico tardio (8.46 @2.983) e 145 rounds com cap≥6
+   (último @3.394) mostram que a linhagem semântica re-explora — mas regressão 0.505 (cara-ou-coroa)
+   e curvatura negativa mantêm <code>local_stagnation</code>. <strong>5ª confirmação do ADR-0002.</strong></li>
+<li><strong>Macros não saturaram desta vez</strong> (4 vs cap 24): dinâmica de promoção varia por linhagem —
+   o sinal <code>macro_cap_saturated</code> (F1) existe exatamente para não generalizarmos uma run.</li>
+<li><strong>F1+F3 validados em escala:</strong> 3.660 rounds auditados 1→3660, JSONL 100% íntegro, 0 exceções,
+   <code>verify_run_continuity.py</code> verde. Runs de 100+ min são só repetição deste protocolo.</li>
+</ol>
+<h2 id="b4-artefatos-desta-roda-nao-commitados-gitignore-numeros-extraidos-acima">B.4 Artefatos desta roda (não commitados — gitignore; números extraídos acima)</h2>
+<ul>
+<li>Estado: <code>.mycelium_state_eval_25min/</code> (audit 3.660 rounds + <code>telemetry/metrics.jsonl</code>)</li>
+<li>Sumário: <code>.mycelium_self_improve/eval-25min-stdout.json</code> (+ <code>self-improve-20260910T005420Z.json</code>)</li>
+<li>Reprodução: comando em B.1 (qualquer máquina com Python 3.11+)</li>
+</ul>
+<hr />
+<p><em>Relatório gerado em 2026-09-09. Nenhum threshold foi ajustado para produzir estes números.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

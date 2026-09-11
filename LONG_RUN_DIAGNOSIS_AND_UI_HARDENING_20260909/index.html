@@ -1,0 +1,1775 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Diagnóstico da parada precoce do run de 8 horas e hardening aplicado - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#diagnostico-da-parada-precoce-do-run-de-8-horas-e-hardening-aplicado" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Diagnóstico da parada precoce do run de 8 horas e hardening aplicado
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PERFORMANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo executivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencia-confirmada-da-execucao-interrompida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência confirmada da execução interrompida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hipoteses-plausiveis-com-grau-de-confianca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hipóteses plausíveis, com grau de confiança
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hipóteses plausíveis, com grau de confiança">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-excecao-nao-observada-no-primeiro-ciclo-guardado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Exceção não observada no primeiro ciclo guardado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-encerramento-externo-do-processo-por-ambienterecursos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Encerramento externo do processo por ambiente/recursos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-corrupcao-logica-do-estado-salvo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Corrupção lógica do estado salvo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardening-implementado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardening implementado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-observabilidade-de-fase-no-self_improvepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Observabilidade de fase no self_improve.py
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-persistencia-de-erro-estruturado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Persistência de erro estruturado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-relatorio-automatico-por-sessao-real-de-execucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Relatório automático por sessão real de execução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-interface-one-click-mycelium-auto-evolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Interface one-click MYCELIUM Auto-evolve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-launcher-de-um-clique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Launcher de um clique
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacao-executada-apos-o-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validação executada após o hardening
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validação executada após o hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testes-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smoke-da-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Smoke da UI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smoke-do-gerador-de-relatorio-automatico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Smoke do gerador de relatório automático
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limites-do-diagnostico-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limites do diagnóstico atual
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recomendacao-antes-do-proximo-run-longo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recomendação antes do próximo run longo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquivos-principais-alterados-nesta-etapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquivos principais alterados nesta etapa
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="diagnostico-da-parada-precoce-do-run-de-8-horas-e-hardening-aplicado">Diagnóstico da parada precoce do run de 8 horas e hardening aplicado</h1>
+<h2 id="resumo-executivo">Resumo executivo</h2>
+<p>A tentativa de calibração focada de 8 horas <strong>não completou nem o primeiro ciclo guardado</strong>. A evidência disponível mostra que o processo chegou a salvar apenas <strong>15 rounds</strong>, deixou <code>macro_staging</code> crescer, mas <strong>não escreveu relatório final nem atualizou o daemon status para além de <code>starting</code></strong>.</p>
+<p>Conclusão honesta:</p>
+<ul>
+<li>a <strong>causa raiz exata não pôde ser provada retroativamente</strong> porque a execução antiga não tinha captura suficiente de exceção/fase;</li>
+<li>a janela mais provável da falha foi <strong>depois do bloco inicial de evolução de 15 rounds e antes do fechamento do primeiro ciclo guardado</strong>;</li>
+<li>o sistema agora foi endurecido para que a próxima execução longa deixe rastros claros de <strong>fase</strong>, <strong>erro</strong>, <strong>estado de daemon</strong> e <strong>relatório automático da sessão</strong>.</li>
+</ul>
+<hr />
+<h2 id="evidencia-confirmada-da-execucao-interrompida">Evidência confirmada da execução interrompida</h2>
+<p>Origem principal do estado interrompido:</p>
+<ul>
+<li><code>.mycelium_state_focused_calibration_8h/state.pkl</code></li>
+<li><code>.mycelium_state_focused_calibration_8h/audit.log.jsonl</code></li>
+<li><code>.mycelium_self_improve/daemon.status.json</code></li>
+</ul>
+<p>Fatos confirmados:</p>
+<ul>
+<li><code>round_index = 15</code></li>
+<li><code>macro_library_count = 0</code></li>
+<li><code>macro_staging_count = 5</code></li>
+<li><code>frontier_archive_count = 45</code></li>
+<li>contagens de fronteira:</li>
+<li><code>dominated = 8</code></li>
+<li><code>frontier = 8</code></li>
+<li><code>impossible = 29</code></li>
+<li>última métrica observada:</li>
+<li><code>best_score = 0.9244484890929348</code></li>
+<li><code>best_exact_rate = 0.0</code></li>
+<li><code>solved_by_best = 0</code></li>
+<li><code>active_niches = 32</code></li>
+<li><code>diversity_entropy = 4.282033133097071</code></li>
+<li><code>macro_transfer_mean = 0.0</code></li>
+<li><code>frontier_learning_progress = 0.0</code></li>
+<li>regime de crescimento permaneceu <code>stalled_or_declining</code></li>
+<li><code>.mycelium_self_improve/daemon.status.json</code> permaneceu em <code>state = "starting"</code></li>
+<li>o processo antes rastreado pelo gerenciador já não existia mais quando foi inspecionado</li>
+<li>não foi encontrado relatório final dessa execução</li>
+</ul>
+<p>Leitura operacional:</p>
+<ol>
+<li>o bloco inicial de evolução realmente rodou;</li>
+<li>houve persistência parcial do estado;</li>
+<li>a execução morreu <strong>antes do marco de ciclo completo</strong>;</li>
+<li>como o status permaneceu em <code>starting</code>, a infraestrutura anterior não mostrava em que fase exata houve a queda.</li>
+</ol>
+<hr />
+<h2 id="hipoteses-plausiveis-com-grau-de-confianca">Hipóteses plausíveis, com grau de confiança</h2>
+<h3 id="1-excecao-nao-observada-no-primeiro-ciclo-guardado">1. Exceção não observada no primeiro ciclo guardado</h3>
+<p><strong>Confiança: média</strong></p>
+<p>A falha pode ter ocorrido em uma etapa como:</p>
+<ul>
+<li>benchmark do baseline;</li>
+<li>busca de candidato em paralelo;</li>
+<li>aplicação/restauração de perfil;</li>
+<li>regressão por testes;</li>
+<li>escrita de relatório.</li>
+</ul>
+<p>Essa hipótese é forte porque o processo desapareceu sem relatório final e sem transição clara de status.</p>
+<h3 id="2-encerramento-externo-do-processo-por-ambienterecursos">2. Encerramento externo do processo por ambiente/recursos</h3>
+<p><strong>Confiança: média</strong></p>
+<p>Também é possível que o processo tenha sido morto por pressão externa, recurso ou lifecycle do ambiente. A evidência atual não permite distinguir isso de uma exceção interna porque a execução antiga não persistia <code>last_error.json</code>.</p>
+<h3 id="3-corrupcao-logica-do-estado-salvo">3. Corrupção lógica do estado salvo</h3>
+<p><strong>Confiança: baixa</strong></p>
+<p>A inspeção do estado interrompido foi bem-sucedida e coerente, então não há indício forte de que a falha principal tenha sido corrupção do checkpoint persistido.</p>
+<hr />
+<h2 id="hardening-implementado">Hardening implementado</h2>
+<h2 id="1-observabilidade-de-fase-no-self_improvepy">1. Observabilidade de fase no <code>self_improve.py</code></h2>
+<p>Foram adicionadas atualizações explícitas de fase em:</p>
+<ul>
+<li><code>startup</code></li>
+<li><code>evolution</code></li>
+<li><code>benchmark_baseline</code></li>
+<li><code>search_candidate</code></li>
+<li><code>apply_candidate</code></li>
+<li><code>regression_tests</code></li>
+<li><code>cycle_complete</code></li>
+<li><code>finished</code></li>
+<li><code>exception</code></li>
+</ul>
+<p>Com isso, o próximo run longo deixa claro <strong>em que estágio está</strong> e <strong>onde morreu</strong>, se voltar a morrer.</p>
+<h2 id="2-persistencia-de-erro-estruturado">2. Persistência de erro estruturado</h2>
+<p>Foi adicionado o arquivo:</p>
+<ul>
+<li><code>.mycelium_self_improve/last_error.json</code></li>
+</ul>
+<p>Agora exceções passam a registrar, no mínimo:</p>
+<ul>
+<li>tipo do erro</li>
+<li>mensagem</li>
+<li>traceback</li>
+<li>ciclo em andamento</li>
+<li>contadores de ciclos concluídos/aprovados/rejeitados</li>
+<li>tempo decorrido</li>
+</ul>
+<p>Além disso, <code>daemon.status.json</code> agora é marcado como <code>state = "error"</code> quando ocorre falha capturada.</p>
+<h2 id="3-relatorio-automatico-por-sessao-real-de-execucao">3. Relatório automático por sessão real de execução</h2>
+<p>O script <code>scripts/generate_auto_round_report.py</code> foi ampliado para gerar relatório a partir de:</p>
+<ul>
+<li><code>latest.json</code> de auto melhoria, quando existir;</li>
+<li><strong>ou do próprio <code>state_dir</code> da sessão</strong>, usando <code>--start-round</code> para resumir apenas o trecho realmente executado.</li>
+</ul>
+<p>Isso permite relatório automático também para:</p>
+<ul>
+<li><code>run</code></li>
+<li><code>self-improve</code></li>
+<li><code>focused</code></li>
+</ul>
+<p>O relatório agora pode resumir:</p>
+<ul>
+<li>rounds executados no trecho</li>
+<li>round inicial/final</li>
+<li>contagens finais de macro library, staging e frontier archive</li>
+<li>métricas que mudaram no trecho</li>
+<li>quantas vezes cada métrica melhorou ou piorou durante o trecho</li>
+<li>última métrica observada</li>
+<li>quando aplicável, mudanças aprovadas do guarda e contagem de melhorias por ciclo</li>
+</ul>
+<h2 id="4-interface-one-click-mycelium-auto-evolve">4. Interface one-click MYCELIUM Auto-evolve</h2>
+<p>Foi completada a base da interface local:</p>
+<ul>
+<li><code>mycelium_ui/index.html</code></li>
+<li><code>mycelium_ui/styles.css</code></li>
+<li><code>mycelium_ui/app.js</code></li>
+<li><code>scripts/mycelium_ui_server.py</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.sh</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.command</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.desktop</code></li>
+</ul>
+<p>Capacidades implementadas:</p>
+<ul>
+<li>visual profissional com painel de execução</li>
+<li>console/CMD em tempo real</li>
+<li>comandos rápidos e <code>/help</code> em linguagem não técnica</li>
+<li>escolha de RAM antes da execução</li>
+<li>iniciar/parar <code>run</code>, <code>self-improve</code> e <code>focused</code></li>
+<li>leitura de <code>daemon.status.json</code></li>
+<li>leitura do estado atual para métricas vivas</li>
+<li>geração/apresentação do relatório automático mais recente</li>
+<li><strong>modo segundo plano após 5 minutos sem interação na área do CMD</strong></li>
+<li>retomada do foreground ao clicar/interagir novamente no console</li>
+</ul>
+<h2 id="5-launcher-de-um-clique">5. Launcher de um clique</h2>
+<p>Foram adicionados launchers simples para abrir a interface:</p>
+<ul>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.sh</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.command</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.desktop</code></li>
+</ul>
+<hr />
+<h2 id="validacao-executada-apos-o-hardening">Validação executada após o hardening</h2>
+<h3 id="testes-python">Testes Python</h3>
+<p>Comando executado:</p>
+<pre><code class="language-bash">python -m unittest discover -s tests -v
+</code></pre>
+<p>Resultado:</p>
+<ul>
+<li><strong>18/18 testes passando</strong></li>
+</ul>
+<p>Novo caso coberto explicitamente:</p>
+<ul>
+<li>gravação de <code>last_error.json</code> e <code>daemon.status.json</code> com <code>state = "error"</code> quando ocorre exceção em <code>run_daemon(...)</code></li>
+</ul>
+<h3 id="smoke-da-ui">Smoke da UI</h3>
+<p>Validações executadas:</p>
+<ul>
+<li>servidor da UI iniciado com sucesso em <code>0.0.0.0:8765</code></li>
+<li><code>GET /</code> retornando o HTML da interface</li>
+<li><code>GET /api/status</code> retornando JSON válido com sessão, ajuda e árvore do projeto</li>
+<li><code>POST /api/start</code> em modo <code>run</code> funcionando</li>
+<li>encerramento do run curto gerando relatório automático em <code>reports/auto/</code></li>
+</ul>
+<h3 id="smoke-do-gerador-de-relatorio-automatico">Smoke do gerador de relatório automático</h3>
+<p>Comando executado sobre uma sessão curta real:</p>
+<pre><code class="language-bash"># run from the repository root; the path is repo-relative (no hardcoded $HOME)
+python scripts/generate_auto_round_report.py --state-dir .mycelium_state_ui --start-round 0 --mode run
+</code></pre>
+<p>Resultado:</p>
+<ul>
+<li>relatório Markdown gerado com sucesso em <code>reports/auto/</code></li>
+</ul>
+<hr />
+<h2 id="limites-do-diagnostico-atual">Limites do diagnóstico atual</h2>
+<p>Ainda não se pode afirmar, com prova forense completa, se a execução de 8 horas morreu por:</p>
+<ul>
+<li>exceção Python interna,</li>
+<li>finalização externa do processo,</li>
+<li>ou pressão de recurso do ambiente.</li>
+</ul>
+<p>O que mudou é que a próxima execução longa <strong>não ficará mais opaca</strong> da mesma forma.</p>
+<hr />
+<h2 id="recomendacao-antes-do-proximo-run-longo">Recomendação antes do próximo run longo</h2>
+<p>Ordem sugerida:</p>
+<ol>
+<li>manter este hardening</li>
+<li>abrir a UI e validar um <code>focused</code> curto pela própria interface</li>
+<li>confirmar que <code>daemon.status.json</code> muda de fase durante a execução</li>
+<li>confirmar que, ao final, <code>last_error.json</code> permanece ausente ou vazio quando não há falha</li>
+<li>confirmar geração do relatório automático da sessão</li>
+<li>só então relançar a calibração focada longa endurecida</li>
+</ol>
+<hr />
+<h2 id="arquivos-principais-alterados-nesta-etapa">Arquivos principais alterados nesta etapa</h2>
+<ul>
+<li><code>mycelium_accel/self_improve.py</code></li>
+<li><code>tests/test_self_improve.py</code></li>
+<li><code>scripts/generate_auto_round_report.py</code></li>
+<li><code>scripts/mycelium_ui_server.py</code></li>
+<li><code>mycelium_ui/index.html</code></li>
+<li><code>mycelium_ui/styles.css</code></li>
+<li><code>mycelium_ui/app.js</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.sh</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.command</code></li>
+<li><code>OPEN_MYCELIUM_AUTO_EVOLVE_UI.desktop</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

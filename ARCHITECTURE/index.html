@@ -1,0 +1,2331 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+        <link rel="prev" href="../PERFORMANCE/">
+      
+      
+        <link rel="next" href="../ERRORS/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Arquitetura - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arquitetura-do-prototipo-mycelium-auto-evolve" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Arquitetura
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PERFORMANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo-desta-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo desta base
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-nucleo-de-representacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Núcleo de representação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Núcleo de representação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caminho-de-execucao-otimizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caminho de execução otimizado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-desafios-black-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Desafios black-box
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Desafios black-box">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtro-de-nao-trivialidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtro de não-trivialidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-selecao-e-regras-populacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Seleção e regras populacionais
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Seleção e regras populacionais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#familias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Famílias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#torneio-impar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Torneio ímpar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-por-i" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase por i
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avaliacao-em-duas-fases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avaliação em duas fases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nichos-comportamentais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nichos comportamentais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vigor-por-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vigor por e
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clima
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-extincao-e-reposicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Extinção e reposição
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-transferencia-horizontal-e-novas-primitivas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Transferência horizontal e novas primitivas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Transferência horizontal e novas primitivas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gene-bank-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gene bank local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macro-staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro staging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macro-library-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro library global
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-personagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Personagens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Personagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#artista" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artista
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clerigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clérigo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ladrao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ladrão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-seguranca-e-metabolismo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Segurança e metabolismo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-persistencia-auditoria-e-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Persistência, auditoria e rollback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-modo-aceleracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Modo aceleração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Modo aceleração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-improve-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-improve mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-honestidade-sobre-crescimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Honestidade sobre crescimento
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo-desta-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivo desta base
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-nucleo-de-representacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Núcleo de representação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Núcleo de representação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caminho-de-execucao-otimizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caminho de execução otimizado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-desafios-black-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Desafios black-box
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Desafios black-box">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtro-de-nao-trivialidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtro de não-trivialidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-selecao-e-regras-populacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Seleção e regras populacionais
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Seleção e regras populacionais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#familias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Famílias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#torneio-impar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Torneio ímpar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-por-i" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase por i
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avaliacao-em-duas-fases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avaliação em duas fases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nichos-comportamentais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nichos comportamentais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vigor-por-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vigor por e
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clima" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clima
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-extincao-e-reposicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Extinção e reposição
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-transferencia-horizontal-e-novas-primitivas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Transferência horizontal e novas primitivas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Transferência horizontal e novas primitivas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gene-bank-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gene bank local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macro-staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro staging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macro-library-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macro library global
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-personagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Personagens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Personagens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#artista" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artista
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clerigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clérigo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ladrao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ladrão
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-seguranca-e-metabolismo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Segurança e metabolismo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-persistencia-auditoria-e-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Persistência, auditoria e rollback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-modo-aceleracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Modo aceleração
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Modo aceleração">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-improve-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-improve mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-honestidade-sobre-crescimento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Honestidade sobre crescimento
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="arquitetura-do-prototipo-mycelium-auto-evolve">Arquitetura do protótipo MYCELIUM Auto-evolve</h1>
+<h2 id="objetivo-desta-base">Objetivo desta base</h2>
+<p>Transformar a especificação ideológica em uma base executável mínima, mas já com:</p>
+<ul>
+<li>regras evolutivas reconhecíveis;</li>
+<li>persistência e recuperação;</li>
+<li>isolamento lógico por orçamento;</li>
+<li>aceleração com aplicação real no código;</li>
+<li>documentação suficiente para virar repositório público.</li>
+</ul>
+<h2 id="1-nucleo-de-representacao">1. Núcleo de representação</h2>
+<p>O indivíduo é um programa simbólico em árvore (<code>Node</code>) sobre inteiros.</p>
+<p>Terminais:</p>
+<ul>
+<li><code>input</code></li>
+<li><code>const</code></li>
+<li><code>macro</code></li>
+</ul>
+<p>Operadores:</p>
+<ul>
+<li>unários: <code>neg</code>, <code>abs</code>, <code>inc</code>, <code>dec</code>, <code>square</code></li>
+<li>binários: <code>add</code>, <code>sub</code>, <code>mul</code>, <code>max</code>, <code>min</code>, <code>mod</code></li>
+</ul>
+<p>A escolha foi deliberadamente pequena para manter:</p>
+<ul>
+<li>interpretabilidade;</li>
+<li>orçamento previsível;</li>
+<li>mutação estrutural simples;</li>
+<li>espaço grande o bastante para comportamento emergente.</li>
+</ul>
+<h3 id="caminho-de-execucao-otimizado">Caminho de execução otimizado</h3>
+<p>Embora a representação canônica seja em árvore, a execução quente é feita por um <strong>executor compilado em instruções stack-based</strong>. Nesta versão, o executor também consegue pontuar datasets inteiros em lote, reutilizando a mesma stack de trabalho. Isso preserva a editabilidade estrutural e reduz o custo de avaliação por par entrada→saída.</p>
+<h2 id="2-desafios-black-box">2. Desafios black-box</h2>
+<p>O gerador cria um <strong>oráculo oculto</strong> a partir da mesma família de primitivas.</p>
+<p>Nesta versão, o gerador também consegue produzir uma fração de desafios <strong>composicionais</strong>, combinando subestruturas e macros já disponíveis para pressionar recombinação real de capacidades.</p>
+<p>O sistema não vê o oráculo nem a regra de geração. Ele só recebe:</p>
+<ul>
+<li>pares de treino <code>x -&gt; y</code></li>
+<li>pares de teste <code>x -&gt; y</code></li>
+</ul>
+<p>Isso implementa a exigência de:</p>
+<ul>
+<li>critérios aleatórios;</li>
+<li>suprimento infinito de tarefas;</li>
+<li>redução do risco de decorar listas manuais.</li>
+</ul>
+<h3 id="filtro-de-nao-trivialidade">Filtro de não-trivialidade</h3>
+<p>Antes de aceitar um desafio, o gerador rejeita oráculos que sejam:</p>
+<ul>
+<li>constantes;</li>
+<li>identidade pura;</li>
+<li>com pouca diversidade de saída;</li>
+<li>semanticamente pobres diante da dificuldade pedida.</li>
+</ul>
+<h2 id="3-selecao-e-regras-populacionais">3. Seleção e regras populacionais</h2>
+<h3 id="familias">Famílias</h3>
+<p>A população é composta por famílias. Cada família tem:</p>
+<ul>
+<li>membros;</li>
+<li>profundidade de linhagem;</li>
+<li>fase de seleção;</li>
+<li>banco de genes local.</li>
+</ul>
+<h3 id="torneio-impar">Torneio ímpar</h3>
+<p>Toda escolha de pais usa torneio ímpar e maior que 1.</p>
+<p>A paridade ímpar também torna o estado <code>neutro</code> da fase mais bem definido, pois há mediana única.</p>
+<h3 id="fase-por-i">Fase por <code>i</code></h3>
+<p>A fase gira em período 4:</p>
+<ul>
+<li><code>1</code> -&gt; seleção normal</li>
+<li><code>0</code> -&gt; seleção neutra/mediana</li>
+<li><code>-1</code> -&gt; seleção invertida, favorecendo azarões</li>
+<li><code>0</code> -&gt; neutra</li>
+</ul>
+<p>No protótipo, isso afeta a escolha nos torneios.</p>
+<h3 id="avaliacao-em-duas-fases">Avaliação em duas fases</h3>
+<p>Para concentrar compute nos indivíduos com maior retorno, a seleção usa uma rotina em duas fases:</p>
+<ol>
+<li>uma triagem rápida em subconjuntos menores de desafios/casos;</li>
+<li>uma reavaliação completa dos melhores colocados por família e de um pequeno contingente exploratório.</li>
+</ol>
+<p>Isso implementa, em termos operacionais, a ideia de quimiotaxia: mais recurso vai para onde o gradiente de utilidade parece melhor.</p>
+<h3 id="nichos-comportamentais">Nichos comportamentais</h3>
+<p>Além da família histórica, cada organismo agora recebe uma <strong>assinatura comportamental</strong> baseada em probes canônicos. Essa assinatura permite:</p>
+<ul>
+<li>contar nichos ativos;</li>
+<li>medir entropia de diversidade;</li>
+<li>dar bônus leve para soluções menos redundantes;</li>
+<li>tornar a extinção de famílias um pouco menos cega à redundância global.</li>
+</ul>
+<h3 id="vigor-por-e">Vigor por <code>e</code></h3>
+<p>A força de uma família decai como:</p>
+<pre><code class="language-text">exp(-lineage_depth / e)
+</code></pre>
+<p>Isso incentiva renovação e evita imortalidade estrutural.</p>
+<h3 id="clima">Clima</h3>
+<p>O clima alterna entre:</p>
+<ul>
+<li>multiplicar por <code>π</code></li>
+<li>dividir por <code>2.967</code></li>
+</ul>
+<p>Mas só como influência leve na seleção, via multiplicador pequeno.</p>
+<h2 id="4-extincao-e-reposicao">4. Extinção e reposição</h2>
+<p>A especificação diz que uma família é eliminada por rodada, com 7 sobreviventes em diáspora.</p>
+<p>Se isso fosse seguido literalmente sem reposição, o sistema acabaria em zero famílias. Portanto, o protótipo adota a seguinte interpretação operacional:</p>
+<ol>
+<li>a pior família é extinta;</li>
+<li>os 7 melhores sobrevivem;</li>
+<li>3 entram como reprodutores em famílias hospedeiras;</li>
+<li>4 doam partes para bancos de genes de outras famílias;</li>
+<li>uma família nova e fresca nasce para ocupar o nicho ecológico.</li>
+</ol>
+<p>Essa é uma <strong>hipótese de fechamento do ciclo</strong>, fácil de revisar depois.</p>
+<h2 id="5-transferencia-horizontal-e-novas-primitivas">5. Transferência horizontal e novas primitivas</h2>
+<p>Existem dois níveis:</p>
+<h3 id="gene-bank-local">Gene bank local</h3>
+<p>Cada família acumula subárvores úteis de seus melhores membros.</p>
+<p>Essas subárvores podem ser enxertadas por recombinação em descendentes futuros.</p>
+<h3 id="macro-staging">Macro staging</h3>
+<p>Antes de virar primitiva global, um motivo passa agora por uma camada intermediária de <strong>staging</strong>.</p>
+<p>Cada macro candidata registra:</p>
+<ul>
+<li>família de origem;</li>
+<li>suporte em múltiplas famílias;</li>
+<li>ganho estimado de transferência;</li>
+<li>ganho de compressão estrutural;</li>
+<li>contagem de reuso;</li>
+<li>round em que foi vista pela última vez.</li>
+</ul>
+<p>Macros fracas podem ser aposentadas; macros fortes podem ser promovidas.</p>
+<h3 id="macro-library-global">Macro library global</h3>
+<p>Quando um motivo demonstra valor suficiente, ele vira uma <code>Macro</code> global.</p>
+<p>Essa macro passa a funcionar como nova primitiva acessível a toda a população.</p>
+<p>Isso atende, em nível mais forte que o MVP anterior, à exigência de que valor demonstrado possa virar nova estrutura de linguagem.</p>
+<h2 id="6-personagens">6. Personagens</h2>
+<h3 id="artista">Artista</h3>
+<p>A cada 3 rodadas injeta padrões repetitivos na família mais fraca.</p>
+<h3 id="clerigo">Clérigo</h3>
+<p>A cada 7 rodadas revive o melhor organismo do cemitério recente.</p>
+<h3 id="ladrao">Ladrão</h3>
+<p>A cada bloco de 15 famílias criadas ao longo da história, rouba até 2 indivíduos de famílias fortes para uma família hospedeira aleatória.</p>
+<h2 id="7-seguranca-e-metabolismo">7. Segurança e metabolismo</h2>
+<p>O protótipo implementa segurança em nível lógico de interpretador:</p>
+<ul>
+<li>limite de nós por programa;</li>
+<li>limite de passos por avaliação;</li>
+<li>clipping de magnitude numérica;</li>
+<li>escrita restrita ao diretório de estado do workspace.</li>
+</ul>
+<p>Ainda não há sandbox via processo do SO, seccomp ou cgroups. Isso é item natural da próxima versão.</p>
+<h2 id="8-persistencia-auditoria-e-rollback">8. Persistência, auditoria e rollback</h2>
+<p>Estado persistido:</p>
+<ul>
+<li><code>state.json</code></li>
+<li><code>audit.log.jsonl</code></li>
+<li><code>checkpoints/round-XXXXX.json</code></li>
+</ul>
+<p>Com isso, o ciclo já tem:</p>
+<ul>
+<li>retomada após reinício;</li>
+<li>trilha append-only de eventos;</li>
+<li>rollback por checkpoint;</li>
+<li>kill-switch por arquivo <code>KILL</code>.</li>
+</ul>
+<h2 id="9-modo-aceleracao">9. Modo aceleração</h2>
+<h3 id="self-mode">Self mode</h3>
+<p>O protótipo benchmarka variantes equivalentes de uma rotina interna e grava a variante vencedora em:</p>
+<pre><code class="language-text">mycelium_accel/generated/active_variants.py
+</code></pre>
+<p>Isso fecha o ciclo mínimo de:</p>
+<ul>
+<li>medir;</li>
+<li>verificar correção;</li>
+<li>aplicar ao código-fonte real;</li>
+<li>usar na rodada seguinte.</li>
+</ul>
+<h3 id="external-mode">External mode</h3>
+<p>Há suporte inicial a módulos Python com contrato explícito de benchmark.</p>
+<p>É um começo de generalização para projetos hospedeiros sem depender de LLM.</p>
+<h3 id="self-improve-mode">Self-improve mode</h3>
+<p>Além do <code>accelerate</code>, o projeto agora possui um modo <code>self-improve</code> com guarda anti-regressão.</p>
+<p>Ele opera em ciclos:</p>
+<ol>
+<li>executa rodadas normais de evolução no estado persistente;</li>
+<li>mede o baseline atual do próprio projeto;</li>
+<li>explora candidatos automáticos de tuning de perfil e variante ativa;</li>
+<li>compara baseline e candidato em benchmark pareado multi-seed;</li>
+<li>aplica a mudança apenas se ela superar o baseline e respeitar os limites de qualidade;</li>
+<li>roda a suíte de testes como trava final antes de consolidar a alteração.</li>
+</ol>
+<p>Esse modo ainda não reescreve arbitrariamente o engine. Ele foca primeiro em um espaço menor, auditável e reversível:</p>
+<ul>
+<li>perfil default de execução;</li>
+<li>variante ativa interna;</li>
+<li>rollback imediato se o guarda detectar regressão.</li>
+</ul>
+<h2 id="10-honestidade-sobre-crescimento">10. Honestidade sobre crescimento</h2>
+<p>O engine nunca afirma crescimento exponencial por vontade. Ele ajusta duas curvas sobre o histórico de <code>capability_signal</code>:</p>
+<p>Nesta versão, o estado também mantém um <strong>frontier archive</strong> com desafios recentes classificados como:</p>
+<ul>
+<li><code>dominated</code></li>
+<li><code>frontier</code></li>
+<li><code>impossible</code></li>
+</ul>
+<p>A intenção é separar melhor:</p>
+<ul>
+<li>tarefas já dominadas;</li>
+<li>tarefas na fronteira de aprendizagem;</li>
+<li>
+<p>tarefas ainda fora de alcance.</p>
+</li>
+<li>
+<p>linear</p>
+</li>
+<li>exponencial via regressão em <code>log(y)</code></li>
+</ul>
+<p>E classifica o regime observado como:</p>
+<ul>
+<li><code>exponential</code></li>
+<li><code>linear</code></li>
+<li><code>sublinear</code></li>
+<li><code>stalled_or_declining</code></li>
+<li><code>insufficient_data</code></li>
+</ul>
+<p>Isso não prova ciência forte ainda, mas evita autoengano básico.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

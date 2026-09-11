@@ -1,0 +1,2362 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Paired-statistics acceleration harness for real projects. No LLM, prime seeds, sandboxed.">
+      
+      
+        <meta name="author" content="Arena.ai Agent Mode">
+      
+      
+      
+        <link rel="prev" href="../SELF_IMPROVEMENT/">
+      
+      
+        <link rel="next" href="../ARCHITECTURE/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Performance - MYCELIUM-Accel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#performance-e-otimizacao" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MYCELIUM-Accel" class="md-header__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MYCELIUM-Accel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Performance
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../QUICKSTART/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quickstart (5 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../TUTORIAL_10MIN/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorial (10 min)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../CASE_MYCELIUM_20260909/" class="md-tabs__link">
+          
+  
+  
+  Casos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 1ª noite (10 ciclos)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resumo leigo 2ª noite (S2)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../RUNS/" class="md-tabs__link">
+          
+  
+  
+  Operação
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../API_STABLE_1.0/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API estável (1.0)
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/0001-integrations/" class="md-tabs__link">
+          
+  
+  
+  Decisões (ADRs)
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MYCELIUM-Accel" class="md-nav__button md-logo" aria-label="MYCELIUM-Accel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MYCELIUM-Accel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/INSIRA-ORGAO/mycelium-accel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QUICKSTART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart (5 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TUTORIAL_10MIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial (10 min)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Casos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Casos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_MYCELIUM_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC1 dogfooding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_C_FLAGS_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC2 flags de C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC3_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC3 projeto real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_EC4_20260909/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EC4 caso negativo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_PARALLEL_PROOF_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 paralelo morto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARK_COMPETITORS_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vs concorrentes (S2, crivo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CASE_PORTFOLIO_S2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Portfólio S2 (3 projetos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 1ª noite (10 ciclos)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RESUMO_LEIGO_SESSAO2_20260910/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resumo leigo 2ª noite (S2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RUNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runs longas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RELEASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KILLSWITCH_SANDBOX_CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kill-switch & sandbox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SELF_IMPROVEMENT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-improvement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#principais-otimizacoes-implementadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principais otimizações implementadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Principais otimizações implementadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-avaliacao-em-lote-no-executor-da-dsl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Avaliação em lote no executor da DSL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-reuso-de-stack-por-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Reuso de stack por dataset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cache-estrutural-em-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cache estrutural em Node
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-clone-e-substituicao-de-subarvore-mais-leves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Clone e substituição de subárvore mais leves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cache-de-executores-entre-rodadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cache de executores entre rodadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-avaliacao-adaptativa-em-duas-fases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Avaliação adaptativa em duas fases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-persistencia-compacta-versionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Persistência compacta versionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-menos-overhead-no-encoder-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Menos overhead no encoder JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-cadencia-configuravel-de-salvamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Cadência configurável de salvamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-observado-nesta-sessao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado observado nesta sessão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-de-throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark de throughput
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benchmark de throughput">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#perfil-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-quality_reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil quality_reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-turbo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil turbo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparacao-multi-seed-de-qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparação multi-seed de qualidade
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparação multi-seed de qualidade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quality_reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        quality_reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leitura-honesta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leitura honesta
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reducao-do-tamanho-do-estado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redução do tamanho do estado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-default-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração default atual
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-rodar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Como rodar
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como rodar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#perfil-default_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-de-referencia-de-qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil de referência de qualidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-turbo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil turbo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#camada-nova-para-crescimento-composto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada nova para crescimento composto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximos-gargalos-provaveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Próximos gargalos prováveis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guarda-de-qualidade-para-auto-melhoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guarda de qualidade para auto melhoria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximas-otimizacoes-candidatas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Próximas otimizações candidatas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ERRORS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Erros e troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API_STABLE_1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API estável (1.0)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisões (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Decisões (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0002-open-growth-decision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tese de crescimento
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#principais-otimizacoes-implementadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principais otimizações implementadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Principais otimizações implementadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-avaliacao-em-lote-no-executor-da-dsl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Avaliação em lote no executor da DSL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-reuso-de-stack-por-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Reuso de stack por dataset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cache-estrutural-em-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cache estrutural em Node
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-clone-e-substituicao-de-subarvore-mais-leves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Clone e substituição de subárvore mais leves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cache-de-executores-entre-rodadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cache de executores entre rodadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-avaliacao-adaptativa-em-duas-fases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Avaliação adaptativa em duas fases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-persistencia-compacta-versionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Persistência compacta versionada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-menos-overhead-no-encoder-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Menos overhead no encoder JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-cadencia-configuravel-de-salvamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Cadência configurável de salvamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-observado-nesta-sessao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resultado observado nesta sessão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-de-throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark de throughput
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benchmark de throughput">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#perfil-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-quality_reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil quality_reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-turbo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil turbo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparacao-multi-seed-de-qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparação multi-seed de qualidade
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparação multi-seed de qualidade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quality_reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        quality_reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leitura-honesta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Leitura honesta
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reducao-do-tamanho-do-estado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redução do tamanho do estado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-default-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração default atual
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-rodar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Como rodar
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como rodar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#perfil-default_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-de-referencia-de-qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil de referência de qualidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#perfil-turbo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfil turbo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#camada-nova-para-crescimento-composto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camada nova para crescimento composto
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximos-gargalos-provaveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Próximos gargalos prováveis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guarda-de-qualidade-para-auto-melhoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guarda de qualidade para auto melhoria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proximas-otimizacoes-candidatas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Próximas otimizações candidatas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="performance-e-otimizacao">Performance e otimização</h1>
+<p>Esta versão do protótipo foi retrabalhada para perseguir um alvo operacional claro:</p>
+<ul>
+<li><strong>aproximadamente 89 rounds/s por geração</strong></li>
+<li><strong>sem derrubar a qualidade média observada</strong></li>
+</ul>
+<p>A estratégia adotada não foi apenas “cortar custo”. Ela combina:</p>
+<ul>
+<li>redução de overhead no caminho quente;</li>
+<li>persistência mais barata;</li>
+<li>e <strong>avaliação adaptativa</strong>, concentrando compute nos candidatos mais promissores.</li>
+</ul>
+<h2 id="principais-otimizacoes-implementadas">Principais otimizações implementadas</h2>
+<h3 id="1-avaliacao-em-lote-no-executor-da-dsl">1. Avaliação em lote no executor da DSL</h3>
+<p>O <code>ProgramExecutor</code> ganhou rotinas especializadas para avaliar diretamente um conjunto de pares:</p>
+<ul>
+<li><code>score_pairs()</code></li>
+<li><code>score_pairs_limit()</code></li>
+</ul>
+<p>Em vez de chamar <code>run()</code> para cada amostra e acumular fora do executor, a avaliação agora ocorre dentro de um loop otimizado com:</p>
+<ul>
+<li>variáveis locais;</li>
+<li>stack reutilizada;</li>
+<li>menos chamadas Python no hot path.</li>
+</ul>
+<h3 id="2-reuso-de-stack-por-dataset">2. Reuso de stack por dataset</h3>
+<p>Durante o scoring de um dataset, a stack interna é alocada uma vez e reutilizada entre pares.</p>
+<p>Impacto:</p>
+<ul>
+<li>menos alocação temporária;</li>
+<li>menor pressão no GC;</li>
+<li>menor overhead por amostra.</li>
+</ul>
+<h3 id="3-cache-estrutural-em-node">3. Cache estrutural em <code>Node</code></h3>
+<p>Cada árvore memoiza:</p>
+<ul>
+<li><code>count_nodes()</code></li>
+<li><code>depth()</code></li>
+<li><code>render()</code></li>
+<li><code>complexity_score()</code></li>
+</ul>
+<p>Isso reduz custo recorrente em:</p>
+<ul>
+<li>avaliação;</li>
+<li>serialização;</li>
+<li>deduplicação de motivos;</li>
+<li>registro de macros.</li>
+</ul>
+<h3 id="4-clone-e-substituicao-de-subarvore-mais-leves">4. Clone e substituição de subárvore mais leves</h3>
+<p><code>deepcopy()</code> foi removido do caminho crítico.</p>
+<p>Agora:</p>
+<ul>
+<li><code>clone()</code> é recursivo e enxuto;</li>
+<li><code>replace_subtree()</code> reconstrói apenas o caminho alterado.</li>
+</ul>
+<h3 id="5-cache-de-executores-entre-rodadas">5. Cache de executores entre rodadas</h3>
+<p>Executores compilados agora permanecem aquecidos no engine e podem ser reaproveitados em rodadas futuras.</p>
+<p>Também foi adicionado um limite simples de cache para conter crescimento de memória:</p>
+<ul>
+<li>limpeza grosseira quando o cache atinge o teto configurado internamente.</li>
+</ul>
+<h3 id="6-avaliacao-adaptativa-em-duas-fases">6. Avaliação adaptativa em duas fases</h3>
+<p>Esta foi a mudança com melhor relação <strong>velocidade x qualidade</strong>.</p>
+<p>Fluxo:</p>
+<ol>
+<li>todos os organismos recebem uma <strong>avaliação de triagem</strong> em subconjuntos menores de desafios/casos;</li>
+<li>por família, apenas os melhores colocados na triagem e um pequeno contingente exploratório aleatório são <strong>reavaliados integralmente</strong>.</li>
+</ol>
+<p>Isso concentra compute onde ele altera de fato:</p>
+<ul>
+<li>elites;</li>
+<li>candidatos fronteira;</li>
+<li>alguns exploradores.</li>
+</ul>
+<p>Na prática, isso reduziu bastante o custo por rodada sem colapsar a pressão seletiva.</p>
+<h3 id="7-persistencia-compacta-versionada">7. Persistência compacta versionada</h3>
+<p>O estado persistido usa formato compacto versionado:</p>
+<ul>
+<li><code>format = 3</code></li>
+</ul>
+<p>Compactações aplicadas:</p>
+<ul>
+<li>árvores em representação curta;</li>
+<li>famílias em listas compactas;</li>
+<li>organismos sem campos efêmeros redundantes;</li>
+<li><code>graveyard</code> reduzido;</li>
+<li><code>metrics_history</code> em arrays posicionais.</li>
+</ul>
+<h3 id="8-menos-overhead-no-encoder-json">8. Menos overhead no encoder JSON</h3>
+<p>As gravações usam:</p>
+<ul>
+<li><code>separators=(",", ":")</code></li>
+<li><code>check_circular=False</code></li>
+</ul>
+<h3 id="9-cadencia-configuravel-de-salvamento">9. Cadência configurável de salvamento</h3>
+<p>O estado completo não precisa mais ser salvo a cada rodada.</p>
+<p>Parâmetro:</p>
+<ul>
+<li><code>state_save_every</code></li>
+</ul>
+<p>Também seguem existindo:</p>
+<ul>
+<li>checkpoint periódico;</li>
+<li>flush final garantido.</li>
+</ul>
+<h2 id="resultado-observado-nesta-sessao">Resultado observado nesta sessão</h2>
+<h2 id="benchmark-de-throughput">Benchmark de throughput</h2>
+<p>Comando:</p>
+<pre><code class="language-bash">python examples/benchmark_runtime.py
+</code></pre>
+<p>Resultado observado no sandbox:</p>
+<h3 id="perfil-default">Perfil <code>default</code></h3>
+<ul>
+<li>famílias: <code>7</code></li>
+<li>tamanho da família: <code>11</code></li>
+<li>desafios por rodada: <code>3</code></li>
+<li>treino/teste: <code>8/16</code></li>
+<li>triagem: <code>2</code> desafios, <code>2</code> casos de treino, <code>4</code> de teste</li>
+<li>rescore completo por família: <code>top 4 + 1 explorador</code></li>
+</ul>
+<p>Resultado observado:</p>
+<ul>
+<li><strong>~94 rounds/s</strong></li>
+</ul>
+<h3 id="perfil-quality_reference">Perfil <code>quality_reference</code></h3>
+<ul>
+<li>famílias: <code>9</code></li>
+<li>tamanho da família: <code>15</code></li>
+<li>desafios por rodada: <code>3</code></li>
+<li>treino/teste: <code>8/16</code></li>
+<li>triagem menos agressiva: <code>3/6</code></li>
+<li>rescore completo por família: <code>top 6 + 1 explorador</code></li>
+</ul>
+<p>Resultado observado:</p>
+<ul>
+<li><strong>~55 rounds/s</strong></li>
+</ul>
+<h3 id="perfil-turbo">Perfil <code>turbo</code></h3>
+<ul>
+<li>famílias: <code>7</code></li>
+<li>tamanho da família: <code>10</code></li>
+<li>desafios por rodada: <code>2</code></li>
+<li>treino/teste: <code>6/10</code></li>
+<li>profundidade/nós menores</li>
+</ul>
+<p>Resultado observado:</p>
+<ul>
+<li><strong>~132–137 rounds/s</strong></li>
+</ul>
+<h2 id="comparacao-multi-seed-de-qualidade">Comparação multi-seed de qualidade</h2>
+<p>Comando:</p>
+<pre><code class="language-bash">python examples/benchmark_quality.py
+</code></pre>
+<p>Amostra usada nesta sessão:</p>
+<ul>
+<li>seeds: <code>101, 103, 107, 109, 113</code></li>
+<li>30 rodadas por seed</li>
+</ul>
+<h3 id="quality_reference"><code>quality_reference</code></h3>
+<ul>
+<li>throughput médio: <strong>~52.0 rounds/s</strong></li>
+<li><code>best_score_mean</code>: <strong>~2.95</strong></li>
+<li><code>best_exact_rate_mean</code>: <strong>~0.354</strong></li>
+<li><code>solved_by_best_mean</code>: <strong>~0.6</strong></li>
+<li><code>capability_signal_mean</code>: <strong>~3.154</strong></li>
+</ul>
+<h3 id="default"><code>default</code></h3>
+<ul>
+<li>throughput médio: <strong>~90.7 rounds/s</strong></li>
+<li><code>best_score_mean</code>: <strong>~3.62</strong></li>
+<li><code>best_exact_rate_mean</code>: <strong>~0.45</strong></li>
+<li><code>solved_by_best_mean</code>: <strong>~1.2</strong></li>
+<li><code>capability_signal_mean</code>: <strong>~3.25</strong></li>
+</ul>
+<h3 id="leitura-honesta">Leitura honesta</h3>
+<p>No conjunto observado nesta sessão, o perfil <code>default</code> bateu a meta de throughput e <strong>não degradou a qualidade média agregada</strong>; ao contrário, melhorou:</p>
+<ul>
+<li><code>best_score_mean</code></li>
+<li><code>best_exact_rate_mean</code></li>
+<li><code>solved_by_best_mean</code></li>
+<li><code>capability_signal_mean</code></li>
+</ul>
+<p>Houve pequena redução em <code>frontier_difficulty_mean</code> isolado, então a conclusão correta não é “ganho universal”, mas sim:</p>
+<blockquote>
+<p><strong>o perfil default atual oferece melhor compromisso velocidade/qualidade no benchmark multi-seed observado.</strong></p>
+</blockquote>
+<h2 id="reducao-do-tamanho-do-estado">Redução do tamanho do estado</h2>
+<p>Em uma amostra desta sessão:</p>
+<ul>
+<li>payload verboso: <strong>72.411 bytes</strong></li>
+<li>payload compacto: <strong>10.365 bytes</strong></li>
+<li>redução: <strong>85,69%</strong></li>
+</ul>
+<h2 id="configuracao-default-atual">Configuração default atual</h2>
+<p>Os defaults do projeto foram recalibrados para o alvo de ~89 rounds/s:</p>
+<ul>
+<li><code>family_count=7</code></li>
+<li><code>family_size=11</code></li>
+<li><code>challenges_per_round=3</code></li>
+<li><code>train_cases=8</code></li>
+<li><code>test_cases=16</code></li>
+<li><code>checkpoint_every=10</code></li>
+<li><code>state_save_every=10</code></li>
+<li><code>probe_challenges=2</code></li>
+<li><code>probe_train_cases=2</code></li>
+<li><code>probe_test_cases=4</code></li>
+<li><code>full_rescore_top_k=4</code></li>
+<li><code>full_rescore_random_k=1</code></li>
+</ul>
+<h2 id="como-rodar">Como rodar</h2>
+<h3 id="perfil-default_1">Perfil default</h3>
+<pre><code class="language-bash">python -m mycelium_accel run --seed 101 --state-dir .mycelium_state --rounds 100
+</code></pre>
+<h3 id="perfil-de-referencia-de-qualidade">Perfil de referência de qualidade</h3>
+<pre><code class="language-bash">python -m mycelium_accel run \
+  --seed 101 \
+  --state-dir .mycelium_state \
+  --rounds 100 \
+  --family-count 9 \
+  --family-size 15 \
+  --checkpoint-every 10 \
+  --state-save-every 10 \
+  --probe-train-cases 3 \
+  --probe-test-cases 6 \
+  --full-rescore-top-k 6 \
+  --full-rescore-random-k 1
+</code></pre>
+<h3 id="perfil-turbo_1">Perfil turbo</h3>
+<pre><code class="language-bash">python -m mycelium_accel run \
+  --seed 101 \
+  --state-dir .mycelium_state \
+  --rounds 100 \
+  --family-count 7 \
+  --family-size 10 \
+  --challenges-per-round 2 \
+  --train-cases 6 \
+  --test-cases 10 \
+  --max-program-depth 4 \
+  --max-program-nodes 31 \
+  --checkpoint-every 20 \
+  --state-save-every 10 \
+  --probe-train-cases 2 \
+  --probe-test-cases 4 \
+  --full-rescore-top-k 4 \
+  --full-rescore-random-k 1
+</code></pre>
+<h2 id="camada-nova-para-crescimento-composto">Camada nova para crescimento composto</h2>
+<p>Além do throughput, o projeto agora ganhou uma camada explícita para tentar reduzir a tendência linear de longo prazo:</p>
+<ul>
+<li><code>macro_staging</code> antes da promoção global;</li>
+<li>métricas de <code>transfer_gain</code> e <code>compression_gain</code>;</li>
+<li>desafios composicionais;</li>
+<li><code>frontier_archive</code> com janela recente de progresso;</li>
+<li>nichos comportamentais com entropia de diversidade;</li>
+<li>política de mutação um pouco mais rica, com <code>gene_splice</code>, injeção de macro e <code>shrink</code>.</li>
+</ul>
+<p>Esses itens não garantem crescimento exponencial por si só, mas criam mecanismos de <strong>acumulação composicional</strong> e de <strong>preservação de diversidade útil</strong>, que eram o principal gargalo arquitetural do protótipo anterior.</p>
+<h2 id="proximos-gargalos-provaveis">Próximos gargalos prováveis</h2>
+<ol>
+<li>promoção de macros ainda conservadora demais para alguns regimes;</li>
+<li>custo de scoring extra para staging/frontier;</li>
+<li>recompilação estrutural em cenários de alta diversidade;</li>
+<li>política de desafio composicional ainda simples;</li>
+<li>ausência de cache semântico entre desafios parecidos.</li>
+</ol>
+<h2 id="guarda-de-qualidade-para-auto-melhoria">Guarda de qualidade para auto melhoria</h2>
+<p>O projeto agora possui um modo <code>self-improve</code> com guarda anti-regressão.</p>
+<p>Ele não aplica tuning automaticamente sem validação. Antes de consolidar uma mudança, ele compara baseline e candidato em benchmark pareado multi-seed e pode ainda rodar a suíte de testes como trava final.</p>
+<p>Detalhes:</p>
+<ul>
+<li><code>docs/SELF_IMPROVEMENT.md</code></li>
+</ul>
+<h2 id="proximas-otimizacoes-candidatas">Próximas otimizações candidatas</h2>
+<ol>
+<li>formato binário opcional para estado quente;</li>
+<li>paralelização da avaliação por família/processo;</li>
+<li>profiles nativos no CLI (<code>default</code>, <code>quality</code>, <code>turbo</code>);</li>
+<li>checkpoints delta/incrementais;</li>
+<li>autotuning adaptativo dos parâmetros de triagem.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
