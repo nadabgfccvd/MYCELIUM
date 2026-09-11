@@ -42,10 +42,13 @@ def descriptor_from_signature(
     signature: Sequence[int],
     *,
     node_count: int,
-    cost_bins: int = 4,
-    scale_bins: int = 5,
 ) -> tuple[int, ...]:
-    """Project a behavior signature into a small discrete descriptor."""
+    """Project a behavior signature into a small discrete descriptor.
+
+    The bin edges are fixed (5 mean/slope levels, 4 curvature/parity levels,
+    5 cost levels); they are deliberately not caller-configurable so two
+    archives always share one descriptor grid.
+    """
     if not signature:
         return (0,)
     mean_val = sum(signature) / len(signature)

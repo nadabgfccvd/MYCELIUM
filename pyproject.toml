@@ -1,24 +1,56 @@
 [build-system]
-requires = ["setuptools>=68"]
+# >=77 parses the PEP 639 SPDX license expression used below; it supports
+# Python 3.9+ and this project requires 3.11+, so the floor is safe.
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mycelium-accel"
-version = "1.5.0"
+version = "1.5.1"
 description = "MYCELIUM-Accel: paired-statistics acceleration harness for arbitrary projects (no LLM, prime seeds, sandboxed)"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+# PEP 639 SPDX expression (setuptools>=77). The old `{ text = "MIT" }` table
+# and the "License ::" classifier are both deprecated and emit build warnings.
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
   { name = "Arena.ai Agent Mode" }
+]
+keywords = [
+  "benchmarking",
+  "statistics",
+  "paired-bootstrap",
+  "performance",
+  "optimization",
+  "reproducibility",
 ]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  # License is declared via the PEP 639 SPDX `license` expression above;
+  # the legacy "License ::" classifier is deprecated by setuptools.
   "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "Environment :: Console",
+  "Operating System :: OS Independent",
+  "Development Status :: 4 - Beta",
+  "Topic :: Software Development :: Testing",
   "Topic :: Software Development :: Code Generators",
+  "Topic :: Scientific/Engineering",
 ]
+# TODO(user): troque INSIRA-ORGAO pela organização real após o push (Fase 0),
+# consistente com mkdocs.yml.
+[project.urls]
+Homepage = "https://github.com/INSIRA-ORGAO/mycelium-accel"
+Documentation = "https://github.com/INSIRA-ORGAO/mycelium-accel/tree/main/docs"
+Repository = "https://github.com/INSIRA-ORGAO/mycelium-accel"
+Issues = "https://github.com/INSIRA-ORGAO/mycelium-accel/issues"
+Changelog = "https://github.com/INSIRA-ORGAO/mycelium-accel/blob/main/CHANGES.md"
 
 [project.optional-dependencies]
 # Q1.1: dev/test-only deps. Runtime stays stdlib-only (no install_requires).
@@ -33,6 +65,9 @@ dev = [
   "scipy==1.17.1",
   "numpy==2.3.5",
   "mypy==2.3.1",
+  # S2.6: dead-code reachability gate (tests/test_no_dead_code_s2.py); pinned
+  # because confidence scores can move between versions.
+  "vulture==2.16",
 ]
 
 [project.scripts]
@@ -42,10 +77,21 @@ mycelium = "mycelium_accel.__main__:main"
 [tool.setuptools.packages.find]
 include = ["mycelium_accel*"]
 
+# PEP 561: ship the py.typed marker so downstream mypy/pyright users consume
+# the inline type annotations from the installed wheel.
+[tool.setuptools.package-data]
+mycelium_accel = ["py.typed"]
+
 [tool.pytest.ini_options]
 markers = [
   "slow: real benchmark sweeps / servers (excluded from the inner loop; CI always runs all)",
 ]
+
+[tool.ruff]
+# docs/data/ holds verbatim third-party artifacts (portfolio pygments lexer
+# + patch, S2 Unidecode patch); tests/fixtures/ holds a byte-identical
+# pristine upstream source used for patch-reproduction — neither is our style.
+extend-exclude = ["docs/data", "tests/fixtures"]
 
 [tool.ruff.lint]
 # V3.2: minimal high-signal gate (real bugs, not style).

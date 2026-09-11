@@ -1,7 +1,11 @@
 [Desktop Entry]
 Type=Application
 Name=MYCELIUM Auto-evolve Control Center
-Comment=Open the professional MYCELIUM Auto-evolve interface
-Exec=python /home/user/mycelium-prototype/scripts/mycelium_ui_server.py
+Comment=Open the MYCELIUM Auto-evolve interface (relocatable; starts from this file's folder)
+# %k expands to this .desktop file's own location, so the entry works from any
+# checkout/clone without a machine-specific absolute home path (the pre-rename
+# Exec hardcoded the repository's old absolute location). The sibling .sh cd's
+# to its own directory before starting the server.
+Exec=sh -c "exec \"$(dirname \"%k\")/OPEN_MYCELIUM_AUTO_EVOLVE_UI.sh\""
 Terminal=false
 Categories=Development;

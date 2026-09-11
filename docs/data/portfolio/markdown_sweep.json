@@ -1,0 +1,455 @@
+{
+  "comparisons": [
+    {
+      "baseline": "baseline",
+      "candidate": "pythonoptimize-1",
+      "ci_high": 0.007207466559812037,
+      "ci_low": -0.10032727516023439,
+      "confidence": 0.95,
+      "deltas": [
+        -0.03726181600050049,
+        0.01832478719989017,
+        -0.06823518279998098,
+        -0.13204645900023015,
+        0.031220039999971028
+      ],
+      "direction": -1,
+      "effect_dz": -0.5648741077232627,
+      "mean_delta": -0.03759972612017008,
+      "median_delta": -0.03726181600050049,
+      "metric": "seconds",
+      "n_pairs": 5,
+      "p_value": 0.8818118188181182,
+      "p_value_corrected": 0.8818118188181182,
+      "prob_superior": 0.4
+    }
+  ],
+  "lower_is_better": true,
+  "metric": "seconds",
+  "started_at": 1789083304.6736891,
+  "summaries": [
+    {
+      "candidate": "baseline",
+      "flaky": false,
+      "maximum": 1.0548416940000607,
+      "mean": 0.9140151451998827,
+      "median": 0.8932269919996543,
+      "minimum": 0.7946572599994397,
+      "runs": [
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0946928849998585,
+          "seed": 101,
+          "value": 1.0439930660004393
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0708057799993185,
+          "seed": 101,
+          "value": 1.0180951699994694
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.940166935999514,
+          "seed": 101,
+          "value": 0.8932269919996543
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8700142249999772,
+          "seed": 101,
+          "value": 0.8230102789993907
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9404075830007059,
+          "seed": 101,
+          "value": 0.8930612249996557
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9896569669999735,
+          "seed": 103,
+          "value": 0.9379691120002462
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.046400442999584,
+          "seed": 103,
+          "value": 0.9931580929996926
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.040642089999892,
+          "seed": 103,
+          "value": 0.9892204139996466
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0669176809997225,
+          "seed": 103,
+          "value": 1.0080183979998765
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.113798639000379,
+          "seed": 103,
+          "value": 1.0548416940000607
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.876120599999922,
+          "seed": 107,
+          "value": 0.830451840999558
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8788431339999079,
+          "seed": 107,
+          "value": 0.8359325199999148
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9654991979996339,
+          "seed": 107,
+          "value": 0.9181795200001943
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0600108919998092,
+          "seed": 107,
+          "value": 1.0075494350003282
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0666900209998857,
+          "seed": 107,
+          "value": 1.0143241149999085
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0415203170005043,
+          "seed": 109,
+          "value": 0.9882789839994075
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9387940340002388,
+          "seed": 109,
+          "value": 0.888067764999505
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8401711829992564,
+          "seed": 109,
+          "value": 0.7946572599994397
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8655452660004812,
+          "seed": 109,
+          "value": 0.8195732169997427
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8560623759994996,
+          "seed": 109,
+          "value": 0.8097153600001548
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8535640109994347,
+          "seed": 113,
+          "value": 0.807007686000361
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.871480502999475,
+          "seed": 113,
+          "value": 0.8268162909998864
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0441963449993636,
+          "seed": 113,
+          "value": 0.9958567710000352
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9061231539999426,
+          "seed": 113,
+          "value": 0.8565314450006554
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.847252698000375,
+          "seed": 113,
+          "value": 0.8028419769998436
+        }
+      ],
+      "stddev": 0.08934906666099598
+    },
+    {
+      "candidate": "pythonoptimize-1",
+      "flaky": false,
+      "maximum": 1.024771131000307,
+      "mean": 0.9516148713200527,
+      "median": 0.9848461910005426,
+      "minimum": 0.793082737000077,
+      "runs": [
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0389437209996686,
+          "seed": 101,
+          "value": 0.9870080650007367
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0493618430000424,
+          "seed": 101,
+          "value": 0.9975688130007256
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0639182909999363,
+          "seed": 101,
+          "value": 1.013441678000163
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.038557562999813,
+          "seed": 101,
+          "value": 0.9859258129999944
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9218977040000027,
+          "seed": 101,
+          "value": 0.8737514429994917
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0383286659998703,
+          "seed": 103,
+          "value": 0.987981411999499
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.037248255999657,
+          "seed": 103,
+          "value": 0.9848461910005426
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0415134340000805,
+          "seed": 103,
+          "value": 0.9884781000000658
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0034686239996518,
+          "seed": 103,
+          "value": 0.9517256190001717
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0274563409993789,
+          "seed": 103,
+          "value": 0.9785524529997929
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0004098090003026,
+          "seed": 107,
+          "value": 0.9509560199994667
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0420962150001287,
+          "seed": 107,
+          "value": 0.9902741710002374
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0463455629997043,
+          "seed": 107,
+          "value": 0.9953348600001846
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.049372938000488,
+          "seed": 107,
+          "value": 0.9977169379999395
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0660679299999174,
+          "seed": 107,
+          "value": 1.0133313559999806
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0328328109999347,
+          "seed": 109,
+          "value": 0.9811116569999285
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.031955153999661,
+          "seed": 109,
+          "value": 0.9813283599996794
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0239986429996861,
+          "seed": 109,
+          "value": 0.9732882309999695
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.0508636989998195,
+          "seed": 109,
+          "value": 1.0000255019995166
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 1.077029054000377,
+          "seed": 109,
+          "value": 1.024771131000307
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.9149325380003575,
+          "seed": 113,
+          "value": 0.8689344929998697
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8823502850000295,
+          "seed": 113,
+          "value": 0.8384281810003813
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8766096589997687,
+          "seed": 113,
+          "value": 0.8331719550005801
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.8415404840006886,
+          "seed": 113,
+          "value": 0.7993366040000183
+        },
+        {
+          "candidate": "pythonoptimize-1",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.835306097999819,
+          "seed": 113,
+          "value": 0.793082737000077
+        }
+      ],
+      "stddev": 0.07076790013445063
+    }
+  ],
+  "target": "/tmp/mycelium_p7/markdown"
+}

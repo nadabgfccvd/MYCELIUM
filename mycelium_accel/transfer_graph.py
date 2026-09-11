@@ -88,9 +88,6 @@ class TransferGraph:
         span = min(window_rounds, max(1, self.rounds))
         return len(recent) / span
 
-    def edge_count(self) -> int:
-        return len(self.edges)
-
     def to_dict(self) -> dict[str, Any]:
         return {
             "edges": [edge.to_dict() for edge in self.edges.values()],

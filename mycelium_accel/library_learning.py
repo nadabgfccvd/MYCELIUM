@@ -55,10 +55,6 @@ class LearnedLibrary:
         payload["abstractions"] = [item.to_dict() for item in self.abstractions]
         return payload
 
-    def render_map(self, prefix: str = "lib") -> dict[str, Node]:
-        return {item.name: _unrender(item.render) for item in self.abstractions}
-
-
 def _unrender(render: str) -> Node:
     """Rebuild a Node from a stored render via the tree registry trick.
 
@@ -208,8 +204,8 @@ def learn_library(
                 best_subtree = subtree
         if best_render is None or best_gain <= 0 or best_subtree is None:
             break
-        # Q0: memoize the adopted subtree so promote_to_staging/render_map work
-        # in a fresh process (no dependence on ambient _RENDER_CACHE state).
+        # Q0: memoize the adopted subtree so promote_to_staging works in a
+        # fresh process (no dependence on ambient _RENDER_CACHE state).
         _memo(best_subtree)
         name = f"{name_prefix}_{index}"
         used_names.add(name)

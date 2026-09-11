@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-p5-natsort-pythonoptimize",
+  "kind": "shell",
+  "test_command": "python digest_gate_pylib_s2.py natsort",
+  "benchmark_command": "python bench_natsort.py",
+  "metrics_parser": "json_stdout",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "timeout_seconds": 180.0,
+  "manifest_version": "1.0",
+  "variants": [
+    {"name": "pythonoptimize-1", "mode": "env", "env": {"PYTHONOPTIMIZE": "1"},
+     "description": "P5: skip assert/debug bytecode (-O) for natsort; honest no-effect expected (noise floor)"}
+  ]
+}

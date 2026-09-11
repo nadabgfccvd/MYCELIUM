@@ -207,6 +207,40 @@ def _median(values: list[float]) -> float:
     return (ordered[mid - 1] + ordered[mid]) / 2.0
 
 
+def _as_metric_float(value: Any, parser: str) -> float:
+    """Coerce a captured metric to float; a bad capture fails the run, not the
+    sweep (Ciclo 4/S2: a benchmark printing ``"seconds": "fast"`` used to escape
+    parse_metrics as an uncaught ValueError and traceback the whole sweep)."""
+    try:
+        return float(value)
+    except (TypeError, ValueError) as exc:
+        raise RuntimeError(
+            f"{parser} parser captured a non-numeric metric {value!r}") from exc
+
+
+def _parse_regex_metric(
+    result: TargetRunResult, pattern_text: str, metric_name: str,
+) -> dict[str, float]:
+    """regex:<pattern> metric extraction; every failure mode is a RuntimeError
+    so a bad/ungrouped pattern fails the run instead of tracebacking the sweep."""
+    try:
+        pattern = re.compile(pattern_text)
+    except re.error as exc:
+        raise RuntimeError(f"invalid regex metric parser: {pattern_text!r} ({exc})") from exc
+    match = pattern.search(result.stdout_tail + "\n" + result.stderr_tail)
+    if not match:
+        raise RuntimeError(f"regex parser did not match output: {pattern.pattern!r}")
+    if match.groupdict():
+        key = metric_name if metric_name in match.groupdict() else next(iter(match.groupdict()))
+        return {metric_name: _as_metric_float(match.group(key), "regex")}
+    try:
+        captured = match.group(1)
+    except IndexError as exc:  # pattern matched but has no capture group
+        raise RuntimeError(
+            f"regex parser {pattern.pattern!r} has no capture group for the metric") from exc
+    return {metric_name: _as_metric_float(captured, "regex")}
+
+
 def parse_metrics(result: TargetRunResult, parser: str, metric_name: str) -> dict[str, float]:
     """Extract the metric from a benchmark run according to the parser mode."""
     if parser == "time":
@@ -221,17 +255,10 @@ def parse_metrics(result: TargetRunResult, parser: str, metric_name: str) -> dic
             except json.JSONDecodeError:
                 continue
             if metric_name in payload:
-                return {metric_name: float(payload[metric_name])}
+                return {metric_name: _as_metric_float(payload[metric_name], "json_stdout")}
         raise RuntimeError("json_stdout parser found no JSON line with the requested metric.")
     if parser.startswith("regex:"):
-        pattern = re.compile(parser[len("regex:"):])
-        match = pattern.search(result.stdout_tail + "\n" + result.stderr_tail)
-        if not match:
-            raise RuntimeError(f"regex parser did not match output: {pattern.pattern!r}")
-        if match.groupdict():
-            key = metric_name if metric_name in match.groupdict() else next(iter(match.groupdict()))
-            return {metric_name: float(match.group(key))}
-        return {metric_name: float(match.group(1))}
+        return _parse_regex_metric(result, parser[len("regex:"):], metric_name)
     raise ValueError(f"Unknown metrics parser: {parser}")
 
 
@@ -274,7 +301,7 @@ class BenchmarkExecutor:
     def _run_once(
         self,
         candidate: str,
-        seed_index: int,
+        _seed_index: int,  # positional for callers; the timed seed arrives via ``seed``
         *,
         seed: int,
         warmup: bool,
@@ -390,20 +417,13 @@ class BenchmarkExecutor:
         return path
 
     def export_csv(self, sweep: BenchmarkSweep) -> Path:
-        # C4: atomic + byte-identical (StringIO newline="" keeps csv's \r\n;
-        # _atomic_write_bytes skips text-mode translation on Windows).
-        import io as _io
-
-        from .sweep_cache import _atomic_write_bytes
-
-        buf = _io.StringIO(newline="")
-        writer = csv.writer(buf)
-        writer.writerow(["candidate", "seed", "metric", "value", "seconds", "ok"])
-        for summary in sweep.summaries:
-            for run in summary.runs:
-                writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
         path = self.export_dir / f"{self._stem(sweep)}.csv"
-        _atomic_write_bytes(path, buf.getvalue().encode("utf-8"))
+        with path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.writer(handle)
+            writer.writerow(["candidate", "seed", "metric", "value", "seconds", "ok"])
+            for summary in sweep.summaries:
+                for run in summary.runs:
+                    writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
         return path
 
     def export_markdown(self, sweep: BenchmarkSweep) -> Path:
@@ -432,17 +452,14 @@ class BenchmarkExecutor:
                     f"{comparison['ci_low']:.6g} | {comparison['ci_high']:.6g} | "
                     f"{comparison['p_value']:.4f} | {corrected_str} | {comparison['effect_dz']:.3f} |"
                 )
-        from .sweep_cache import _atomic_write_text as _atomic_md  # C4: atomic
-
-        _atomic_md(path, "\n".join(lines) + "\n")
+        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
         return path
 
     def export_html(self, sweep: BenchmarkSweep, *, verdict: str = "") -> Path:
         from .report_html import html_from_sweep
-        from .sweep_cache import _atomic_write_text as _atomic_html  # C4: atomic
 
         path = self.export_dir / f"{self._stem(sweep)}.html"
-        _atomic_html(path, html_from_sweep(sweep.to_dict(), verdict=verdict))
+        path.write_text(html_from_sweep(sweep.to_dict(), verdict=verdict), encoding="utf-8")
         return path
 
 

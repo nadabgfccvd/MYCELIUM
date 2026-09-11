@@ -1,0 +1,48 @@
+{
+  "results": [
+    {
+      "command": "python -c \"\nimport sys; sys.path.insert(0, '/tmp/portfolio/pygments-src')\nfrom pygments import highlight\nfrom pygments.lexers import PythonLexer, SqlLexer, HtmlLexer, JavascriptLexer\nfrom pygments.formatters import HtmlFormatter\nmix = [(open(p, encoding='utf-8').read(), L) for p, L in [('bigfile.py', PythonLexer), ('query.sql', SqlLexer), ('sample.html', HtmlLexer), ('sample.js', JavascriptLexer)]]\nfor src, lexer in mix: highlight(src, lexer(), HtmlFormatter())\n\"",
+      "mean": 0.7065287603599999,
+      "stddev": 0.06043173598563892,
+      "median": 0.68372408296,
+      "user": 0.6913687266666667,
+      "system": 0.014930526666666666,
+      "min": 0.67070263896,
+      "max": 0.87486168296,
+      "times": [
+        0.69208132396,
+        0.69487050796,
+        0.68372408296,
+        0.67937833296,
+        0.67090882196,
+        0.67862363596,
+        0.67415939896,
+        0.67070263896,
+        0.67397159096,
+        0.69760188696,
+        0.68316405496,
+        0.70046832196,
+        0.69462682196,
+        0.82878830196,
+        0.87486168296
+      ],
+      "exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

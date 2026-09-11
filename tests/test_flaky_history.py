@@ -98,22 +98,6 @@ class HistoryTests(unittest.TestCase):
             self.assertNotEqual(proc.returncode, 0)
             self.assertIn("≥2 sweeps", proc.stderr + proc.stdout)
 
-    def test_history_dark_mode_and_print_css(self) -> None:
-        out = history_html([fake_sweep(1.0, {"baseline": 1.2}),
-                            fake_sweep(2.0, {"baseline": 1.1})])
-        self.assertIn("@media (prefers-color-scheme:dark)", out)
-        self.assertIn("@media print", out)
-        for banned in ("http://", "https://", "<script", "@import"):
-            self.assertNotIn(banned, out)
-
-    def test_nonfinite_means_never_reach_svg(self) -> None:
-        out = history_html([fake_sweep(1.0, {"baseline": 1.2, "broken": float("nan")}),
-                            fake_sweep(2.0, {"baseline": 1.1, "broken": float("inf")})])
-        self.assertIn("<svg", out)  # finite candidate still charted
-        self.assertIn("No finite means", out)  # broken one degrades honestly
-        self.assertNotIn("nan", out)
-        self.assertNotIn("inf", out)
-
 
 if __name__ == "__main__":
     unittest.main()

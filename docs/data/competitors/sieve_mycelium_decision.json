@@ -1,0 +1,40 @@
+{
+  "target": "/tmp/mycelium_p9/mycelium_target",
+  "baseline": "baseline",
+  "best_candidate": "bulk-slice-sieve",
+  "applied": false,
+  "decision_reasons": [
+    "bulk-slice-sieve accepted: CI lower bound 0.0695743 > 0 with corrected p <= 0.05."
+  ],
+  "sweep_path": "/tmp/mycelium_p9/mycelium_target/.mycelium_benchmarks/sweep-1789084832371363-28568.json",
+  "comparisons": [
+    {
+      "metric": "seconds",
+      "n_pairs": 5,
+      "mean_delta": 0.07241413226674923,
+      "median_delta": 0.0711677783331955,
+      "ci_low": 0.06957427226637568,
+      "ci_high": 0.07627871593364641,
+      "confidence": 0.95,
+      "p_value": 0.030996900309969003,
+      "p_value_corrected": 0.030996900309969003,
+      "effect_dz": 16.907506864062878,
+      "prob_superior": 1.0,
+      "direction": -1,
+      "deltas": [
+        0.07116294399929757,
+        0.07370769366692306,
+        0.0711677783331955,
+        0.07884098066733713,
+        0.06719126466699285
+      ],
+      "candidate": "bulk-slice-sieve",
+      "baseline": "baseline"
+    }
+  ],
+  "seconds": 16.172261642000194,
+  "raced_candidates": [],
+  "regression": false,
+  "cached": false,
+  "interrupted": false
+}

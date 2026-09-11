@@ -4,10 +4,20 @@ on:
   push:
   pull_request:
 
+# Least privilege: CI never writes to the repo or issues tokens.
+permissions:
+  contents: read
+
+# Cancel superseded runs on the same ref (rapid pushes / PR updates).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # W3.1: fast signal in ~1 min (same loop as local dev).
   fast:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,6 +35,7 @@ jobs:
   # W3.2: docs break releases — verify at push time, not release day.
   docs:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,6 +46,7 @@ jobs:
 
   full:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:

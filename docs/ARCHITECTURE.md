@@ -256,26 +256,6 @@ Esse modo ainda não reescreve arbitrariamente o engine. Ele foca primeiro em um
 - variante ativa interna;
 - rollback imediato se o guarda detectar regressão.
 
-### Orçamento computacional da estatística (C3, medido)
-
-Custo por comparação pareada em CPython 3.11.2 / 2-core sandbox (BCa com
-2000 bootstraps = default de `compare_paired_metric`; sign-flip exato em
-7..16 pares, Monte Carlo fora disso):
-
-| n | BCa | sign-flip | compare total |
-|---|---|---|---|
-| 1 | 0.00 ms (degenerado) | 1.48 ms (MC) | 1.49 ms |
-| 3 | 1.59 ms | 2.78 ms (MC) | 4.30 ms |
-| 7 | 3.16 ms | 0.08 ms (exato, 2^7) | 3.25 ms |
-| 16 | 7.52 ms | 69.97 ms (exato, 2^16 — pior caso limitado) | 78.26 ms |
-| 17 | 7.83 ms | 11.12 ms (MC) | 19.34 ms |
-| 32 | 14.99 ms | 19.72 ms (MC) | 35.61 ms |
-
-Leitura: no n operacional (7 seeds) a decisão custa ~3 ms; o pior caso
-absoluto (n=16, enumeração exata) custa <80 ms e é limitado por construção
-(n>16 volta ao MC). A estatística é ~0.2% do sweep — micro-otimizar aqui
-rende centésimos (morto em V2.1, re-morto no C2 com estes números).
-
 ## 10. Honestidade sobre crescimento
 
 O engine nunca afirma crescimento exponencial por vontade. Ele ajusta duas curvas sobre o histórico de `capability_signal`:
@@ -304,30 +284,3 @@ E classifica o regime observado como:
 - `insufficient_data`
 
 Isso não prova ciência forte ainda, mas evita autoengano básico.
-
-## 11. UI local e plataformas (limitação documentada, não escondida)
-
-`scripts/mycelium_ui_server.py` é Unix-only: ele importa `resource` para aplicar
-o teto de RAM (`RLIMIT_AS`/`RLIMIT_DATA`) nos filhos que lança. No Windows não
-há `resource`, então o smoke test (`tests/test_ui_smoke.py`) é pulado lá — de
-propósito, sem falsa suíte verde. O que vale em todas as plataformas:
-
-- boot sem DNS reverso: `UIServer.server_bind` preenche `server_name` com o host
-  numérico em vez de chamar `socket.getfqdn()`. O `HTTPServer` do CPython faz
-  esse PTR+A lookup *antes* do `listen()`, então um resolver lento ou ausente
-  (runner macOS, notebook offline) deixa a porta bindada mas sem aceitar por
-  segundos — o cliente só vê timeout. Foi a causa vermelha do CI-4 no macOS.
-- o smoke test escolhe porta pelo kernel (`MYCELIUM_UI_PORT=0`) e lê a porta
-  real do banner do próprio servidor; sem corrida por "porta livre".
-- deadline escalado por ambiente (`CI` ⇒ boot/HTTP até 120 s, senão 30 s) e
-  stdout/stderr do filho drenados em threads: pipe cheio não trava o filho, e a
-  log do servidor vai para dentro da mensagem de falha.
-
-Escrita de cache sob concorrência (Q2.5/CI-5): `store` escreve em tmp+rename,
-com retentativa exponencial limitada por `REPLACE_BUDGET_SECONDS`. No Windows um
-rename sobre um arquivo aberto por outro thread é recusado (`PermissionError`;
-sem `FILE_SHARE_DELETE`, e a varredura do antivírus estende a janela). Depois do
-orçamento esgotado, o refresh é **degradado para miss** quando já existe uma
-entrada válida — nunca metades, nunca crash de corrida. Falha real de I/O
-(ENOSPC, permissão posix) e qualquer export (`sweep-*.json`) continuam estourando:
-export é o registro, cache é memoização.

@@ -24,7 +24,9 @@ def _row(seed: int, **overrides):
     return row
 
 
-def _snapshot(seeds, row_factory, **mean_overrides):
+def _snapshot(seeds, row_factory):
+    # Build a BenchmarkSnapshot from per-seed rows; means are derived from the
+    # rows themselves (no caller-supplied mean overrides are needed).
     per_seed = [row_factory(seed) for seed in seeds]
     means = {
         key: sum(row[key] for row in per_seed) / len(per_seed)

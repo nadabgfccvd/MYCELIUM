@@ -45,15 +45,6 @@ class AuditLog:
         )
         return path
 
-    def available_checkpoints(self) -> list[Path]:
-        return sorted(
-            [
-                *self.checkpoint_dir.glob("round-*.json"),
-                *self.checkpoint_dir.glob("round-*.pkl"),
-            ]
-        )
-
-
 def checkpoint_file(checkpoint_dir: Path, round_index: int, backend: str) -> Path:
     if backend not in PAYLOAD_BACKENDS:
         raise ValueError(f"Unsupported checkpoint backend: {backend}")

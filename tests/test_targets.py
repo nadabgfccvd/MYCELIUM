@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import tempfile
+import unittest.mock
 import pytest
 import unittest
 from pathlib import Path
@@ -146,3 +147,151 @@ class EndToEndTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DefaultManifestTests(unittest.TestCase):
+    """Ciclo 2 (Q): node/cargo/cmake default_manifest — 31-47% covered before.
+
+    Each branch is pinned: missing toolchain, missing markers, malformed
+    manifests, command priority. A regression in auto-detection now fails
+    here instead of surprising a fresh `accelerate init` user.
+    """
+
+    def _root(self, tmp: str, name: str = "proj") -> Path:
+        root = Path(tmp) / name
+        root.mkdir(parents=True)
+        return root
+
+    # -- Node ------------------------------------------------------------
+
+    def test_node_bare_manifest_without_package_json(self) -> None:
+        from mycelium_accel.targets.node_target import NodeTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value="/fake/npm"
+        ):
+            manifest = NodeTarget.default_manifest(self._root(tmp))
+        self.assertEqual(manifest.kind, "node")
+        self.assertEqual(manifest.name, "proj")
+        self.assertIsNone(manifest.build_command)
+        self.assertIsNone(manifest.test_command)
+        self.assertIsNone(manifest.benchmark_command)
+
+    def test_node_manifest_reads_scripts(self) -> None:
+        from mycelium_accel.targets.node_target import NodeTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value="/fake/npm"
+        ):
+            root = self._root(tmp)
+            (root / "package.json").write_text(
+                json.dumps({"scripts": {"build": "tsc", "test": "jest", "bench": "node bench.js"}}),
+                encoding="utf-8",
+            )
+            manifest = NodeTarget.default_manifest(root)
+        self.assertEqual(manifest.build_command, "npm run build")
+        self.assertEqual(manifest.test_command, "npm test --silent")
+        self.assertEqual(manifest.benchmark_command, "npm run bench")
+
+    def test_node_bench_alias_and_missing_npm(self) -> None:
+        from mycelium_accel.targets.node_target import NodeTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value="/fake/npm"
+        ):
+            root = self._root(tmp)
+            (root / "package.json").write_text(
+                json.dumps({"scripts": {"benchmark": "node bench.js"}}), encoding="utf-8"
+            )
+            manifest = NodeTarget.default_manifest(root)
+        self.assertEqual(manifest.benchmark_command, "npm run benchmark")
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value=None
+        ):
+            root = self._root(tmp)
+            (root / "package.json").write_text(
+                json.dumps({"scripts": {"build": "tsc"}}), encoding="utf-8"
+            )
+            manifest = NodeTarget.default_manifest(root)
+        self.assertIsNone(manifest.build_command)
+
+    def test_node_malformed_package_json_is_bare(self) -> None:
+        from mycelium_accel.targets.node_target import NodeTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value="/fake/npm"
+        ):
+            root = self._root(tmp)
+            (root / "package.json").write_text("{not json", encoding="utf-8")
+            manifest = NodeTarget.default_manifest(root)
+        self.assertIsNone(manifest.build_command)
+        self.assertIsNone(manifest.test_command)
+
+    # -- Cargo -----------------------------------------------------------
+
+    def test_cargo_bare_manifest_without_cargo(self) -> None:
+        from mycelium_accel.targets.cargo_target import CargoTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value=None
+        ):
+            manifest = CargoTarget.default_manifest(self._root(tmp))
+        self.assertEqual(manifest.kind, "cargo")
+        self.assertIsNone(manifest.build_command)
+        self.assertIsNone(manifest.test_command)
+        self.assertIsNone(manifest.benchmark_command)
+
+    def test_cargo_manifest_with_and_without_benches(self) -> None:
+        from mycelium_accel.targets.cargo_target import CargoTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value="/fake/cargo"
+        ):
+            root = self._root(tmp)
+            manifest = CargoTarget.default_manifest(root)
+            self.assertEqual(manifest.build_command, "cargo build --release")
+            self.assertEqual(manifest.test_command, "cargo test --release")
+            self.assertIsNone(manifest.benchmark_command)
+            self.assertIsNone(manifest.clean_command)
+            self.assertEqual(manifest.timeout_seconds, 600.0)
+
+            (root / "benches").mkdir()
+            manifest = CargoTarget.default_manifest(root)
+            self.assertEqual(manifest.benchmark_command, "cargo bench")
+
+    # -- CMake -----------------------------------------------------------
+
+    def test_cmake_bare_manifest_without_cmake(self) -> None:
+        from mycelium_accel.targets.cmake_target import CmakeTarget
+
+        with tempfile.TemporaryDirectory() as tmp, unittest.mock.patch(
+            "shutil.which", return_value=None
+        ):
+            manifest = CmakeTarget.default_manifest(self._root(tmp))
+        self.assertEqual(manifest.kind, "cmake")
+        self.assertIsNone(manifest.build_command)
+
+    def test_cmake_manifest_commands(self) -> None:
+        from mycelium_accel.targets.cmake_target import CmakeTarget
+
+        def which_cmake_only(name: str) -> str | None:
+            return "/fake/cmake" if name == "cmake" else None
+
+        def which_both(name: str) -> str | None:
+            return f"/fake/{name}" if name in ("cmake", "ctest") else None
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._root(tmp)
+            with unittest.mock.patch("shutil.which", side_effect=which_cmake_only):
+                manifest = CmakeTarget.default_manifest(root)
+            self.assertEqual(
+                manifest.build_command,
+                "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release",
+            )
+            self.assertIsNone(manifest.test_command)  # ctest absent
+            self.assertEqual(manifest.timeout_seconds, 600.0)
+
+            with unittest.mock.patch("shutil.which", side_effect=which_both):
+                manifest = CmakeTarget.default_manifest(root)
+            self.assertEqual(manifest.test_command, "ctest --test-dir build --output-on-failure")

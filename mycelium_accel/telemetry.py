@@ -14,59 +14,18 @@ Design rules (project style):
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 from typing import Any
-from collections.abc import Iterable, Sequence
+from collections.abc import Sequence
 from datetime import UTC
 
 
 TELEMETRY_DIRNAME = "telemetry"
 METRICS_FILENAME = "metrics.jsonl"
-# C7: rotate the JSONL log past ~1 MB so 10k-round runs don't build one giant
-# file; readers transparently merge all parts (oldest → newest).
-TELEMETRY_ROTATE_BYTES = 1_000_000
-
-# Test seam (mirrors sweep_cache): rotation failure must be injectable.
-_replace = os.replace
 
 
 def telemetry_path(state_dir: str | Path) -> Path:
     return Path(state_dir) / TELEMETRY_DIRNAME / METRICS_FILENAME
-
-
-def _telemetry_parts(state_dir: str | Path) -> list[Path]:
-    """All metrics parts oldest → newest (rotated stamps sort before live)."""
-    directory = Path(state_dir) / TELEMETRY_DIRNAME
-    if not directory.is_dir():
-        return []
-    try:
-        parts = [p for p in directory.glob("metrics*.jsonl") if p.is_file()]
-    except OSError:
-        return []
-    return sorted(parts, key=lambda p: p.name)
-
-
-def _maybe_rotate(path: Path) -> None:
-    """Best-effort size rotation; never raises, never loses the live log."""
-    from datetime import datetime
-
-    try:
-        if path.stat().st_size < TELEMETRY_ROTATE_BYTES:
-            return
-        stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
-        dest = path.with_name(f"metrics-{stamp}.jsonl")
-        if dest.exists():  # microsecond collision (paranoid branch)
-            for i in range(2, 1000):
-                alt = path.with_name(f"metrics-{stamp}-{i}.jsonl")
-                if not alt.exists():
-                    dest = alt
-                    break
-            else:
-                return
-        _replace(path, dest)
-    except OSError:
-        pass  # rotation failed: the file just keeps growing. Runs never break.
 
 
 def append_metric(state_dir: str | Path, metric: dict[str, Any]) -> bool:
@@ -79,7 +38,6 @@ def append_metric(state_dir: str | Path, metric: dict[str, Any]) -> bool:
     try:
         path = telemetry_path(state_dir)
         path.parent.mkdir(parents=True, exist_ok=True)
-        _maybe_rotate(path)
         with path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(metric, default=str) + "\n")
         return True
@@ -99,30 +57,29 @@ def read_metrics(  # noqa: C901 — Q3.2: metrics-parser dispatch.
         limit: max number of most-recent entries to return (None = all).
         from_round: only return entries with ``round`` >= this value.
     """
-    parts = _telemetry_parts(state_dir)  # C7: rotated + live, oldest first
-    if not parts:
+    path = telemetry_path(state_dir)
+    if not path.exists():
         return []
     entries: list[dict[str, Any]] = []
     try:
-        for part in parts:
-            with part.open("r", encoding="utf-8") as handle:
-                for line in handle:
-                    line = line.strip()
-                    if not line:
-                        continue
+        with path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    payload = json.loads(line)
+                except json.JSONDecodeError:
+                    continue  # crash-safe tail: ignore partial last line
+                if not isinstance(payload, dict):
+                    continue
+                if from_round is not None:
                     try:
-                        payload = json.loads(line)
-                    except json.JSONDecodeError:
-                        continue  # crash-safe tail: ignore partial last line
-                    if not isinstance(payload, dict):
-                        continue
-                    if from_round is not None:
-                        try:
-                            if int(payload.get("round", -1)) < from_round:
-                                continue
-                        except (TypeError, ValueError):
+                        if int(payload.get("round", -1)) < from_round:
                             continue
-                    entries.append(payload)
+                    except (TypeError, ValueError):
+                        continue
+                entries.append(payload)
     except OSError:
         return entries
     if limit is not None and limit >= 0:
@@ -132,14 +89,14 @@ def read_metrics(  # noqa: C901 — Q3.2: metrics-parser dispatch.
 
 def metrics_count(state_dir: str | Path) -> int:
     """Count durable entries without parsing them fully (fast path)."""
-    total = 0
-    for part in _telemetry_parts(state_dir):  # C7: all parts
-        try:
-            with part.open("r", encoding="utf-8") as handle:
-                total += sum(1 for line in handle if line.strip())
-        except OSError:
-            continue
-    return total
+    path = telemetry_path(state_dir)
+    if not path.exists():
+        return 0
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            return sum(1 for line in handle if line.strip())
+    except OSError:
+        return 0
 
 
 def full_history(
@@ -161,17 +118,6 @@ def full_history(
     if len(durable) >= len(memory):
         return durable
     return memory
-
-
-def iter_capability(values: Iterable[dict[str, Any]]) -> list[float]:
-    """Extract capability_signal series, tolerating missing keys."""
-    series: list[float] = []
-    for item in values:
-        try:
-            series.append(float(item.get("capability_signal", 0.0)))
-        except (TypeError, ValueError):
-            series.append(0.0)
-    return series
 
 
 # -- provenance (Fase 1.1): ambient artifacts must say where they came from --

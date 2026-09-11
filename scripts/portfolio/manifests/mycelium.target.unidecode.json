@@ -1,0 +1,18 @@
+{
+  "name": "portfolio-p4-unidecode-str-translate",
+  "kind": "shell",
+  "test_command": "python digest_gate_unidecode.py",
+  "benchmark_command": "python bench_unidecode.py",
+  "metrics_parser": "json_stdout",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "timeout_seconds": 180.0,
+  "manifest_version": "1.0",
+  "variants": [
+    {"name": "str-translate-fastpath", "mode": "patch",
+     "files": {"unidecode/__init__.py": "variant_init_patched.py"},
+     "description": "P4: str.translate one-shot table for errors='ignore' transliteration; fallback loop for other policies and surrogates (proven identical: digest gate + upstream 62-test suite)"}
+  ]
+}

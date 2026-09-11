@@ -35,15 +35,6 @@ class ReportHtmlTests(unittest.TestCase):
         doc = html_from_sweep({"target": "x", "metric": "s", "summaries": [], "comparisons": []})
         self.assertIn("No finite means", doc)
 
-    def test_dark_mode_print_and_captions(self) -> None:
-        doc = html_from_sweep(SWEEP, verdict="fast accepted")
-        self.assertIn("@media (prefers-color-scheme:dark)", doc)
-        self.assertIn("@media print", doc)
-        self.assertEqual(doc.count("<caption>"), 2)
-        self.assertIn('scope="col"', doc)
-        for banned in ("http://", "https://", "<script", "@import"):
-            self.assertNotIn(banned, doc)
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -280,7 +280,7 @@ def main() -> None:
     parser.add_argument("--report", default=None)
     parser.add_argument("--state-dir", default=None)
     parser.add_argument("--start-round", type=int, default=0)
-    parser.add_argument("--output-dir", default="/home/user/mycelium-prototype/reports/auto")
+    parser.add_argument("--output-dir", default=str(PROJECT_ROOT / "reports" / "auto"))
     parser.add_argument("--mode", default="run")
     args = parser.parse_args()
 

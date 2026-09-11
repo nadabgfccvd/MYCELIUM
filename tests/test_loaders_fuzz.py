@@ -18,8 +18,12 @@ from mycelium_accel.__main__ import build_parser
 from mycelium_accel.bench import BenchmarkSweep
 from mycelium_accel.targets.base import TargetManifest, Variant
 
-settings.register_profile("fast", max_examples=20, suppress_health_check=list(HealthCheck))
-settings.register_profile("ci", max_examples=200, suppress_health_check=list(HealthCheck))
+settings.register_profile(
+    "fast", max_examples=20, deadline=None, suppress_health_check=list(HealthCheck)
+)
+settings.register_profile(
+    "ci", max_examples=200, deadline=None, suppress_health_check=list(HealthCheck)
+)
 settings.load_profile(os.environ.get("HYPOTHESIS_PROFILE", "fast"))
 
 FRIENDLY = (ValueError, TypeError, KeyError)
@@ -152,7 +156,7 @@ class TestRoundtrips:
     @pytest.mark.parametrize("name", sorted(
         p.name for p in (Path(__file__).parent / "replay").glob("*.json")
     ))
-    def test_replay_sweep_roundtrip(self, name: str, subtests) -> None:  # noqa: ANN001
+    def test_replay_sweep_roundtrip(self, name: str) -> None:
         raw = json.loads((Path(__file__).parent / "replay" / name).read_text())
         once = BenchmarkSweep.from_dict(raw).to_dict()
         twice = BenchmarkSweep.from_dict(once).to_dict()

@@ -1,85 +1,504 @@
 # CHANGES
 
-## 2026-09-10 — autonomous 10-cycle run: 1.5.0 (release candidate, branch arena/01a08ae0-mycelium)
+## 1.5.1 — Sessão 2, Ciclo 10: Finalização & caça a bugs (2026-09-10)
 
-- **C1 higiene & verdade documental:** README evidencia "118 verdes" →
-  380 passed + 180 subtests; linha v1.4 (QUALIDADE) no estado do roadmap;
-  mkdocs `repo_url` aponta p/ o repositório real; `.gitignore` cobre
-  `smoke_state/`; roadmap dos 10 ciclos em
-  `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`. Zero mudança de código.
-- **C2 velocidade R3 (medir + matar, não adivinhar):** re-baseline por máquina
-  em `VELOCITY_BASELINE.md` (sandbox 2-core: loop 8.0 s, suíte 43.1 s serial /
-  23.0 s xdist); decisão estatística custa 3.2 ms → "otimizar stats" morto 2×;
-  "xdist neutro em 2 cores" morto aqui (-47%); -2.0 s nos dois testes
-  cronometrados isoladamente (timeout 2.01→1.00 s, SIGINT 3.06→2.06 s com piso
-  de sleep provado, 0 asserções mudadas; suíte total 43.1→41.7 s, resto é
-  variância da máquina);
-  nota xdist atualizada em AGENTS.md/README (medir localmente).
-- **C3 rigor estatístico II (advisory, 0 flips por construção):**
-  `stats.paired_power()` (aproximação normal, convenções NaN/inf, null=alfa)
-  + `stats.diagnose_comparison()` (ficha descritiva, chaves estáveis,
-  thresholds em constantes `ADVISORY_*` documentadas); isolamento pinado por
-  teste (decisão nunca lê advisory); fronteira S1/OBF auditada (0.0342 =
-  derivação com piso conservador, pinado); orçamento computacional por n em
-  `ARCHITECTURE.md` §9 (decisão a n=7 custa 3.2 ms); contrato em
-  `API_STABLE_1.0.md` §8. +17 testes, 0 existentes tocados.
-- **C4 robustez (escrita atômica em tudo):** `export_csv/md/html` + `doctor
-  --fix` agora via tmp+rename (`_atomic_write_bytes` novo p/ CSV bit-idêntico
-  incl. CRLF em toda plataforma); falha no meio da escrita = zero arquivo
-  parcial, zero resíduo tmp, rewrite falho preserva bytes anteriores (pinado
-  por injeção ENOSPC nos 4 exports + fix); exports seguem altos em lock
-  (só cache degrada); nomes hostis estendidos (`$ ; \\ \n \t ☃ "` roundtrip
-  JSON/CSV); auditoria runner: timeout exato (1.00/2.00 s medidos), orphans
-  mortos por grupo de processo, OSError→exit 1 + 1 linha no CLI. +7 testes (404 verdes).
-- **C5 UX do CLI (aditivo):** `accelerate --dry-run` (valida sem medir, mesmo
-  schema com nulls, contrato em API_STABLE `§8`); `doctor` ganha `disk_free`
-  (WARN-only) + `tool-version:*` (best-effort, nunca FAIL); BUG REAL
-  corrigido: caminho legado do `accelerate` tracebackava (violação do `§2`)
-  e agora devolve 1 linha + exit 1; catálogo `docs/ERRORS.md` com 10 erros
-  fixados por teste; `history` mantém as flags de engine por estabilidade de
-  contrato (W4 wontfix documentado). +15 testes (6 dry-run, 7 erros, 2 doctor).
-- **C6 alvos & manifestos:** novo kind `go` (GoTarget + scaffold `go test
-  -bench` com métrica `ns_per_op` via regex, `go` no allowlist global como
-  build-tool confiável à la cargo); detecção estendida (`go.mod`,
-  `requirements.txt`/`uv.lock`→python, `deno.json[c]`→node, precedência
-  antiga preservada e fixada); `validate()` agora sugere o fix
-  (executable_allowlist) e ecoa valores (repeats/warmup); exemplo
-  `examples/go-bench/` (test live pula sem toolchain); README/docstrings
-  atualizados. +12 testes (+2 pulos condicionais ao toolchain).
-- **C7 substrato de pesquisa (comportamento default intocado):** telemetria com
-  rotação por tamanho (~1 MB/parte, leitores somem partes em ordem, falha de
-  rotação nunca quebra runs); `self-improve` ganha `screen_trail` por ciclo
-  (variante + diff de perfil + rps + veredito + motivos — o "nenhum candidato"
-  agora é explicável); dogfood gate verde (engine intocado). +10 testes.
-- **C8 relatórios & UI (offline-first):** `report_html` + `history` ganham
-  dark-mode (`prefers-color-scheme`), CSS de impressão e (report) captions +
-  `scope=col` nas tabelas; BUG REAL corrigido: médias nan/inf envenenavam o
-  SVG do `history` com coordenadas literais "nan" (agora filtradas, seção
-  degradada honestamente); UI server ganha testes unitários puros (labels,
-  matriz de status, árvore com teto, pin anti-DNS-reverso do CI-5) +
-  auditoria "zero refs externas" nos estáticos. +8 testes.
-- **C9 release engineering:** `release.sh --dry-run` (guards + checks, zero
-  side effects, auditado ao vivo); teste live de single-source version
-  (pyproject==__init__==CHANGES, falha no bump parcial); nav do mkdocs com
-  teste (18 páginas user-facing linkadas, zero refs pendentes) + `ERRORS.md`
-  no site; quickstart agora fixa o JSON gêmeo do HTML; anúncio cita Go. +5 testes (454 verdes).
-- **C10 consolidação:** mutação amostral manual 8/8 mortos (faults em stats,
-  dry-run, CSV, telemetria, detect, release_check, doctor — todos pegos);
-  suíte 3× serial verde (42–44 s) + 1× xdist (23.6 s); bump 1.5.0
-  (pyproject+__init__+dist rebuildado, twine-PASS, `release.sh v1.5.0
-  --dry-run` verde); README evidências corrigidas (phantom-edit C1 auditado:
-  edições paralelas no mesmo arquivo correm — nunca mais em lote);
-  `docs/ROADMAP_NEXT_2.0.md` (propostas pós-contrato-1.x); cadeia de backups
-  verificada (ORIGINAL + C1..C10: 11 zips válidos + 10 pushes);
-  pós-PR (CI PR #3, runs 34511785988): (a) `GOCACHE`/`GOMODCACHE` entram
-  no `ENV_PASSTHROUGH` do harness e o live test go fixa um GOCACHE
-  explícito (sem `%LocalAppData%`, `go build` falhava nos 2 runners
-  windows); +1 teste; (b) teste C8 de árvore-do-projetos era flaky —
-  `.index("a")` em STRING renderizada hitava o nome aleatório do temp
-  (fast job: 17 not less than 4) → nome fixo hostil + asserts no
-  formato renderizado (conectores), prova com 8 nomes adversariais.
+- **Sem mais tracebacks crus na CLI.** Caça a bugs "olhos frescos" encontrou e
+  corrigiu 5 caminhos de erro que vazavam rastreio Python:
+  - `report`/`growth-regime` sobre estado não inicializado e
+    `rollback --round N` sem checkpoints agora dizem, numa linha, para rodar
+    `init` primeiro (saída 1). O contrato de biblioteca de `load_state`
+    (continua levantando `FileNotFoundError` em diretório ausente, para o
+    motor iniciar do zero) foi preservado e segue testado.
+  - `accelerate --target <inexistente>` recusa com `target not found`;
+    módulo com erro de sintaxe ou sem `BENCHMARK_SPEC` degrada para uma
+    linha `accelerate failed: …` (sem `SyntaxError`/`AttributeError` crus).
+  - `growth-regime` com *sidecar* derivado corrompido/não-objeto
+    (`.mycelium_qd`, transferência, biblioteca) avisa e degrada para zeros
+    (saída 0), em vez de `JSONDecodeError`.
+  - `--state-dir` apontando para um **arquivo** é recusado uma única vez
+    (`must be a directory`), antes do `NotADirectoryError` do `AuditLog`.
+- Testes novos: `tests/test_cli_error_paths_s2.py` (7 métodos/5 subtestes) +
+  3 métodos em `tests/test_cli_state_errors.py`; suíte serial
+  **556 passados + 770 subtestes**, 0 warnings.
+- Relatório `docs/SESSAO2_CICLO_10_FINALIZACAO_20260910.md`; resumo leigo da
+  sessão em `docs/RESUMO_LEIGO_SESSAO2_20260910.md`.
+- Nenhum veredito/caminho de medição tocado; correções só em tratamento de
+  erro de entrada.
 
-## Unreleased — bench.py mutation reconnaissance (post-1.4.0)
+## Unreleased — Sessão 2
+
+### Ciclo 9: Benchmark contra concorrentes (2026-09-10)
+
+- **Novo alvo e comparação real com AOT** (`scripts/competitors/`, kernel
+  crivo de Eratóstenes): CPython clássico, CPython `-O`, a variante segura
+  do MYCELIUM (`bytearray` + fatia C, Python puro), **mypyc** (duas formas)
+  e **Cython** (duas formas). Todas devolvem saída idêntica (π(10⁶)=78498,
+  soma 37550402023), provada por `digest_gate_sieve.py` contra oráculo.
+- **Medido:** variante MYCELIUM ~1,95× total / 2,12× em 10⁶; mypyc 1,55×
+  (a forma `bytearray` com laço ficou 0,60× — checagem de limites), Cython
+  clássico 1,54× e Cython "no talo" (sem bounds-check) 2,22× (apenas ~6–12%
+  à frente, exigindo `.so` por plataforma + flags inseguras); `-O` inócuo.
+  Decisão pareada MYCELIUM: **ACEITO**, IC [0,070; 0,076], p=0,031,
+  dz=16,9, prob_superior=1,0.
+- Novos assets: 7 implementações/driver/gate/manifest,
+  `setup_cython.py`, `scripts/run_competitor_sieve.sh`, JSONs crus em
+  `docs/data/competitors/sieve_*.json` e relatório
+  `docs/BENCHMARK_COMPETITORS_S2_20260910.md`.
+- `tests/test_competitor_sieve_s2.py` (10 testes, sem compilador/rede):
+  equivalência das implementações + constantes, gate nos dois kernels e
+  kernel corrompido sendo barrado, manifesto, e evidência arquivada
+  (checksums idênticos, ordenação e decisão batendo com os JSON).
+
+### Ciclo 8: Consolidação & Fortalecimento (2026-09-10)
+
+- **Contratos de variante no parser** (`Variant.from_dict` → helper extraído
+  `_validate_mode`): nome obrigatório não vazio; `patch` exige `files` não
+  vazio com destinos relativos (sem absoluto/`..`); `args` exige argumentos;
+  `script` exige `apply_command`. Antes, um patch/args/script que não mudava
+  nada mediria baseline contra si mesmo (veredito falso).
+- **Confinação de escrita de patch (defesa em profundidade):**
+  `apply_variant` recusa em runtime destinos absolutos, com `..` ou que
+  escapem via symlink para fora da raiz resolvida (`TargetSafetyError`, antes
+  de qualquer escrita); provado que nenhum arquivo externo é criado e que o
+  caminho relativo legítimo aplica/reverte.
+- **PEP 561 permanente:** teste trava a presença de `py.typed` e o
+  `package-data` no `pyproject.toml`.
+- **Portfólio tornado permanente** (`tests/test_portfolio_s2.py`): todos os
+  manifests carregam; os sweeps arquivados têm estrutura canônica e o sinal do
+  CI dos casos S2 está travado (Unidecode aceito, natsort negativo, Markdown
+  cruza zero, mediana de parede favorecendo a variante); fixture byte-idêntica
+  do `__init__.py` pristine (Unidecode 1.3.8) sobre a qual `git apply` do
+  patch é aplicado e comparado ao arquivo enviado. Fixture vendored adicionada
+  ao `extend-exclude` do ruff.
+- +18 testes (13 de contrato/confinação + 5 de permanência do portfólio); gate
+  536 passed + 751 subtests; ruff/mypy/twine limpos.
+
+### Ciclo 7: Teste Real de Portfólio (2026-09-10)
+
+- **3 projetos de terceiros NOVOS** (não repetem pygments/sqlparse/tabulate),
+  com verdicts medidos de verdade (5 sementes primas × 5 repetições, serial):
+  - **P4 Unidecode 1.3.8** (avian2/unidecode @ a31eb5f) — **patch de fonte
+    real ACEITO**: o caminho `errors='ignore'` usa uma tabela `str.translate`
+    montada uma vez; outras políticas e surrogates seguem no laço original.
+    Digest gate byte-idêntico + **suíte oficial upstream 62/62 passando sob o
+    patch**; ~1.8× em documento denso, CI pareado [+0.023, +0.039], p=0.031,
+    dz=3.05. Artefatos: patch + cópia integral em `docs/data/portfolio/`.
+  - **P5 natsort 8.4.0** (env `PYTHONOPTIMIZE=1`) — **REJEITADO**, CI
+    [−0.137, −0.014], p=0.935 (modo de otimização inócuo; guarda recusou).
+  - **P6 Markdown 3.8** (env `PYTHONOPTIMIZE=1`) — **REJEITADO**, CI cruza
+    zero [−0.100, +0.007], p=0.882.
+- Novos assets: `scripts/portfolio/{bench,digest_gate}_unidecode.py`,
+  `bench_natsort.py`, `bench_markdown.py`, `digest_gate_pylib_s2.py`, 3
+  manifests, `scripts/reproduce_portfolio_s2.sh`, sweeps crus arquivados e
+  `docs/CASE_PORTFOLIO_S2_20260910.md`.
+- **Teste hermético novo** `tests/test_portfolio_s2.py` (9 testes): valida os
+  manifests/compilação e **executa o arquivo do patch do Unidecode** com
+  tabelas falsas, comparando o fast path ao laço original em 400 strings
+  aleatórias + bordas (PUA, tabela curta, surrogate, todas as políticas) — sem
+  rede nem instalar o Unidecode.
+
+### Ciclo 6: Limpeza Geral (2026-09-10)
+
+- **Código morto real removido (auditoria com vulture):**
+  - `qd_archive.descriptor_from_signature` aceitava `cost_bins`/`scale_bins`
+    que **eram silenciosamente ignorados** (as bordas dos bins são fixas).
+    Parâmetros mentirosos removidos; nenhum chamador os usava.
+  - `bench.BenchmarkRunner._run_once` tinha um `seed_index` posicional nunca
+    lido (o seed efetivo chega pelo keyword `seed`); renomeado `_seed_index`
+    para documentar que é slot posicional, sem quebrar os chamadores.
+  - `targets.base.FileSnapshot.__exit__` renomeado `(_exc_type, _exc, _tb)`
+    (rollback é incondicional; parâmetros do protocolo, não usados).
+- **Limpeza de testes (asserções preservadas, nada deletado):**
+  - `test_paired_guard._snapshot` aceitava `**mean_overrides` que nenhum
+    chamador passava e que era engolido em silêncio — removido.
+  - `test_loaders_fuzz` declarava o fixture `subtests` sem usá-lo — removido.
+  - Os demais avisos do vulture em testes são parâmetros de protocolo
+    legítimos (doubles `run(..., timeout, seed)`, callbacks `lambda ri, s:`,
+    input de wizard `(prompt, default)`) — correto, intencional.
+- **Guarda permanente de código morto:** `vulture==2.16` adicionado ao extra
+  `dev` e novo `tests/test_no_dead_code_s2.py` varrendo `mycelium_accel/` +
+  `scripts/` em confiança ≥ 90 (código dinâmico/entry-point fica em ~60 e não
+  dispara). `tests/` é excluído de propósito (doubles/callbacks carregam
+  parâmetros de protocolo não usados).
+- **Correção documental:** o gate de parser de docs (rodada completa)
+  encontrou um comando inline mal-formado no doc do Ciclo 5
+  (crase grudada em `--version`); reescrito. O pacote+scripts zeraram o
+  vulture em ≥90; não havia classes de teste duplicadas (nomes repetidos
+  revelaram conjuntos de métodos complementares, sem corpos copiados).
+
+### Ciclo 5: O que falta para ser profissional (2026-09-10)
+
+- **PEP 561 — marcador de tipos no wheel:** adicionado `mycelium_accel/py.typed`
+  (vazio) + `[tool.setuptools.package-data]`, então as anotações inline passam
+  a ser consumidas por mypy/pyright por quem instala o pacote. Verificado que o
+  marker entra no wheel, no sdist e em `site-packages` após instalar em venv
+  limpo. Sem o marker, todo símbolo importado vira `Any` no mypy do consumidor.
+- **Gate de prontidão para PyPI (`--strict-publish`):** `scripts/release_check.py`
+  ganhou `publish_readiness()` e a flag `--strict-publish`, que **bloqueia o
+  upload** enquanto `pyproject.toml`/`README.md`/`mkdocs.yml`/`CITATION.cff`
+  ainda contiverem o slug placeholder `INSIRA-ORGAO` (links quebrados no PyPI)
+  ou se o marker `py.typed` faltar. É opt-in: o release local continua
+  funcionando; quem for publicar de verdade roda
+  `scripts/release.sh vX.Y.Z --strict-publish`. 6 testes novos.
+- **Endurecimento do CI:** `permissions: contents: read` (menor privilégio; o
+  token não escreve no repositório), `concurrency` cancelando runs
+  superscedidos do mesmo ref, e `timeout-minutes: 30` por job (o default é
+  6h). Actions continuam sendo as primeiras partes (`actions/checkout`,
+  `setup-python`, `cache`); pin de SHA fica como dívida consciente.
+- Wheel puro `py3-none-any` revisado: só código do pacote + `py.typed` +
+  licença + metadados (sem testes/entulho); sdist inclui testes, docs e
+  LICENSE. `twine check` PASSA em ambos; smoke de console (`--version`,
+  `doctor`, `history`) OK em venv limpo.
+
+### Ciclo 4: Robustez (2026-09-10)
+
+- **BUG CORRIGIDO (rollback incompleto):** `FileSnapshot.restore` não removia
+  arquivos/diretórios **recém-criados** listados em `touched`. Uma variante
+  `patch` que adiciona um arquivo novo (ex.: o caso de portfólio) e falha nos
+  testes deixava o artefato para trás, quebrando a promessa de
+  snapshot/rollback. Agora a existência pré-snapshot é registrada
+  (`_existed`) e todo path que não existia antes e foi criado é removido no
+  restore (arquivo, symlink ou diretório); a remoção trata links quebrados.
+  Verificado por probe reproduzível e por testes novos em
+  `tests/test_sandbox_s2.py`.
+- **BUG CORRIGIDO (métrica não-numérica derrubava o sweep):** um benchmark que
+  imprimisse `{"seconds": "fast"}` ou um regex que capturasse algo não
+  numérico escapava `ValueError`/`TypeError` de `float()` como traceback cru
+  (o executor só capturava `RuntimeError`). `parse_metrics` agora converte via
+  `_as_metric_float` e transforma captura inválida/regex inválido/regex sem
+  grupo em `RuntimeError` → run marcado quebrado (`inf`) → rejeição honesta.
+  Extraído `_parse_regex_metric` (complexidade ≤ 10). Testes de ponta a ponta
+  em `tests/test_robustness_s2.py`.
+- **Cobertura de falhas adicionais:** valores finitos gigantes (1e308)
+  degradam em estatística não-aceitante sem `OverflowError` (contrato M3);
+  fonte de `patch` ausente levanta e **não** vaza diretório de snapshot nem
+  injeta arquivo parcial; symlink novo removido no rollback.
+- Suíte: **502 verdes + 725 subtestes**; ruff/mypy limpos; `dist/`
+  reconstruído. Detalhes: `docs/SESSAO2_CICLO_04_ROBUSTEZ_20260910.md`.
+
+## Unreleased — Sessão 2, Ciclo 3: Otimização e Velocidade (2026-09-10)
+
+- **Núcleo de decisão ~4,6× mais rápido, com vereditos bit-idênticos.** O
+  gargalo do `decide_best_candidate` era o bootstrap BCa/percentil: ~85% do
+  tempo em `random.randrange`, e cada comparação com os mesmos `(n, seed,
+  n_bootstrap)` redesenhava a **mesma matriz de índices** (todas as
+  comparações de um sweep usam seed=13). Agora a matriz de índices é gerada
+  uma vez e memoizada (`functools.lru_cache`, `_bootstrap_index_matrix`); cada
+  média bootstrap soma os dados na **mesma ordem** de antes → ICs
+  bit-a-bit idênticos. Microbindings locais também no sign-flip Monte Carlo
+  (mesma sequência de RNG).
+- **Medição (A/B serial, mesma máquina):** 300 decisões com 4 candidatos × 7
+  seeds: **14,52 → 3,17 ms/decisão (4,6×)**; BCa x2000: 17,1 → 2,8 s no
+  regime repetido. `pytest tests/test_bootstrap_perf_s2.py` congela os valores
+  numéricos exatos e a memoização.
+- **Prova de equivalência:** ICs/p-valores capturados antes/depois
+  bit-idênticos; âncoras de replay verdes; **0 flips de veredito em 500 sweeps
+  aleatórios** (215 aceites, idênticos nos dois lados).
+- Suíte: **490 verdes + 725 subtestes**; ruff/mypy limpos; `dist/`
+  reconstruído. Detalhes: `docs/SESSAO2_CICLO_03_VELOCIDADE_20260910.md`.
+
+## Unreleased — Sessão 2, Ciclo 2: Qualidade (2026-09-10)
+
+- **+63 testes de alto valor** (429 → **484 verdes**; subtestes 688 → 725),
+  todos verificando comportamento real e invariantes, sem trivialidades:
+  - **Invariante central do guarda** (`test_guard_invariant_s2.py`): em 120
+    sweeps aleatórios, um vencedor só é devolvido se IC lower > 0 **e** p
+    corrigido ≤ α; regressão estrita e variante idêntica nunca passam;
+    direção higher/lower-is-better correta; veredito determinístico.
+    Documenta a propriedade estatística fundamental: com <7 seeds o piso
+    one-sided 1/2^n torna a significância impossível (n=3 → 0,125) — por que o
+    default são 7 seeds.
+  - **Matriz de validação do `Config`** (37 subtestes): cada campo inválido
+    levanta `ValueError`; fronteiras válidas aceitas; `config.py` foi de 73%
+    para **100% de cobertura**.
+  - **Sandbox/rollback** (`test_sandbox_s2.py`): canonicalização de
+    interpretador (python3.13t/.exe), política de caminhos absolutos,
+    filtragem de ambiente (segredos não vazam), kill por timeout (SIGKILL),
+    ciclo de vida prepare/build/test/clean + falha de build, e restauração de
+    FileSnapshot (arquivos/diretórios modificados e deletados) — `base.py`
+    86% → **97%**.
+  - **Resiliência do cache** (`test_cache_resilience_s2.py`): JSON corrompido,
+    payload não-dict, chave/versão adulteradas e ausência de sweep sempre
+    viram *miss* (nunca exceção); symlinks/.pyc/dirs ocultos não entram na
+    chave; retry de `os.replace` (PermissionError transitório) recupera;
+    escrita atômica falha sem deixar lixo — `sweep_cache.py` 80% → **97%**.
+  - **Bordas de estatística** (`test_stats_edges_s2.py`): flag `significant`,
+    dz infinito em variância zero, bootstrap degenerado/constante/1 obs, NaN
+    → p=1, piso exato 1/128 em 7 pares, invariantes Holm/BH, corrida que
+    elimina perdedor consistente — `stats.py` 96% → **99%**.
+- Cobertura global 88% → **89%**; os ramos restantes são específicos de
+  Windows (fallback `proc.kill`) ou matematicamente inalcançáveis
+  (denominador zero do BCa). ruff/mypy limpos.
+
+## Unreleased — Sessão 2, Ciclo 1: Higiene & Verdade Documental (2026-09-10)
+
+- **Empacotamento PEP 639 (fim dos warnings de build):** `pyproject.toml`
+  migrou de `license = { text = "MIT" }` (tabela TOML depreciada) para a
+  expressão SPDX `license = "MIT"` + `license-files = ["LICENSE"]`; o
+  classifier depreciado `License :: OSI Approved :: MIT License` foi removido
+  e o piso do build-system subiu para `setuptools>=77`. Antes, `python -m
+  build` emitia 3 `SetuptoolsDeprecationWarning`; agora build limpo e
+  `twine check` PASSED com `License-Expression: MIT` no METADATA do wheel.
+- **Mensagem honesta para zero variantes (primeiro uso real):** um manifesto
+  só com baseline (estado do `accelerate init`/auto-detecção) dizia
+  "No candidate had enough paired data" — tecnicamente falso (não há o que
+  parear). Agora `decide_best_candidate` devolve um motivo distinto e
+  acionável ("o manifesto define só o baseline; adicione `variants` …
+  `accelerate init`"). Refactor de extração (`_build_challenger_comparisons`,
+  `_acceptance_verdict`) manteve complexidade ≤ 10 e **equivalência de
+  veredito** (replay/decide-determinism verdes).
+- **Launcher `.desktop` relocalizável:** o `Exec` apontava para
+  `/home/user/mycelium-prototype/scripts/...` (path morto pós-rename); agora
+  usa o field-code `%k` do freedesktop para derivar a pasta do próprio
+  arquivo e chamar o `.sh` irmão (sintaxe shell validada com `sh -n`).
+- **Bits de execução restaurados:** `OPEN_*UI.sh/.command` e todos os
+  `scripts/*.sh` estavam `644` (duplo-clique/`./` falhava com "Permission
+  denied"); agora `755`.
+- **Markdown do README:** banner de renome tinha um code/bold span mal
+  fechado (`**\`mycelium-accel\`\`\`,`); corrigido para
+  `**\`mycelium-accel\`**\`,`.
+- **LICENSE:** holder antes vazio ("Copyright (c) 2026") agora nomeia
+  "MYCELIUM-Accel contributors" (consistente com `CITATION.cff`).
+- **Doc reprodutível:** exemplo em
+  `LONG_RUN_DIAGNOSIS_AND_UI_HARDENING_20260909.md` usava o path absoluto
+  morto `/home/user/mycelium-prototype/.mycelium_state_ui`; agora relativo à
+  raiz do repo.
+- **Novos guardiões:** `tests/test_hygiene_s2.py` (8 testes) congrega tudo
+  acima (zero-variantes vs dados insuficientes, span do README, `.desktop`
+  relocalizável e sem path de $HOME, PEP 639 no pyproject, holder da LICENSE,
+  bits executáveis em POSIX). Suíte: **429 verdes + 688 subtestes**,
+  ruff/mypy limpos, build sem warnings.
+
+## Unreleased — Ciclo 10.1: Correções de revisão pós-avaliação (2026-09-10)
+
+- **GRAVE corrigido: artefato P1 do portfólio não reproduzia o gate.**
+  `docs/data/portfolio/pygments_lexer_first_char_dispatch.py` (e o `.patch`
+  derivado) ainda continham o `if pos >= ln: return` precoce, que abandona as
+  regras zero-width de fim de texto (`\Z`, `$`) — o bug #3 que a doc dizia ter
+  sido corrigido. Um revisor que rodasse `reproduce_portfolio.sh` encontrava
+  **5214 passed, 1 failed** (`examplefiles/arturo`). Agora, em `pos == len(text)`
+  o lexer iterage **todas** as regras daquele estado (e o braço sem-match cai
+  no `IndexError`/break como o upstream): suíte oficial **5215/5215 verde** com
+  o artefato enviado. O `.patch` foi regenerado contra o baseline exato
+  (aplica limpo com `git apply`; hunks: maquinaria de dispatch + loop de EOF).
+- **Gate rápido endurecido (9 lexers):** `scripts/portfolio/digest_gate_pygments.py`
+  agora inclui o lexer Arturo com os casos `---abc` / `x --- y` (estado
+  `inside-eof-string`, regra `\Z`) — a regressão do retorno precoce é pega
+  sem precisar do pytest (verificado: artefato bugado → exit 1; corrigido → exit 0).
+- **`reproduce_portfolio.sh` de ponta a ponta:** assert exato **5215 passed /
+  0 failed** na suíte oficial sob a variante (falha o script caso contrário),
+  checagem de consistência `.patch` == arquivo completo enviado, digest gate,
+  e os **3 sweeps pareados reais** (P1 pygments, P2 sqlparse, P3 tabulate) via
+  `mycelium-accel accelerate` com os 5 seeds primos.
+- **Benchmarks de timing versionados** em `scripts/portfolio/`:
+  `bench_pygments_mix.py` (mix de 4 lexers, carga ~0,6-0,7s, sementado),
+  `bench_sqlparse.py`, `bench_tabulate.py` e `digest_gate_pylib.py` (gates de
+  saída byte-idêntica sob `PYTHONOPTIMIZE=1`, com checagens explícitas que
+  sobrevivem ao -O). Manifests em `scripts/portfolio/manifests/`.
+- **pyperf: número corrigido na doc de concorrentes.** A tabela dizia "+31%"
+  mas os JSON crus dão redução (554,6−422,0)/554,6 = **23,9%** na média
+  (mediana 554,0→416,9 = 24,7%); "+31%" era a razão com a variante no
+  denominador (convenção inconsistente com as demais linhas). Tabela e CHANGES
+  corrigidos para +24%, com a aritmética explícita.
+- **Codegen da DSL:** `_compile_score_kernel` valida a pilha abstrata e lança
+  `ValueError` explícito para tuplas de instruções com underflow/opcode
+  desconhecido (antes gerava nome de variável `t-1` e estourava em
+  `SyntaxError` dentro do `exec`). Teste novo em test_dsl_codegen.py.
+- **Limpeza:** comentário órfão citando `render_map` removido
+  (library_learning.py).
+- **Validação final 10.1 (tudo re-executado):** suíte completa **421 verdes +
+  688 subtestes** (incl. sob `pytest --cov`, 88%), ruff/mypy limpos,
+  `mkdocs build --strict` ok, wheel/sdist reconstruídos (twine PASSED),
+  reprodutor do portfólio rodado de ponta a ponta: consistência patch/artefato
+  OK, digest gates OK, suíte oficial do Pygments 5215/5215 assertada,
+  P1 aceito e P3 rejeitado reproduzidos (P2 é chamada de fronteira, ver
+  CASE_PORTFOLIO §P2).
+
+## Unreleased — Ciclo 10: Finalização e Resumo Leigo (2026-09-10)
+
+- **Bateria final de validação (9/9 verde):** suíte completa 420 verdes +
+  683 subtestes; ruff/mypy limpos; mkdocs --strict ok; 0 links quebrados;
+  quickstart end-to-end real (init→doctor→sweep→HTML); doctor global OK;
+  release_check v1.5.0 SHIPPABLE; wheel instala e importa limpo (1.5.0);
+  git tree 0 sujeiras + fsck ok; dogfood 10 rounds ok.
+- **NEW docs/RESUMO_LEIGO_20260910.md:** resumo dos 10 ciclos em linguagem
+  simples (não-técnica), com placar antes/depois — todos os números
+  medidos, links no nav do site.
+
+## Unreleased — Ciclo 9: Benchmark contra Concorrentes (2026-09-10)
+
+- **Cross-validation do caso P1 com 4 ferramentas** (docs/
+  BENCHMARK_COMPETITORS_20260910.md + dados brutos em
+  docs/data/competitors/): MYCELIUM +9,6% (comando inteiro, pareado),
+  hyperfine ~+11%, pyperf +24% (in-process; corrigido de "+31%" — os JSON
+  crus dão (554,6−422,0)/554,6 = 23,9% na média), pytest-benchmark +32%
+  (in-process) — todas concordam; diferenças são escopo (spawn+import).
+- **Armadilha real documentada:** pytest importa pygments antes do teste
+  (highlight do terminal) — sys.path.insert no teste chega tarde e o
+  pytest-benchmark media site-packages vs site-packages (−3% falso).
+  Correção: PYTHONPATH. O harness MYCELIUM é imune (subprocesso +
+  manifesto). Lição registrada na doc do benchmark.
+- Matriz de capacidades honesta: hyperfine vence em "qual comando é
+  mais rápido" (maduro, rápido); MYCELIUM é o único com gate de
+  corretude antes de medir + estatística pareada por seed + apply
+  guardado com rollback/kill-switch.
+
+## 1.5.0 (2026-09-10) — Melhoria autônoma em 10 ciclos (agent-driven)
+
+Consolida os ciclos 1-10 de melhoria autônoma end-to-end. Suíte: 425+
+verdes (+683 subtestes), ruff/mypy limpos, wheel twine-PASS, suíte oficial
+do pygments 5215/5215 verde sob o patch do portfólio. Detalhes por ciclo
+(mais recente primeiro):
+
+### Ciclo 7: Teste Real de Portfólio (2026-09-10)
+
+- **3 decisões reais em código de terceiros** (docs/
+  CASE_PORTFOLIO_20260910.md + dados brutos em docs/data/portfolio/ +
+  scripts/reproduce_portfolio.sh):
+  - **P1 pygments 2.20.0** (clone GitHub @ 708197d): patch first-char
+    dispatch no RegexLexer — **−9,6% aceito** (0,687→0,621 s, mix 4
+    lexers; Python-only −35% smoke), IC [0,053; 0,074], p=0,031, dz=5,44,
+    5/5 seeds. Prova: digest byte-idêntico em 8 lexers + **suíte oficial
+    do pygments 5215/5215 verde** sob o patch. Os gates pegaram 3 bugs
+    reais durante o desenvolvimento (IGNORECASE, nullable, fim-de-texto
+    zero-width) — todos corrigidos antes de medir.
+  - **P2 sqlparse 0.6.0**: PYTHONOPTIMIZE=1 **−2,1% aceito** (5/5 seeds,
+    p=0,031) — reportado como pequeno, sem inflar.
+  - **P3 tabulate 0.10.0**: mesma variante **REJEITADA** (IC cruza 0,
+    p=0,46) — o guard decide por dados, não por desejo.
+- mkdocs nav + README Evidências atualizados com o portfólio.
+
+### Ciclo 6: Limpeza Geral (2026-09-10)
+
+- **-76 linhas de código morto (11 funções, 0 refs/testes/docs):**
+  `outcome_from_project` (docstring mentia "used by the CLI"),
+  `available_checkpoints` (superseded por resolve_checkpoint_file),
+  `iter_paths`/`get_subtree`/`complexity` (dsl), `render_map`
+  (library_learning), `macro_node_map` (semantics — duplicata de
+  `_normalize_macro_nodes`), `guard_metrics_from_seed_rows`/`infer_direction`
+  (stats), `iter_capability` (telemetry), `edge_count` (transfer_graph).
+  **Mantido:** `divergence_cases` — API documentada do módulo
+  (ROADMAP_EXECUTION §counterexamples). Metodologia: scan AST (defs vs
+  refs em pkg+tests+scripts), cross-check vs API_STABLE_1.0 (freeze é de
+  manifest/CLI/JSON/telemetry-format, não função-à-função) e vs docs.
+- **Bug pós-rename corrigido:** 3 scripts com defaults absolutos
+  hardcoded apontando p/ `/home/user/mycelium-prototype` (path inexistente
+  pós-rename): `generate_auto_round_report.py --output-dir`,
+  `focused_calibrate_new_mechanisms.py --project-root/--state-dir` — agora
+  relativos a PROJECT_ROOT (funcionam em qualquer clone).
+- `reports/auto/` (7 relatórios runtime da máquina original, referenciando
+  paths que não existem mais) untracked + gitignored — regeneráveis pelo
+  script.
+- Suite de testes auditada p/ fusão: já consolidada na W1 (nada a fundir
+  sem perder asserções — disciplina mantida).
+- Validação: 418 verdes + 673 subtestes, ruff/mypy limpos, scripts
+  parseiam, imports todos OK.
+
+### Ciclo 5: O que falta para ser Profissional (2026-09-10)
+
+- **Aviso de deprecação real no alias legado `mycelium`:** o README promete
+  "deprecated desde 1.0 — remoção na 2.0" desde o rename, mas o alias nunca
+  avisou. Agora: 1 linha em stderr por invocação como `mycelium` (argv[0]
+  exato), silêncio para `mycelium-accel`/`python -m mycelium_accel`, stdout
+  e exit code intocados. 4 testes (tests/test_legacy_alias_warning.py).
+- **NEW SECURITY.md:** política de divulgação (advisory privado, SLA 7 dias,
+  divulgação coordenada), escopo do sandbox por design, notas de modelo de
+  risco (pickle = estado local confiável; UI = loopback 1 usuário).
+- **NEW CITATION.cff** (cff-version 1.2.0): software citável — coerente com
+  o classifier Science/Research; abstract reflete o que o projeto É (não
+  promete crescimento exponencial).
+- **pyproject profissional:** +6 keywords, +5 URLs (Homepage/Docs/Repo/
+  Issues/Changelog, placeholder INSIRA-ORGAO consistente com mkdocs.yml),
+  classifiers completos (3.11-3.14, Console, OS Independent, Beta,
+  Testing/Scientific). Wheel rebuilt: twine check PASSED.
+- **README:** badges CI + Docs (mesmo placeholder, TODO(user) documentado).
+- Validação: 382 verdes loop rápido (suíte total 418), ruff/mypy limpos.
+
+### Ciclo 4: Robustez (2026-09-10)
+
+- **Bug de UX real: estado/checkpoint corrompido virava traceback cru.**
+  `state.json` truncado/vazio, pickle truncado ou payload com shape errada
+  davam `json.JSONDecodeError`/`UnpicklingError` crús do CLI (`report`,
+  `run`, `rollback`, `growth-regime`). Agora: `StateCorruptError` (tipada,
+  com path do arquivo e causa) levantada no ponto de carga; CLI degrada
+  para 1 linha acionável (exit 1, sem traceback) sugerindo rollback ou
+  re-init — mesmo contrato de amigabilidade de manifests.
+- `engine.rollback` com checkpoint corrompido → mesma exceção tipada (era
+  traceback cru). `load_checkpoint_payload` novo em state.py.
+- tests/test_cli_state_errors.py (9 testes): json truncado/vazio/shape
+  errada, pickle truncado, ausência≠corrupção (FileNotFoundError preservado
+  p/ init fresco), CLI sem traceback + remédio sugerido, checkpoint
+  corrompido em rollback, e **guarda de regressão**: erro de manifest NÃO
+  pode ser reportado como erro de state.
+- Auditoria de superfícies já robustas (sem ação): servidor UI usa
+  whitelist de rotas (sem path traversal), sweep_cache corrupto=miss,
+  telemetry pula linhas corrompidas, history pula sweeps ilegíveis.
+- Validação: 374+9=383 verdes no loop rápido (suíte total 414), ruff/mypy
+  limpos.
+
+### Ciclo 3: Otimização e Velocidade (2026-09-10)
+
+- **Kernel de scoring compilado (V3.3): `_compile_score_kernel`** — codegen
+  de linha reta (1 função especializada por tupla de instruções, cache
+  limitado a 512) substitui o dispatch de opcodes em `score_pairs`/
+  `score_pairs_limit`. Micro-benchmark controlado: **197→52 ms (3,8×)**;
+  engine 40 rounds: 1,10→0,99 s mediana (host ruidoso). Interpretador
+  mantido como semântica de referência.
+- **Equivalência provada, não assumida:** tests/test_dsl_codegen.py — 490
+  subtestes diferenciais bit-a-bit (120 programas aleatórios × 4 limits +
+  quirks pinadas: clamp após unários/ADD/SUB/MUL/MOD, SEM clamp após
+  CONST/INPUT/MAX/MIN, programa vazio → 0, valores 10^18, cache born-
+  ded). Replay + verdict equivalence: 0 flips. Suíte: 405 verdes.
+- Opcodes do interpretador bindados como locals (LOAD_GLOBAL→LOAD_FAST):
+  +4% residual no caminho de referência (`run()` single-shot).
+- ruff/mypy limpos; callable movido p/ collections.abc (UP035).
+
+### Ciclo 2: Qualidade (2026-09-10)
+
+- **Bug real corrigido: `pytest --cov` quebrava a suíte.** 4 property tests
+  (TestPermutation/TestComparePaired) falhavam com `DeadlineExceeded` sob
+  instrumentação de cobertura (256 ms medidos vs deadline 200 ms default).
+  Fix: `deadline=None` nos perfis hypothesis de test_stats_properties.py e
+  test_loaders_fuzz.py — mesma política que test_pipeline_stateful já usava.
+  O fluxo padrão de cobertura agora é 100% verde.
+- **Contrato de honestidade dos validadores agora é testado** (era 0%):
+  tests/test_validators_toolchain.py (15 testes) — alive-tv e mlir-opt com
+  toolchain falsa em PATH mockado: skipped/verified/refuted×2/error/timeout,
+  construção de comando (transform-script vs pass-pipeline), to_dict. Prova
+  de força por fault-injection: validador mentiroso ("verified" sem
+  toolchain) é pego por 2 testes.
+- **Auto-detecção de targets testada de ponta a ponta** (+7 testes):
+  default_manifest de node (31%→100%), cargo (44%→100%), cmake (47%→100%) —
+  branches: toolchain ausente, package.json malformado, prioridade
+  bench>benchmark, benches/, ctest presente/ausente.
+- Cobertura total: 83% → **85%** (6.120 stmts, 919 miss). Validadores
+  llvm_alive2/mlir_eqsat: 0% → 100%.
+- Validação: suíte completa 384 verdes + 180 subtestes, ruff limpo, mypy
+  limpo.
+
+### Ciclo 1: Higiene & Verdade Documental (2026-09-10)
+
+- Truth fixes: `.coverage` e `.mycelium_ui/{history,session}.json` eram
+  tracked apesar de `.gitignore`/CHANGES dizerem o contrário (CI-1 claim
+  agora é verdade); `.mycelium_ui/` ignorado (estado runtime do servidor de
+  UI, recriado sob demanda — os arquivos committed referenciavam paths de
+  outro host).
+- README verdadeiro: tabela de Evidências re-medida (374 verdes + 180
+  subtestes; loop `not slow` 334 em ~13 s; + linha mutação stats.py 88,7%);
+  claims históricos ("118/204 verdes") anotados como "na época"; estrutura
+  do repositório renomeada de `mycelium-prototype/` → raiz real com os 7
+  módulos que faltavam (doctor, ecology_loop, history, report_html,
+  scaffold, sweep_cache, sygus_adapter) + `mycelium_ui/` + `.github/`.
+- `.gitignore` honesto sobre `dist/` (intencionalmente tracked p/ recycle
+  do sandbox — AGENTS.md) — nota explica o aparente conflito.
+- NEW tests/test_docs_truth.py (3 testes, guard permanente): versão
+  pyproject==`__version__`; tree do README == conjunto exato de módulos
+  `mycelium_accel/*.py` (pegou os 7 faltantes no primeiro run); tree não
+  pode voltar ao nome pré-rename.
+- Validação: suíte completa 377 verdes + 180 subtestes (~50 s), loop
+  `not slow` 337 (~9 s), ruff limpo, mypy limpo, `mkdocs build --strict` ok.
+
+### Pré-ciclos: bench.py mutation reconnaissance (post-1.4.0)
 
 - mutmut round over bench.py: 562 = 331 killed + 6 no-tests + 225 survived
   (59.5% excl. no-tests, below gate → reconnaissance, no CI entry).
@@ -107,51 +526,6 @@
   null_interior_p CI goldens → AlmostEqual places=12 (Apple libm dust);
   shell-text baseline redesigned to one grep (3 ms vs 55 ms, verdict stable
   on msys forks); release.sh + chmod-readonly tests posix-only skips.
-- CI-5 (last 2 red cells — mac×2 = ui_smoke, win×2 = cache concurrency): both
-  were *timing/contract* bugs, not behavior.
-  - **macOS `test_ui_smoke`**: `HTTPServer.server_bind` runs
-    `socket.getfqdn()` — a blocking PTR+A lookup *before* `listen()` — so a slow
-    resolver leaves the port bound-but-not-accepting and every client times out.
-    Reproduced here by injection: 12 s stall → boot 0.3 s→12.34 s; 16 s stall →
-    red with the CI symptom (`server never answered`). Fix: `UIServer.server_bind`
-    skips reverse DNS (+`daemon_threads`); that alone makes boot 0.30 s under a
-    25 s stall. Test hardened too: kernel-picked port read back from the server
-    banner (no free-port race), CI-scaled deadline (120 s vs 15 s) with a 10 s
-    per-attempt timeout (old test also died at exactly 15.18 s on a 20 s starved
-    boot), child pipes drained in threads so their logs land in the failure text.
-  - **Windows `test_concurrent_cache_store_stays_valid`**: the CI-4 retry was
-    10 linear tries ≈ 275 ms — shorter than a Defender re-scan of the file it
-    just renamed. Now: exponential backoff (1→50 ms) bounded by
-    `REPLACE_BUDGET_SECONDS=1.5`, and on exhaustion a cache *refresh* degrades to
-    a miss when a valid entry is already on disk (never halves, never a red run);
-    missing-destination stores, ENOSPC and sweep exports still raise. `lookup`
-    treats a read refusal as a miss like it treats corruption.
-  - +6 tests (0 deleted, 0 weakened): `WindowsLockContentionTests` drives nt
-    semantics by injecting the rename/classifier seams — posix cannot produce a
-    sharing violation, so the platform branch is pinned directly. Harsh model
-    (AV re-lock 150–400 ms on every replace, 4 writers): old retry survived only
-    by luck of timing; new is green with the worst round bounded 50 s→15 s by
-    the smaller budget. Docs: `ARCHITECTURE.md §11` (UI/platform limits + cache
-    concurrency contract). Suite green here: 380 passed + 180 subtests (serial
-    loop 7.4 s fast / 36 s full), ruff+mypy+mkdocs --strict clean.
-- CI-5a (first run on the branch, 34462085940): Windows cache-concurrency cell
-  GREEN (PermissionError gone, both Pythons) and macOS 3.14 GREEN (boot 0.3 s).
-  Two leftovers, both ours:
-  - the new per-platform classifier test hardcoded the posix answer → it was the
-    only red on windows-latest. Now it pins the rule itself: EBUSY transient and
-    ENOSPC fatal everywhere, "rename refused ⇒ transient" iff the platform
-    refuses rename-while-open, plus the opposite branch via `os.name` flip —
-    identical assertions on every OS, nothing skipped.
-  - macOS 3.13 failed on a test that the `--lf` re-run then passed, and the
-    annotate step greps *only* that re-run → the run was red with no name
-    attached anywhere (and raw job logs are unreachable from this sandbox). The
-    obvious fix is a workflow edit (`-rf | tee` + union of both logs) but this
-    App has no `workflows` scope — push is rejected — so the same effect now
-    lives in `tests/conftest.py`: on GITHUB_ACTIONS it emits one
-    `::error title=CI-5 failing test::<nodeid> - <crash line>` per failure from
-    the primary run (works under xdist, silent locally, capped at 30, and it
-    cannot itself fail a suite). Workflow-side improvement left as a note for
-    the mantenedor: name the step's log file and grep both.
 
 ## 2026-09-10 — QUALIDADE completa (Q0–Q4): 1.4.0 (tag v1.4.0)
 

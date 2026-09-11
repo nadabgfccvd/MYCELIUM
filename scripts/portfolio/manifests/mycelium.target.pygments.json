@@ -1,0 +1,18 @@
+{
+  "name": "portfolio-p1-pygments-first-char-dispatch",
+  "kind": "shell",
+  "test_command": "python digest_gate_pygments.py",
+  "benchmark_command": "python bench_pygments_mix.py",
+  "metrics_parser": "json_stdout",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "timeout_seconds": 180.0,
+  "manifest_version": "1.0",
+  "variants": [
+    {"name": "first-char-dispatch", "mode": "patch",
+     "files": {"pygments/lexer.py": "variant_lexer_patched.py"},
+     "description": "P1: per-first-character rule dispatch in RegexLexer (sound over-approximation, order preserved)"}
+  ]
+}

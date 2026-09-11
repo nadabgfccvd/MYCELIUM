@@ -1,0 +1,455 @@
+{
+  "comparisons": [
+    {
+      "baseline": "baseline",
+      "candidate": "first-char-dispatch",
+      "ci_high": 0.07396812951981702,
+      "ci_low": 0.05349447287984725,
+      "confidence": 0.95,
+      "deltas": [
+        0.07954154919980283,
+        0.06534574739980592,
+        0.06587025259987067,
+        0.04698270379985836,
+        0.07279452439988743
+      ],
+      "direction": -1,
+      "effect_dz": 5.435866872704375,
+      "mean_delta": 0.06610695547984505,
+      "median_delta": 0.06587025259987067,
+      "metric": "seconds",
+      "n_pairs": 5,
+      "p_value": 0.030996900309969003,
+      "p_value_corrected": 0.030996900309969003,
+      "prob_superior": 1.0
+    }
+  ],
+  "lower_is_better": true,
+  "metric": "seconds",
+  "started_at": 1789069603.8283346,
+  "summaries": [
+    {
+      "candidate": "baseline",
+      "flaky": false,
+      "maximum": 0.7107520639997347,
+      "mean": 0.6867523826799151,
+      "median": 0.6845789089998107,
+      "minimum": 0.6756099650001488,
+      "runs": [
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7741461010000421,
+          "seed": 101,
+          "value": 0.6913129479999043
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.776809774999947,
+          "seed": 101,
+          "value": 0.6887497289999374
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7999718139999459,
+          "seed": 101,
+          "value": 0.7107520639997347
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7620143009999083,
+          "seed": 101,
+          "value": 0.6781866979999904
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7778868460000012,
+          "seed": 101,
+          "value": 0.6913628859997516
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7666440729999522,
+          "seed": 103,
+          "value": 0.6814865769997596
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7632611819999511,
+          "seed": 103,
+          "value": 0.679145225999946
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7711818429997948,
+          "seed": 103,
+          "value": 0.6870567999999366
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7660057350003626,
+          "seed": 103,
+          "value": 0.6812315819997821
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7966886660001364,
+          "seed": 103,
+          "value": 0.7102970719997757
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7951478890004182,
+          "seed": 107,
+          "value": 0.7097460969998792
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7830390090002766,
+          "seed": 107,
+          "value": 0.7015379639997263
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7659758330000841,
+          "seed": 107,
+          "value": 0.6852365300001111
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7746300929998142,
+          "seed": 107,
+          "value": 0.690952070000094
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.757777410000017,
+          "seed": 107,
+          "value": 0.6764497629997095
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.757583058000364,
+          "seed": 109,
+          "value": 0.6777055289999225
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7558173520001219,
+          "seed": 109,
+          "value": 0.6756099650001488
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7620505449999655,
+          "seed": 109,
+          "value": 0.6814763460001814
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7627629659996273,
+          "seed": 109,
+          "value": 0.6814072080001097
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7660842649997903,
+          "seed": 109,
+          "value": 0.6845789089998107
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7578669559998161,
+          "seed": 113,
+          "value": 0.6766672079997988
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7575328030002311,
+          "seed": 113,
+          "value": 0.6762839590001022
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7697475539998777,
+          "seed": 113,
+          "value": 0.688359501999912
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7669004700001096,
+          "seed": 113,
+          "value": 0.6854295909997745
+        },
+        {
+          "candidate": "baseline",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7595620410002084,
+          "seed": 113,
+          "value": 0.6777873440000803
+        }
+      ],
+      "stddev": 0.010805977340087057
+    },
+    {
+      "candidate": "first-char-dispatch",
+      "flaky": false,
+      "maximum": 0.6840462029999799,
+      "mean": 0.6206454272000701,
+      "median": 0.6153252310000425,
+      "minimum": 0.5993627200000446,
+      "runs": [
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6957321109998702,
+          "seed": 101,
+          "value": 0.6127230319998489
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7051801860002342,
+          "seed": 101,
+          "value": 0.6193005539998921
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7077111280000281,
+          "seed": 101,
+          "value": 0.6232855050002399
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6843405529998563,
+          "seed": 101,
+          "value": 0.5998301859999629
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6945394809999925,
+          "seed": 101,
+          "value": 0.6075173020003604
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.695827568000368,
+          "seed": 103,
+          "value": 0.6047189310002068
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.703055680000034,
+          "seed": 103,
+          "value": 0.6169781179996789
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7430959739999707,
+          "seed": 103,
+          "value": 0.6481709079998836
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7273893819997284,
+          "seed": 103,
+          "value": 0.6390705480002907
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6914714770000501,
+          "seed": 103,
+          "value": 0.6035500150001099
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7067528120001043,
+          "seed": 107,
+          "value": 0.6194138440000643
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.703104021999934,
+          "seed": 107,
+          "value": 0.6162087729999257
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.709530864000044,
+          "seed": 107,
+          "value": 0.6244244780000372
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7010127309999916,
+          "seed": 107,
+          "value": 0.6153252310000425
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7455389749998176,
+          "seed": 107,
+          "value": 0.6591988350000975
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6878417180000724,
+          "seed": 109,
+          "value": 0.6025297310002315
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6875823280001896,
+          "seed": 109,
+          "value": 0.6018749200002276
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7486102079997181,
+          "seed": 109,
+          "value": 0.6623069350002879
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7095758489999753,
+          "seed": 109,
+          "value": 0.615106649000154
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.770806294999602,
+          "seed": 109,
+          "value": 0.6840462029999799
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.7076899419998881,
+          "seed": 113,
+          "value": 0.6177130000000943
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6961259300001075,
+          "seed": 113,
+          "value": 0.6073659759999828
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6949733140004355,
+          "seed": 113,
+          "value": 0.6080798269999832
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6868671819997871,
+          "seed": 113,
+          "value": 0.5993627200000446
+        },
+        {
+          "candidate": "first-char-dispatch",
+          "metric": "seconds",
+          "ok": true,
+          "seconds": 0.6974246199997651,
+          "seed": 113,
+          "value": 0.6080334590001257
+        }
+      ],
+      "stddev": 0.021703676775821606
+    }
+  ],
+  "target": "/tmp/portfolio/pygments-src"
+}

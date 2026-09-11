@@ -32,7 +32,6 @@ MANIFEST_FILENAME = "mycelium.target.json"
 DEFAULT_EXECUTABLE_ALLOWLIST = {
     "python", "python3", "pip", "pip3",
     "cargo", "rustc", "rustup",
-    "go",  # C6: `go build/test` drive Go targets (same trust as cargo)
     "cmake", "make", "ninja", "ctest",
     "cc", "c++", "gcc", "g++", "clang", "clang++",
     "node", "npm", "npx", "yarn", "pnpm",
@@ -58,7 +57,6 @@ def canonical_executable(name: str) -> str:
 ENV_PASSTHROUGH = {
     "PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "TEMP", "TMP",
     "CARGO_HOME", "RUSTUP_HOME", "NODE_ENV", "VIRTUAL_ENV",
-    "GOCACHE", "GOMODCACHE",
     "CC", "CXX", "CFLAGS", "CXXFLAGS", "LDFLAGS", "MAKEFLAGS",
 }
 
@@ -103,16 +101,59 @@ class Variant:
         mode = str(payload.get("mode", "env"))
         if mode not in {"env", "args", "patch", "script", "profile"}:
             raise ValueError(f"Unsupported variant mode: {mode}")
+        name = payload.get("name")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Variant needs a non-empty 'name'.")
+        files = {str(k): str(v) for k, v in payload.get("files", {}).items()}
+        args = [str(a) for a in payload.get("args", [])]
+        apply_command = payload.get("apply_command")
+        cls._validate_mode(mode, name, files, args, apply_command)
         return cls(
-            name=str(payload["name"]),
+            name=name,
             mode=mode,
             env={str(k): str(v) for k, v in payload.get("env", {}).items()},
-            args=[str(a) for a in payload.get("args", [])],
-            files={str(k): str(v) for k, v in payload.get("files", {}).items()},
-            apply_command=payload.get("apply_command"),
+            args=args,
+            files=files,
+            apply_command=apply_command,
             revert_command=payload.get("revert_command"),
             description=str(payload.get("description", "")),
         )
+
+    @staticmethod
+    def _validate_mode(
+        mode: str,
+        name: str,
+        files: dict[str, str],
+        args: list[str],
+        apply_command: Any,
+    ) -> None:
+        """Enforce the per-mode contract (a variant must change *something*)."""
+        if mode == "patch":
+            if not files:
+                raise ValueError(
+                    f"patch variant {name!r} needs a non-empty 'files' map."
+                )
+            for destination in files:
+                if not destination.strip():
+                    raise ValueError(
+                        f"patch variant {name!r} has an empty file destination."
+                    )
+                rel = Path(destination)
+                if rel.is_absolute() or ".." in rel.parts:
+                    raise ValueError(
+                        f"patch variant {name!r} destination {destination!r} must be "
+                        "a relative path inside the target root (no absolute / '..')."
+                    )
+        elif mode == "args" and not args:
+            raise ValueError(
+                f"args variant {name!r} needs at least one entry in 'args'."
+            )
+        elif mode == "script" and not (
+            isinstance(apply_command, str) and apply_command.strip()
+        ):
+            raise ValueError(
+                f"script variant {name!r} needs a non-empty 'apply_command'."
+            )
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -123,7 +164,7 @@ class TargetManifest:
     """Declarative description of how to drive an arbitrary project."""
 
     name: str = ""
-    kind: str = "shell"  # shell | python | cargo | cmake | node | go
+    kind: str = "shell"  # shell | python | cargo | cmake | node
     prepare_command: str | None = None
     build_command: str | None = None
     test_command: str | None = None
@@ -212,9 +253,7 @@ class TargetManifest:
             elif canonical_executable(argv[0].split("/")[-1]) not in allow:
                 errors.append(
                     f"{field_name}: executable {argv[0]!r} is not allowlisted "
-                    "(runs would fail at sandbox time; fix the manifest now — "
-                    "either use an allowlisted tool or add it to "
-                    "'executable_allowlist' in mycelium.target.json)"
+                    "(runs would fail at sandbox time; fix the manifest now)"
                 )
         for variant in self.variants:
             for field_name in ("apply_command", "revert_command"):
@@ -225,9 +264,9 @@ class TargetManifest:
                 if canonical_executable(first) not in allow:
                     errors.append(f"variant {variant.name!r} {field_name}: {first!r} not allowlisted")
         if self.repeats < 1:
-            errors.append(f"repeats must be >= 1 (got {self.repeats})")
+            errors.append("repeats must be >= 1")
         if self.warmup < 0:
-            errors.append(f"warmup must be >= 0 (got {self.warmup})")
+            errors.append("warmup must be >= 0")
         return errors
 
     @classmethod
@@ -382,6 +421,18 @@ class FileSnapshot:
         self.root = root
         self._backup_dir: Path | None = None
         self._paths: list[str] = [str(p) for p in paths]
+        # Pre-snapshot existence set: touched paths that did NOT exist here must
+        # be DELETED on restore (a 'patch' variant may add brand-new files;
+        # without this they survived rollback — Ciclo 4/S2).
+        self._existed: set[str] = set()
+
+    @staticmethod
+    def _remove(path: Path) -> None:
+        """Remove a file/symlink or directory tree, tolerating a broken link."""
+        if path.is_symlink() or path.is_file():
+            path.unlink()
+        elif path.is_dir():
+            shutil.rmtree(path)
 
     def __enter__(self) -> FileSnapshot:
         backup_root = Path(os.environ.get("TMPDIR", "/tmp"))
@@ -389,14 +440,15 @@ class FileSnapshot:
         self._backup_dir.mkdir(parents=True, exist_ok=True)
         for rel in self._paths:
             source = self.root / rel
-            if not source.exists():
-                continue
+            if not source.exists() and not source.is_symlink():
+                continue  # nothing to back up, but it is recorded as absent
+            self._existed.add(rel)
             dest = self._backup_dir / rel
             dest.parent.mkdir(parents=True, exist_ok=True)
-            if source.is_dir():
+            if source.is_dir() and not source.is_symlink():
                 shutil.copytree(source, dest)
             else:
-                shutil.copy2(source, dest)
+                shutil.copy2(source, dest, follow_symlinks=False)
         return self
 
     def restore(self) -> None:
@@ -405,19 +457,21 @@ class FileSnapshot:
         for rel in self._paths:
             backup = self._backup_dir / rel
             target = self.root / rel
-            if backup.exists():
-                if target.exists():
-                    if target.is_dir() and not target.is_symlink():
-                        shutil.rmtree(target)
-                    else:
-                        target.unlink()
+            if rel in self._existed:
+                # Put the original back, replacing whatever the variant did.
+                if target.exists() or target.is_symlink():
+                    self._remove(target)
                 if backup.is_dir():
                     shutil.copytree(backup, target)
                 else:
                     target.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(backup, target)
+            elif target.exists() or target.is_symlink():
+                # Created during apply and absent before it -> remove it.
+                self._remove(target)
 
-    def __exit__(self, exc_type: Any, exc: Any, tb: Any) -> None:
+    def __exit__(self, _exc_type: Any, _exc: Any, _tb: Any) -> None:
+        # Context-manager protocol args are unused: rollback is unconditional.
         self.restore()
         if self._backup_dir is not None:
             shutil.rmtree(self._backup_dir, ignore_errors=True)
@@ -477,11 +531,23 @@ class ProjectTarget:
         try:
             if variant.mode == "patch":
                 for rel_path, source_path in variant.files.items():
+                    rel = Path(rel_path)
+                    if rel.is_absolute() or ".." in rel.parts:
+                        raise TargetSafetyError(
+                            f"patch destination {rel_path!r} must be relative "
+                            "and stay inside the target root."
+                        )
                     src = Path(source_path)
                     if not src.is_absolute():
                         src = self.root / src
-                    dest = self.root / rel_path
+                    dest = self.root / rel
                     dest.parent.mkdir(parents=True, exist_ok=True)
+                    # Defense in depth: resolve symlinks and confirm the final
+                    # path is still inside the (resolved) target root.
+                    if not dest.resolve().is_relative_to(self.root):
+                        raise TargetSafetyError(
+                            f"patch destination {rel_path!r} escapes the target root."
+                        )
                     shutil.copy2(src, dest)
             if variant.apply_command:
                 result = self.runner.run(variant.apply_command)

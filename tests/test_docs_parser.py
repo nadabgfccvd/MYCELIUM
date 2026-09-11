@@ -69,10 +69,11 @@ def _command_segments(text: str) -> list[tuple[int, str]]:
 
 # Prose --flags that are NOT mycelium-accel flags, with their owners.
 FOREIGN_FLAGS = {
-    "--durations", "--lf",  # pytest
+    "--durations", "--lf", "--ignore",  # pytest
     "--upgrade",  # pip
     "--abbrev", "--repository", "--tags",  # git
     "--max-children",  # mutmut (Q4/M1 repro commands)
+    "--min-confidence",  # vulture (S2.6 dead-code gate docs)
 }
 # Flags docs deliberately assert the ABSENCE of (pinned: must NOT exist).
 ABSENT_FLAGS = {

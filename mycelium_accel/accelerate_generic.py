@@ -22,7 +22,7 @@ from typing import Any
 from .bench import BenchmarkExecutor, BenchmarkSweep, SweepInterrupted
 from .prime import next_prime
 from .stats import AcceptancePolicy, apply_correction, compare_paired_metric
-from .targets import ProjectTarget, load_target
+from .targets import load_target
 
 
 @dataclass(slots=True)
@@ -70,13 +70,60 @@ def decide_best_candidate(
     the largest CI lower bound wins.
     """
     policy = policy or AcceptancePolicy()
-    direction = -1 if sweep.lower_is_better else 1
     baseline_values = _paired_values_by_seed(sweep, baseline)
     if not baseline_values:
         return None, [f"Baseline '{baseline}' produced no successful runs."], []
 
+    # Ciclo 1 (S2): a baseline with zero challengers is the common first-run
+    # state (auto-detected manifest). Say so, and what to do next — do not
+    # pretend the comparison "lacked paired data" (there is nothing to pair).
+    challengers = [s.candidate for s in sweep.summaries if s.candidate != baseline]
+    if not challengers:
+        return None, [
+            "No variants to compare: the manifest defines only a baseline, so "
+            "there is nothing to accelerate yet. Add one or more 'variants' to "
+            "mycelium.target.json (or run 'mycelium-accel accelerate init' to "
+            "scaffold a manifest you can edit)."
+        ], []
+
     reasons: list[str] = []
     comparisons_payload: list[dict[str, Any]] = []
+    comparisons, candidate_names = _build_challenger_comparisons(
+        sweep, baseline, baseline_values, policy, reasons)
+
+    if not comparisons:
+        return None, reasons or ["No candidate had enough paired data."], comparisons_payload
+
+    apply_correction(comparisons, method=policy.correction)
+    winners: list[tuple[float, str]] = []
+    for name, comparison in zip(candidate_names, comparisons):
+        payload = comparison.to_dict()
+        payload["candidate"] = name
+        payload["baseline"] = baseline
+        comparisons_payload.append(payload)
+        verdict = _acceptance_verdict(name, comparison, policy)
+        if verdict is not None:
+            reasons.append(verdict)
+            continue
+        winners.append((comparison.ci_low, name))
+
+    if not winners:
+        return None, reasons, comparisons_payload
+    winners.sort(reverse=True)
+    best_name = winners[0][1]
+    reasons.insert(0, f"{best_name} accepted: CI lower bound {winners[0][0]:.6g} > 0 with corrected p <= {policy.alpha}.")
+    return best_name, reasons, comparisons_payload
+
+
+def _build_challenger_comparisons(
+    sweep: BenchmarkSweep,
+    baseline: str,
+    baseline_values: dict[int, float],
+    policy: AcceptancePolicy,
+    reasons: list[str],
+) -> tuple[list, list[str]]:
+    """Paired comparison for every challenger with enough shared seeds."""
+    direction = -1 if sweep.lower_is_better else 1
     comparisons = []
     candidate_names: list[str] = []
     for summary in sweep.summaries:
@@ -100,34 +147,20 @@ def decide_best_candidate(
         )
         comparisons.append(comparison)
         candidate_names.append(summary.candidate)
+    return comparisons, candidate_names
 
-    if not comparisons:
-        return None, reasons or ["No candidate had enough paired data."], comparisons_payload
 
-    apply_correction(comparisons, method=policy.correction)
-    winners: list[tuple[float, str]] = []
-    for name, comparison in zip(candidate_names, comparisons):
-        payload = comparison.to_dict()
-        payload["candidate"] = name
-        payload["baseline"] = baseline
-        comparisons_payload.append(payload)
-        if not (comparison.ci_low > 0.0):  # Q1.5: NaN CI never wins
-            reasons.append(
-                f"{name}: CI lower bound {comparison.ci_low:.6g} <= 0 — improvement not established."
-            )
-            continue
-        corrected = comparison.p_value_corrected if comparison.p_value_corrected is not None else comparison.p_value
-        if corrected > policy.alpha:
-            reasons.append(f"{name}: corrected p-value {corrected:.4f} > alpha {policy.alpha}.")
-            continue
-        winners.append((comparison.ci_low, name))
-
-    if not winners:
-        return None, reasons, comparisons_payload
-    winners.sort(reverse=True)
-    best_name = winners[0][1]
-    reasons.insert(0, f"{best_name} accepted: CI lower bound {winners[0][0]:.6g} > 0 with corrected p <= {policy.alpha}.")
-    return best_name, reasons, comparisons_payload
+def _acceptance_verdict(name: str, comparison: Any, policy: AcceptancePolicy) -> str | None:
+    """None when the candidate passes; otherwise the human rejection reason."""
+    if not (comparison.ci_low > 0.0):  # Q1.5: NaN CI never wins
+        return (f"{name}: CI lower bound {comparison.ci_low:.6g} <= 0 — "
+                "improvement not established.")
+    corrected = comparison.p_value_corrected
+    if corrected is None:
+        corrected = comparison.p_value
+    if corrected > policy.alpha:
+        return f"{name}: corrected p-value {corrected:.4f} > alpha {policy.alpha}."
+    return None
 
 
 def _means_by_seed(runs: Any) -> dict[int, float]:
@@ -370,8 +403,6 @@ def _interrupted_outcome(
     )
 
 
-
-
 def _default_seeds(seeds: list[int] | None) -> list[int]:
     """Q3.3: prime paired seeds when the caller passes none."""
     if seeds is not None:
@@ -593,7 +624,6 @@ def accelerate_target(
     cache: bool = False,
     cache_dir: Path | None = None,
     sequential_seeds: bool = False,
-    dry_run: bool = False,
 ) -> GenericAccelerationOutcome:
     started = time.perf_counter()
     target = load_target(target_root, manifest_path)
@@ -605,24 +635,6 @@ def accelerate_target(
     target.build()
     test_result = target.test()
     tests_pass = test_result is None or test_result.ok
-
-    if dry_run:  # C5: validate only — no executor, no sweeps, no cache, no apply
-        test_word = "pass" if tests_pass else "FAIL (nothing would be applied)"
-        return GenericAccelerationOutcome(
-            target=str(target.root),
-            baseline="baseline",
-            best_candidate=None,
-            applied=False,
-            decision_reasons=[
-                "dry run: manifest valid "
-                f"({manifest.kind}, {len(manifest.variants)} variant(s), "
-                f"metric '{manifest.metric_name}'); build ok; tests {test_word}; "
-                "no measurements taken.",
-            ],
-            sweep_path=None,
-            comparisons=[],
-            seconds=time.perf_counter() - started,
-        )
 
     # 1b. sweep cache (V4.1: read-only runs only; key computed AFTER build)
     executor = BenchmarkExecutor(target, export_dir=export_dir)
@@ -677,14 +689,3 @@ def accelerate_target(
         cached=cache_hit is not None,
     )
 
-def outcome_from_project(target: ProjectTarget) -> dict[str, Any]:
-    """Small introspection helper used by the CLI."""
-    manifest = target.manifest
-    return {
-        "root": str(target.root),
-        "kind": manifest.kind,
-        "has_benchmark": manifest.benchmark_command is not None,
-        "has_tests": manifest.test_command is not None,
-        "variants": [variant.name for variant in manifest.variants],
-        "seed_env_var": manifest.seed_env_var,
-    }

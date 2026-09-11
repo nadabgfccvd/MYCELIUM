@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from statistics import mean
 
 from .acceleration import aggregate_scores
-from .audit import AuditLog, load_payload, resolve_checkpoint_file
+from .audit import AuditLog, resolve_checkpoint_file
 from .challenge import Challenge, ChallengeFactory
 from .config import Config
 from .dsl import (
@@ -25,7 +25,7 @@ from .dsl import (
 )
 from .model import EngineState, Family, Organism, StagedMacro
 from .prime import next_prime
-from .state import kill_switch_file, load_state, save_state, state_file
+from .state import StateCorruptError, kill_switch_file, load_state, save_state, state_file
 from .counterexamples import CounterexampleBank, harvest_counterexamples
 from .mutation_semantic import SemanticMutationContext, apply_semantic_mutation
 from .semantics import SemanticBank, canonical_probes
@@ -151,7 +151,17 @@ class MyceliumEngine:
 
     def rollback(self, round_index: int) -> EngineState:
         checkpoint = resolve_checkpoint_file(self.config.state_path / "checkpoints", round_index)
-        state = EngineState.from_dict(load_payload(checkpoint, "pickle" if checkpoint.suffix == ".pkl" else "json"))
+        # Ciclo 4 (R): corrupt checkpoint -> StateCorruptError (friendly CLI),
+        # not a raw json/pickle traceback.
+        from .state import load_checkpoint_payload
+
+        try:
+            payload = load_checkpoint_payload(checkpoint)
+            state = EngineState.from_dict(payload)
+        except (KeyError, TypeError, AttributeError) as exc:
+            raise StateCorruptError(
+                f"checkpoint {checkpoint} has invalid content ({type(exc).__name__}: {exc})"
+            ) from exc
         save_state(self.config.state_path, state, self.config.persistence_backend)
         self.audit.append("rollback", {"round": round_index, "checkpoint": str(checkpoint)})
         return state

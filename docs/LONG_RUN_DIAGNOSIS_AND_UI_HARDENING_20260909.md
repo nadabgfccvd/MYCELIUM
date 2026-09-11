@@ -205,7 +205,8 @@ Validações executadas:
 Comando executado sobre uma sessão curta real:
 
 ```bash
-python scripts/generate_auto_round_report.py --state-dir /home/user/mycelium-prototype/.mycelium_state_ui --start-round 0 --mode run
+# run from the repository root; the path is repo-relative (no hardcoded $HOME)
+python scripts/generate_auto_round_report.py --state-dir .mycelium_state_ui --start-round 0 --mode run
 ```
 
 Resultado:

@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: >-
+  If you use MYCELIUM-Accel in your research, please cite it using
+  this metadata.
+title: MYCELIUM-Accel
+type: software
+version: 1.5.0
+date-released: "2026-09-10"
+authors:
+  - name: MYCELIUM-Accel contributors
+repository-code: "https://github.com/INSIRA-ORGAO/mycelium-accel"
+abstract: >-
+  Paired-statistics acceleration harness for arbitrary projects (Python,
+  C/CMake, Rust/Cargo, Node). No LLM in any stage, prime-seed validation,
+  sandboxed variant application with snapshot/rollback and kill-switch, and
+  accept/reject decisions gated by paired per-seed statistics (BCa bootstrap
+  confidence intervals, sign-flip permutation, Holm/BH correction) with
+  honest negative results.
+keywords:
+  - benchmarking
+  - statistics
+  - optimization
+  - performance
+  - reproducibility
+license: MIT

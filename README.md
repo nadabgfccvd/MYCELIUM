@@ -1,15 +1,20 @@
 # MYCELIUM-Accel — harness de aceleração estatística para projetos reais
 
+<!-- TODO(user): troque INSIRA-ORGAO pela organização real após o push (Fase 0),
+     consistente com mkdocs.yml e pyproject.toml [project.urls]. -->
+[![CI](https://github.com/INSIRA-ORGAO/mycelium-accel/actions/workflows/ci.yml/badge.svg)](https://github.com/INSIRA-ORGAO/mycelium-accel/actions/workflows/ci.yml)
+[![Docs](https://github.com/INSIRA-ORGAO/mycelium-accel/actions/workflows/docs.yml/badge.svg)](https://github.com/INSIRA-ORGAO/mycelium-accel/actions/workflows/docs.yml)
+
 **`pip install mycelium-accel`** · sem LLM · seeds primas · sandbox/rollback/kill-switch · decisões por estatística pareada.
 
-> **Nome novo (Fase D, 2026-09-09):** distribuição `mycelium-auto-evolve` → **`mycelium-accel``,
+> **Nome novo (Fase D, 2026-09-09):** distribuição `mycelium-auto-evolve` → **`mycelium-accel`**,
 > import `mycelium` → **`mycelium_accel`**, console `mycelium` → **`mycelium-accel`**
 > (alias legado `mycelium` deprecated desde 1.0 — remoção prevista na 2.0).
 > Motivo: `mycelium`/`import mycelium` está ocupado no PyPI por projetos ativos de terceiros.
 
 ## O que é
 
-Um **acelerador estatístico genérico**: você aponta para um projeto (Python, C/CMake, Rust/Cargo, Node, Go —
+Um **acelerador estatístico genérico**: você aponta para um projeto (Python, C/CMake, Rust/Cargo, Node —
 detecção automática via `mycelium.target.json`), ele propõe variantes (flags, env, patches, profiles),
 mede com **benchmarks pareados por seed** e só aplica o que passa na guarda:
 
@@ -35,12 +40,15 @@ pareada completa), então ciclos sempre terminam em minutos.
 
 | Evidência | Número |
 |---|---|
-| Suíte de testes | **454 passed + 276 subtests** (v1.5.0; CI 3 SOs × 2 Pythons, ruff+mypy gates) |
+| Suíte de testes | **556 verdes + 770 subtestes** (suíte completa; números re-medidos a cada release) |
 | Roda 25 min pós-roadmap (2026-09-09) | 73 ciclos em 1.512s (~20,7s/ciclo), **73/73 rejeições honestas** do guard pareado |
 | Screening com futilidade | busca focada de 29 candidatos em ~5s com portão fechado |
+| Decisão pareada (S2/C3) | **14,5 → 3,2 ms/decisão (4,6×)** via matriz de índices de bootstrap memoizada; 0 flips em 500 sweeps, ICs bit-idênticos |
 | Library learning (corpus real, 30 rodadas) | 374 → 332 nós (11,3%), 8 abstrações, suporte médio 5,1 |
 | Experimento QD (20 gerações) | coverage 0,121 · QD-score 182,6 · QD-AUC +1.583 |
 | Saturação DSL (2 réplicas) | platô + `local_stagnation` — tese de crescimento no DSL atual **refutada 2×** |
+| Mutação (stats.py, Q4/M1) | 88,7% kill (579/28/74, ledger de 71 equivalentes) |
+| Portfólio real (Ciclo 7, 2026-09-10) | 3 projetos de terceiros: **pygments −9,6% aceito** (suíte oficial 5215/5215 verde sob o patch), sqlparse −2,1% aceito, tabulate rejeitado honesto — `docs/CASE_PORTFOLIO_20260910.md` |
 
 ## Quickstart
 
@@ -52,7 +60,7 @@ mycelium-accel doctor            # checa ambiente: python, gcc, git, toolchain, 
 # acelerar um projeto qualquer (auto-detecção; sem --manifest usa heurística)
 mycelium-accel accelerate --target /caminho/do/projeto --seeds 101,103,107,109,113,127,131
 
-# gerar manifesto para um projeto (auto-detecção python/cmake/cargo/node/go)
+# gerar manifesto para um projeto (auto-detecção python/cmake/cargo/node)
 mycelium-accel accelerate init --target /caminho/do/projeto
 
 # engine evolutivo interno (substrato de pesquisa)
@@ -65,7 +73,7 @@ mycelium-accel growth-regime --state-dir .mycelium_state --markdown
 
 ## Estado do roadmap (12 semanas, solo)
 
-- **Fase D — Decisão & rename** ✅ (mycelium-accel, 118 verdes)
+- **Fase D — Decisão & rename** ✅ (mycelium-accel; 118 verdes **na época** — ver tabela de Evidências acima para o número atual)
 - **Trilha F — Fundamentos** ✅ (telemetria durável, CI 3.13/3.14, runs fatiadas, dogfood 76 rps, kill-switch exercitado)
 - **Trilha B — Produto 0.2.0** ✅ (EC1 negativo-honesto, **EC2 O3native +23.7% aceito**, doctor/init/relatórios, ADR-0001; uploads PyPI aguardam token — `docs/RELEASE.md`)
 - **Trilha C-lite — Pesquisa** ✅ (C1 ☠️ MORTE, C2 ✅ VIDA com 29 tarefas SyGuS, C3 ☠️ MORTE, ADR-0002: NÃO neste substrato + condições)
@@ -79,12 +87,11 @@ suíte 42→27 s, racing -66%, `--cache` 14×, `--adaptive-repeats` -13–60% ru
 (0 flips no replay), ruff gate, `release.sh` v1.3 (VELOCIDADE R2): suíte 32.5→22.5 s, loop →3.7 s,
 `--sequential-seeds` (OBF, -14% decisivos), `--race-adaptive` (-33% screen),
 `--cache-dir` compartilhado, S2 morto com prova, CI 2 estágios, AGENTS.md ·
-suíte: **204 verdes** (v1.3) → v1.4 (QUALIDADE): **380 verdes** + 180 subtests,
-mypy gate, mutação stats.py 88.7% kill, CI 3 SOs × 2 Pythons verde →
-v1.5 (10 ciclos autônomos, `docs/ROADMAP_10CYCLES_AUTONOMOUS_20260910.md`):
-**454 verdes** + 276 subtests, kind `go`, `accelerate --dry-run`, advisory
-stats (§8), exports atômicos, telemetria rotativa, `screen_trail`,
-relatórios dark/print, release `--dry-run`
+suíte: **204 verdes** (na época; ver Evidências acima para o número atual) ·
+v1.4.0 (QUALIDADE Q0–Q4): coverage 85%, mypy gate, ruff C901+UP, mutação
+stats.py 88,7% kill, suíte 324 na época · pós-1.4.0: bateria de
+mutação do `bench.py` (44 testes, 20/20 fault-injection), CI-1..CI-4 (primeiro
+push GitHub: matrix 3.13/3.14 verde) — **suíte hoje: ver tabela de Evidências acima**
 - Documento-mãe: `docs/ROADMAP_ESTRATEGICO_MYCELIUM_AUTO_EVOLVE_20260909.md` · histórico: `CHANGES.md`
 
 ---
@@ -112,14 +119,14 @@ guardada. O que segue documenta o engine interno — o produto acima é o harnes
 - **Modo daemon de auto melhoria**: loop contínuo com status persistido e parada limpa por kill-switch.
 - **Modo aceleração**: benchmark determinístico, verificação de equivalência e aplicação da escolha de volta ao código.
 - **Relatório honesto de crescimento**: classifica o regime observado como exponencial, linear, sublinear ou estagnado.
-- **Harness genérico** (`mycelium_accel/targets/` + `bench.py`): manifestos `mycelium.target.json`, runner confinado, snapshot/rollback, auto-detecção python/cargo/cmake/node/go.
+- **Harness genérico** (`mycelium_accel/targets/` + `bench.py`): manifestos `mycelium.target.json`, runner confinado, snapshot/rollback, auto-detecção python/cargo/cmake/node.
 - **Estatística pareada** (`stats.py`): deltas por seed, IC BCa, permutação sign-flip, Holm/BH, racing sequencial.
 - **Mutação semântica** (6 operadores), **library learning** (MDL), **ecologia QD**, **coevolução de ambientes**, **métricas de regime** — ver `docs/ROADMAP_EXECUTION_20260909.md`.
 
 ## Estrutura do repositório
 
 ```text
-mycelium-prototype/
+MYCELIUM/  (mycelium-accel)
 ├─ mycelium_accel/
 │  ├─ __main__.py
 │  ├─ acceleration.py
@@ -130,32 +137,40 @@ mycelium-prototype/
 │  ├─ challenge.py
 │  ├─ config.py
 │  ├─ counterexamples.py
+│  ├─ doctor.py
 │  ├─ dsl.py
+│  ├─ ecology_loop.py
 │  ├─ engine.py
 │  ├─ environment_ecology.py
 │  ├─ growth_metrics.py
+│  ├─ history.py
 │  ├─ library_learning.py
 │  ├─ model.py
 │  ├─ mutation_semantic.py
 │  ├─ prime.py
+│  ├─ py.typed       (PEP 561: marker shipped in the wheel)
 │  ├─ qd_archive.py
+│  ├─ report_html.py
 │  ├─ runtime_profile.py
+│  ├─ scaffold.py
 │  ├─ self_improve.py
 │  ├─ semantics.py
 │  ├─ state.py
 │  ├─ stats.py
 │  ├─ superoptimize.py
+│  ├─ sweep_cache.py
+│  ├─ sygus_adapter.py
 │  ├─ telemetry.py
 │  ├─ transfer_graph.py
-│  ├─ targets/
-│  ├─ validators/
-│  └─ generated/
-│     ├─ active_variants.py
-│     └─ default_profile.py
+│  ├─ targets/       (python · cargo · cmake · node · shell · base/sandbox)
+│  ├─ validators/    (behavioral · metamorphic · llvm_alive2 · mlir_eqsat)
+│  └─ generated/     (active_variants · default_profile)
+├─ mycelium_ui/      (UI local de 1 arquivo: index.html + app.js + styles.css)
 ├─ docs/
 ├─ examples/
 ├─ scripts/
-├─ tests/
+├─ tests/            (+ tests/replay/ âncoras de veredito)
+├─ .github/          (CI matrix 3 SOs × {3.13, 3.14})
 ├─ CHANGES.md
 ├─ README.md
 └─ pyproject.toml
@@ -383,7 +398,7 @@ pip install -e . pytest pytest-xdist   # uma vez
 pytest -m "not slow" -q               # loop interno (~5 s)
 pytest -q                             # tudo (~24 s, antes de commitar)
 pytest --lf -x -q                     # W1.3: só o que falhou (ciclo vermelho-verde em segundos)
-pytest -q -n auto                     # tudo em paralelo (meça local; sandbox 2-core: 43→23 s)
+pytest -q -n auto                     # tudo em paralelo (vale em 4+ cores)
 ruff check mycelium_accel/ tests/ scripts/   # lint (gate do CI)
 bash scripts/release.sh vX.Y.Z --full # release em 1 comando
 ```

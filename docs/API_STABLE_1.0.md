@@ -96,27 +96,22 @@ alvo quebrado): 1 linha `mycelium-accel: accelerate failed: ...` em stderr.
   (Mann-Whitney p>0.10 **e** |razão das medianas − 1| < 5%) em 3 benchmarks.
   Kill: 1 diferença = anti-meta mantido, sem apelação.
 
-## 8. Adições 1.5 (advisory — pré-registradas no C3, nunca mudam vereditos)
+## 8. Adições 1.5 (Ciclos 1-10, 2026-09-10 — aditivas, compatíveis)
 
-- **`stats.paired_power(dz, n, alpha=0.05)`**: poder one-sided por aproximação
-  normal `Φ(dz·√n − z)`. Convenções: NaN/`-inf` → 0.0, `+inf` → 1.0, dz=0 →
-  poder = alfa. `ValueError` em alfa fora de (0,1), n<1 não-inteiro ou dz
-  não-numérico. Número de planejamento ("preciso de mais seeds?"), nunca gate.
-- **`stats.diagnose_comparison(comp, alpha=0.05)`**: ficha descritiva com chaves
-  estáveis `metric n_pairs effect_dz approx_power_one_sided power_alpha
-  ci_width margin_above_zero rel_margin exact_p_floor notes`. `notes` é lista
-  (vazia quando nada a dizer); thresholds em constantes
-  `ADVISORY_POWER_TARGET=0.80`, `ADVISORY_THIN_MARGIN_RATIO=0.10`,
-  `ADVISORY_NOISY_CI_RATIO=2.0` — arbitrários, documentados, advisory-only.
-- **Isolamento pinado por teste** (`test_stats_advisory.py::AdvisoryIsolationTests`):
-  `accelerate_generic.py`, `bench.py`, `__main__.py` e `self_improve.py` NUNCA
-  referenciam `paired_power`, `diagnose_comparison` ou `ADVISORY_*`. Se um dia
-  um veredito quiser ler advisory, isso é mudança de regra de decisão: exige
-  pré-registro + simulação + kill, como qualquer outra (§7 vale de modelo).
-- **`accelerate --dry-run` (C5):** valida manifesto+build+testes sem medir:
-  exit 0 + mesmo schema JSON com `best_candidate: null`, `applied: false`,
-  `sweep_path: null`, `comparisons: []` e 1 `decision_reason` começando com
-  `"dry run: …; no measurements taken."`; não cria `.mycelium_benchmarks/`,
-  não toca cache, não aplica. Build quebrado/manifesto inválido = exit 1 +
-  1 linha (catálogo em `docs/ERRORS.md`); testes quebrados = exit 0 com
-  `FAIL` na reason (nada seria aplicado).
+- **`StateCorruptError` (nova exceção, `mycelium_accel.state`):** estado ou
+  checkpoint corrompido/truncado/ilegível levanta exceção tipada (subclasse
+  de `RuntimeError`, carrega path + causa) em vez de `JSONDecodeError`/
+  `UnpicklingError` crus. CLI degrada para 1 linha acionável + exit 1
+  (códigos de saída da seção 2 inalterados). Ausência de state continua
+  `FileNotFoundError` (init fresco) — corrupção ≠ ausência.
+- **Aviso de deprecação do alias `mycelium`:** invocação como `mycelium`
+  (argv[0] exato) imprime 1 linha em stderr; stdout e exit code intactos.
+  Consistente com a seção 4 (remoção na 2.0).
+- **Kernel de scoring compilado (interno, `dsl._compile_score_kernel`):**
+  `ProgramExecutor.score_pairs/score_pairs_limit` usam codegen especializado
+  (3,8×) com equivalência bit-a-bit garantida por bateria diferencial
+  (tests/test_dsl_codegen.py, 490 subtestes) + bateria de mutação
+  (tests/test_kernel_mutation.py, 9/9 mutantes do emitter mortos +
+  controle). Nenhuma mudança de schema/veredito — replay 0 flips.
+- **`load_checkpoint_payload` (nova, `mycelium_accel.state`):** carga de
+  checkpoint com decode/shape → `StateCorruptError`.

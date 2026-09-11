@@ -3,6 +3,7 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 from typing import Any
+from collections.abc import Callable
 from collections.abc import Iterable, Mapping, Sequence
 
 
@@ -195,10 +196,14 @@ class ProgramExecutor:
         return _execute_program(self.instructions, self.max_abs_value, self.max_stack_depth, x)
 
     def score_pairs(self, pairs: Sequence[tuple[int, int]]) -> tuple[float, float]:
-        return _score_pairs_program(self.instructions, self.max_abs_value, self.max_stack_depth, pairs, None)
+        # V3.3 (Ciclo 3): compiled kernel; interpreter kept as reference
+        # (differential-tested in tests/test_dsl_codegen.py).
+        kernel = _compile_score_kernel(self.instructions, self.max_abs_value, self.max_stack_depth)
+        return kernel(pairs, None)
 
     def score_pairs_limit(self, pairs: Sequence[tuple[int, int]], limit: int) -> tuple[float, float]:
-        return _score_pairs_program(self.instructions, self.max_abs_value, self.max_stack_depth, pairs, limit)
+        kernel = _compile_score_kernel(self.instructions, self.max_abs_value, self.max_stack_depth)
+        return kernel(pairs, limit)
 
 
 MacroNodeMap = Mapping[str, Node | Macro]
@@ -233,6 +238,22 @@ def _execute_program(  # noqa: C901 — Q3.2: opcode dispatch table, 1-2 lines p
     max_abs_value: int,
     max_stack_depth: int,
     x: int,
+    *,
+    # V3.3 (Ciclo 3): opcodes bound as locals — LOAD_GLOBAL per comparison
+    # was ~15% of interpreter time (profile: 40-round engine run). Pure
+    # speed change; semantics guarded by test_semantics + replay anchors.
+    _const: int = OP_CONST,
+    _input: int = OP_INPUT,
+    _neg: int = OP_NEG,
+    _abs: int = OP_ABS,
+    _inc: int = OP_INC,
+    _dec: int = OP_DEC,
+    _square: int = OP_SQUARE,
+    _add: int = OP_ADD,
+    _sub: int = OP_SUB,
+    _mul: int = OP_MUL,
+    _max: int = OP_MAX,
+    _min: int = OP_MIN,
 ) -> int:
     if x > max_abs_value:
         x = max_abs_value
@@ -242,39 +263,39 @@ def _execute_program(  # noqa: C901 — Q3.2: opcode dispatch table, 1-2 lines p
     stack = [0] * max_stack_depth
     top = 0
     for opcode, argument in instructions:
-        if opcode == OP_CONST:
+        if opcode == _const:
             stack[top] = argument
             top += 1
             continue
-        if opcode == OP_INPUT:
+        if opcode == _input:
             stack[top] = x
             top += 1
             continue
 
-        if opcode == OP_NEG:
+        if opcode == _neg:
             stack[top - 1] = -stack[top - 1]
-        elif opcode == OP_ABS:
+        elif opcode == _abs:
             stack[top - 1] = abs(stack[top - 1])
-        elif opcode == OP_INC:
+        elif opcode == _inc:
             stack[top - 1] += 1
-        elif opcode == OP_DEC:
+        elif opcode == _dec:
             stack[top - 1] -= 1
-        elif opcode == OP_SQUARE:
+        elif opcode == _square:
             stack[top - 1] *= stack[top - 1]
         else:
             right = stack[top - 1]
             left = stack[top - 2]
             top -= 1
-            if opcode == OP_ADD:
+            if opcode == _add:
                 stack[top - 1] = left + right
-            elif opcode == OP_SUB:
+            elif opcode == _sub:
                 stack[top - 1] = left - right
-            elif opcode == OP_MUL:
+            elif opcode == _mul:
                 stack[top - 1] = left * right
-            elif opcode == OP_MAX:
+            elif opcode == _max:
                 stack[top - 1] = left if left >= right else right
                 continue
-            elif opcode == OP_MIN:
+            elif opcode == _min:
                 stack[top - 1] = left if left <= right else right
                 continue
             else:
@@ -294,6 +315,20 @@ def _score_pairs_program(  # noqa: C901 — Q3.2: scoring loop with opcode dispa
     max_stack_depth: int,
     pairs: Sequence[tuple[int, int]],
     limit: int | None,
+    *,
+    # V3.3 (Ciclo 3): opcodes as locals — see _execute_program note.
+    _const: int = OP_CONST,
+    _input: int = OP_INPUT,
+    _neg: int = OP_NEG,
+    _abs: int = OP_ABS,
+    _inc: int = OP_INC,
+    _dec: int = OP_DEC,
+    _square: int = OP_SQUARE,
+    _add: int = OP_ADD,
+    _sub: int = OP_SUB,
+    _mul: int = OP_MUL,
+    _max: int = OP_MAX,
+    _min: int = OP_MIN,
 ) -> tuple[float, float]:
     total_soft = 0.0
     exact_hits = 0
@@ -311,39 +346,39 @@ def _score_pairs_program(  # noqa: C901 — Q3.2: scoring loop with opcode dispa
 
         top = 0
         for opcode, argument in instructions:
-            if opcode == OP_CONST:
+            if opcode == _const:
                 stack[top] = argument
                 top += 1
                 continue
-            if opcode == OP_INPUT:
+            if opcode == _input:
                 stack[top] = x
                 top += 1
                 continue
 
-            if opcode == OP_NEG:
+            if opcode == _neg:
                 stack[top - 1] = -stack[top - 1]
-            elif opcode == OP_ABS:
+            elif opcode == _abs:
                 stack[top - 1] = abs(stack[top - 1])
-            elif opcode == OP_INC:
+            elif opcode == _inc:
                 stack[top - 1] += 1
-            elif opcode == OP_DEC:
+            elif opcode == _dec:
                 stack[top - 1] -= 1
-            elif opcode == OP_SQUARE:
+            elif opcode == _square:
                 stack[top - 1] *= stack[top - 1]
             else:
                 right = stack[top - 1]
                 left = stack[top - 2]
                 top -= 1
-                if opcode == OP_ADD:
+                if opcode == _add:
                     stack[top - 1] = left + right
-                elif opcode == OP_SUB:
+                elif opcode == _sub:
                     stack[top - 1] = left - right
-                elif opcode == OP_MUL:
+                elif opcode == _mul:
                     stack[top - 1] = left * right
-                elif opcode == OP_MAX:
+                elif opcode == _max:
                     stack[top - 1] = left if left >= right else right
                     continue
-                elif opcode == OP_MIN:
+                elif opcode == _min:
                     stack[top - 1] = left if left <= right else right
                     continue
                 else:
@@ -366,6 +401,154 @@ def _score_pairs_program(  # noqa: C901 — Q3.2: scoring loop with opcode dispa
     if count == 0:
         return 0.0, 0.0
     return total_soft / count, exact_hits / count
+
+
+# ---------------------------------------------------------------------------
+# V3.3 (Ciclo 3): compiled scoring kernels.
+#
+# The interpreter above is the *reference semantics*; the kernel below is a
+# straight-line codegen of the same program (one specialized Python function
+# per instruction tuple, cached). Semantics are pinned bit-for-bit by
+# tests/test_dsl_codegen.py (differential vs the interpreter, including the
+# no-clamp-after MAX/MIN quirk and the empty-program path) and by the replay
+# verdict anchors. Integer math + same float-op order ⇒ identical results.
+# ---------------------------------------------------------------------------
+
+_ScoreKernel = Callable[[Sequence[tuple[int, int]], int | None], tuple[float, float]]
+_KERNEL_CACHE: dict[tuple[tuple[tuple[int, int], ...], int, int], _ScoreKernel] = {}
+_KERNEL_CACHE_LIMIT = 512
+
+# Opcode -> codegen. Each arm receives the symbolic stack top `p` and returns
+# (source_line, new_p). Clamp policy mirrors the interpreter EXACTLY: unary +
+# add/sub/mul/mod clamp their result; const/input/max/min do not.
+_CLAMP_AFTER = frozenset({OP_NEG, OP_ABS, OP_INC, OP_DEC, OP_SQUARE, OP_ADD, OP_SUB, OP_MUL, OP_MOD})
+
+
+def _emit_clamp(slot: int, max_abs_value: int, out: list[str]) -> None:
+    out.append(f"        if t{slot} > {max_abs_value}:")
+    out.append(f"            t{slot} = {max_abs_value}")
+    out.append(f"        elif t{slot} < -{max_abs_value}:")
+    out.append(f"            t{slot} = -{max_abs_value}")
+
+
+def _compile_score_kernel(  # noqa: C901 — Q3.2: one arm per opcode, mirrors interpreter.
+    instructions: tuple[tuple[int, int], ...],
+    max_abs_value: int,
+    max_stack_depth: int,
+) -> _ScoreKernel:
+    """Compile a scoring loop with the opcode dispatch resolved at build time."""
+    key = (instructions, max_abs_value, max_stack_depth)
+    cached = _KERNEL_CACHE.get(key)
+    if cached is not None:
+        return cached
+
+    # Validate the abstract stack first: an underflowing instruction tuple is
+    # not a program the compiler can emit (negative slot names would be a
+    # SyntaxError). The interpreter happens to tolerate it via accidental
+    # negative list indexing; the compiler must reject it explicitly. Such a
+    # tuple is unreachable through tree compilation (Node programs always
+    # type-check the stack), but the function is public to the test suite.
+    depth = 0
+    for index, (opcode, _argument) in enumerate(instructions):
+        if opcode == OP_CONST or opcode == OP_INPUT:
+            depth += 1
+        elif opcode in (OP_NEG, OP_ABS, OP_INC, OP_DEC, OP_SQUARE):
+            if depth < 1:
+                raise ValueError(
+                    f"instruction {index} (opcode {opcode}) underflows an empty stack"
+                )
+        elif opcode in (OP_ADD, OP_SUB, OP_MUL, OP_MOD, OP_MAX, OP_MIN):
+            if depth < 2:
+                raise ValueError(
+                    f"instruction {index} (opcode {opcode}) needs 2 stack items, has {depth}"
+                )
+            depth -= 1
+        else:
+            raise ValueError(f"instruction {index} has unknown opcode: {opcode}")
+
+    body: list[str] = []
+    p = 0
+    for opcode, argument in instructions:
+        if opcode == OP_CONST:
+            body.append(f"        t{p} = {argument}")
+            p += 1
+        elif opcode == OP_INPUT:
+            body.append(f"        t{p} = x")
+            p += 1
+        elif opcode in _CLAMP_AFTER:
+            q = p - 1
+            if opcode == OP_NEG:
+                body.append(f"        t{q} = -t{q}")
+            elif opcode == OP_ABS:
+                body.append(f"        t{q} = abs(t{q})")
+            elif opcode == OP_INC:
+                body.append(f"        t{q} = t{q} + 1")
+            elif opcode == OP_DEC:
+                body.append(f"        t{q} = t{q} - 1")
+            elif opcode == OP_SQUARE:
+                body.append(f"        t{q} = t{q} * t{q}")
+            else:
+                a, b = p - 2, p - 1
+                if opcode == OP_ADD:
+                    body.append(f"        t{a} = t{a} + t{b}")
+                elif opcode == OP_SUB:
+                    body.append(f"        t{a} = t{a} - t{b}")
+                elif opcode == OP_MUL:
+                    body.append(f"        t{a} = t{a} * t{b}")
+                else:  # OP_MOD
+                    body.append(f"        t{a} = t{a} % (abs(t{b}) % 97 + 1)")
+                p -= 1
+                q = p - 1
+            _emit_clamp(q, max_abs_value, body)
+        elif opcode == OP_MAX:
+            a, b = p - 2, p - 1
+            body.append(f"        t{a} = t{a} if t{a} >= t{b} else t{b}")
+            p -= 1
+        elif opcode == OP_MIN:
+            a, b = p - 2, p - 1
+            body.append(f"        t{a} = t{a} if t{a} <= t{b} else t{b}")
+            p -= 1
+        else:  # pragma: no cover — compiler only emits known opcodes
+            raise ValueError(f"unknown opcode: {opcode}")
+
+    # Interpreter quirk: an empty instruction list reads stack[-1] of the
+    # zeroed stack, i.e. always 0.
+    predicted = f"t{p - 1}" if p > 0 else "0"
+
+    slots = "".join(f"    t{i} = 0\n" for i in range(max(p, 1)))
+    source = (
+        f"def _kernel(pairs, limit):\n"
+        f"    total_soft = 0.0\n"
+        f"    exact_hits = 0\n"
+        f"    count = 0\n"
+        f"{slots}"
+        f"    for x, expected in pairs:\n"
+        f"        if limit is not None and count >= limit:\n"
+        f"            break\n"
+        f"        count += 1\n"
+        f"        if x > {max_abs_value}:\n"
+        f"            x = {max_abs_value}\n"
+        f"        elif x < -{max_abs_value}:\n"
+        f"            x = -{max_abs_value}\n"
+        + "\n".join(body) + "\n"
+        f"        predicted = {predicted}\n"
+        f"        error = predicted - expected\n"
+        f"        if error < 0:\n"
+        f"            error = -error\n"
+        f"        total_soft += 1.0 / (1.0 + error)\n"
+        f"        if error == 0:\n"
+        f"            exact_hits += 1\n"
+        f"    if count == 0:\n"
+        f"        return 0.0, 0.0\n"
+        f"    return total_soft / count, exact_hits / count\n"
+    )
+    namespace: dict[str, Any] = {}
+    exec(compile(source, "<mycelium-score-kernel>", "exec"), namespace)  # noqa: S102 — ints only, no user text
+    kernel = namespace["_kernel"]
+    if len(_KERNEL_CACHE) >= _KERNEL_CACHE_LIMIT:
+        _KERNEL_CACHE.clear()
+    _KERNEL_CACHE[key] = kernel
+    return kernel
 
 
 def _compile_program_instructions(tree: Node, macro_nodes: dict[str, Node]) -> tuple[tuple[tuple[int, int], ...], int]:  # noqa: C901 — Q3.2: compiler recursion over node kinds.
@@ -523,19 +706,6 @@ def iter_path_nodes(node: Node) -> list[tuple[tuple[int, ...], Node]]:
     return items
 
 
-def iter_paths(node: Node, path: tuple[int, ...] = ()) -> list[tuple[int, ...]]:
-    if path:
-        raise ValueError("iter_paths no longer accepts a non-root starting path.")
-    return [item[0] for item in iter_path_nodes(node)]
-
-
-def get_subtree(node: Node, path: tuple[int, ...]) -> Node:
-    current = node
-    for index in path:
-        current = current.children[index]
-    return current
-
-
 def replace_subtree(node: Node, path: tuple[int, ...], new_subtree: Node) -> Node:
     if not path:
         return new_subtree.clone()
@@ -617,10 +787,6 @@ def repeated_pattern_tree(rng: random.Random) -> Node:
     if rng.random() < 0.5:
         return Node("add", children=[left, Node("input")])
     return Node("mul", children=[Node("input"), Node("max", children=[left, right])])
-
-
-def complexity(tree: Node) -> int:
-    return tree.complexity_score()
 
 
 def dedupe_motifs(motifs: Iterable[Node], limit: int) -> list[Node]:

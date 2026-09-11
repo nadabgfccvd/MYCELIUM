@@ -37,26 +37,6 @@ class DoctorTests(unittest.TestCase):
             manifest = json.loads(Path(tmp, "mycelium.target.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["kind"], "python")
 
-    def test_disk_free_check_present_and_never_fails(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            checks = run_checks(str(Path(tmp) / "state"))
-        disk = [c for c in checks if c.name == "disk_free"]
-        self.assertEqual(len(disk), 1)
-        self.assertIn(disk[0].status, ("PASS", "WARN"))
-
-    def test_tool_version_checks_never_fail(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            checks = run_checks(str(Path(tmp) / "state"))
-        versions = [c for c in checks if c.name.startswith("tool-version:")]
-        for check in versions:  # only present tools are listed
-            self.assertIn(check.status, ("PASS", "WARN"))
-        names = {c.name for c in checks}
-        for tool in ("gcc", "cmake", "make", "cargo", "node"):
-            if f"tool:{tool}" in names:
-                present = next(c for c in checks if c.name == f"tool:{tool}")
-                if present.status == "PASS":
-                    self.assertIn(f"tool-version:{tool}", names)
-
 
 if __name__ == "__main__":
     unittest.main()

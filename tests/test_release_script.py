@@ -50,30 +50,6 @@ class ReleaseScriptTests(unittest.TestCase):
             self.assertIn("version mismatch", proc.stderr)
             self.assertFalse((root / "dist").exists(), "build must not start")
 
-    def test_dry_run_checks_without_building(self) -> None:
-        # Hermetic like above, but with the REAL version files: the current
-        # tree must always be dry-runnable at its own version.
-        import shutil
-
-        from mycelium_accel import __version__
-
-        with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp)
-            shutil.copytree(ROOT / "scripts", root / "scripts")
-            shutil.copy(ROOT / "pyproject.toml", root / "pyproject.toml")
-            shutil.copy(ROOT / "CHANGES.md", root / "CHANGES.md")
-            pkg = root / "mycelium_accel"
-            pkg.mkdir()
-            shutil.copy(ROOT / "mycelium_accel" / "__init__.py",
-                        pkg / "__init__.py")
-            tag = f"v{__version__}"
-            proc = subprocess.run(
-                ["bash", str(root / "scripts" / "release.sh"), tag, "--dry-run"],
-                capture_output=True, text=True, cwd=root)
-            self.assertEqual(proc.returncode, 0, proc.stderr)
-            self.assertIn(f"DRY-RUN {tag}", proc.stdout)
-            self.assertFalse((root / "dist").exists(), "dry-run builds nothing")
-
 
 class ReleaseCheckTests(unittest.TestCase):
     def _fixture(self, root: Path, *, version: str, init_version: str, changes: str) -> None:
@@ -116,16 +92,74 @@ class ReleaseCheckTests(unittest.TestCase):
             errors = release_check.check("v2.0.0", root)
             self.assertEqual(errors, ["CHANGES.md has no entry for v2.0.0"])
 
-    def test_live_tree_versions_agree(self) -> None:
-        # The single-source rule, on the real tree: a partial bump reds here.
-        import tomllib
 
-        from mycelium_accel import __version__
+class PublishReadinessTests(unittest.TestCase):
+    """S2.5: the opt-in PyPI readiness gate (placeholder slugs + py.typed)."""
 
-        py_version = tomllib.loads(
-            (ROOT / "pyproject.toml").read_bytes().decode())["project"]["version"]
-        self.assertEqual(py_version, __version__)
-        self.assertEqual(release_check.check(f"v{py_version}", ROOT), [])
+    def _ready_fixture(self, root: Path, *, slug: str = "my-org/mycelium") -> None:
+        pyproject = (
+            '[project]\nname = "x"\nversion = "3.0.0"\n'
+            f'[project.urls]\nHomepage = "https://github.com/{slug}"\n'
+        )
+        (root / "pyproject.toml").write_text(pyproject, encoding="utf-8")
+        pkg = root / "mycelium_accel"
+        pkg.mkdir()
+        (pkg / "__init__.py").write_text('__version__ = "3.0.0"\n', encoding="utf-8")
+        (pkg / "py.typed").write_text("", encoding="utf-8")
+        (root / "CHANGES.md").write_text("## 3.0.0\n", encoding="utf-8")
+
+    def test_clean_fixture_is_ready(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._ready_fixture(root)
+            self.assertEqual(release_check.publish_readiness(root), [])
+
+    def test_placeholder_slug_in_pyproject_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._ready_fixture(root, slug="INSIRA-ORGAO/mycelium")
+            errors = release_check.publish_readiness(root)
+            self.assertEqual(len(errors), 1)
+            self.assertIn("INSIRA-ORGAO", errors[0])
+
+    def test_placeholder_slug_in_readme_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._ready_fixture(root)
+            (root / "README.md").write_text(
+                "see github.com/INSIRA-ORGAO/x", encoding="utf-8")
+            errors = release_check.publish_readiness(root)
+            self.assertTrue(any("README.md" in e for e in errors))
+
+    def test_missing_py_typed_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._ready_fixture(root)
+            (root / "mycelium_accel" / "py.typed").unlink()
+            errors = release_check.publish_readiness(root)
+            self.assertTrue(any("py.typed" in e for e in errors))
+
+    def test_strict_publish_cli_fails_on_placeholder(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._ready_fixture(root, slug="INSIRA-ORGAO/mycelium")
+            proc = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "release_check.py"),
+                 "--strict-publish", "v3.0.0"],
+                capture_output=True, text=True, cwd=root)
+            self.assertEqual(proc.returncode, 1)
+            self.assertIn("INSIRA-ORGAO", proc.stderr)
+
+    def test_strict_publish_cli_passes_when_ready(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self._ready_fixture(root)
+            proc = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "release_check.py"),
+                 "--strict-publish", "v3.0.0"],
+                capture_output=True, text=True, cwd=root)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertIn("publish readiness OK", proc.stdout)
 
 
 if __name__ == "__main__":

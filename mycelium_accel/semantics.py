@@ -14,7 +14,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 from collections.abc import Iterable, Sequence
 
-from .dsl import Macro, Node, compile_program, iter_path_nodes
+from .dsl import Node, compile_program, iter_path_nodes
 
 CANONICAL_PROBES = (-11, -7, -5, -3, -2, -1, 0, 1, 2, 3, 5, 7, 11)
 
@@ -224,8 +224,3 @@ class SemanticBank:
         return bank
 
 
-def macro_node_map(macros: dict[str, Node] | dict[str, Macro]) -> dict[str, Node]:
-    normalized: dict[str, Node] = {}
-    for name, value in macros.items():
-        normalized[name] = value.tree if isinstance(value, Macro) else value
-    return normalized

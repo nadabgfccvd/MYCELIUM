@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
 # V3.1: one-command release — build + twine + clean-venv verify + tag.
 # The version number stays deliberate: pass the TAG explicitly (no auto-bump).
-# Usage: scripts/release.sh v1.2.0 [--full] [--dry-run]
+# Usage: scripts/release.sh v1.2.0 [--full] [--strict-publish]
 #   --full also runs scripts/ci_local.sh first (~1 min).
-#   --dry-run (C9): guards + version checks only; builds/tags nothing.
+#   --strict-publish also gates on PyPI readiness (no INSIRA-ORGAO slugs,
+#                    py.typed present). Run this before a real twine upload.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" || $# -lt 1 ]]; then
-  echo "usage: scripts/release.sh vX.Y.Z [--full] [--dry-run]"
+  echo "usage: scripts/release.sh vX.Y.Z [--full] [--strict-publish]"
   echo "  builds, twine-checks, verifies in a clean venv, then tags."
   echo "  --full: run scripts/ci_local.sh first."
-  echo "  --dry-run: guards + version checks only; builds/tags nothing."
+  echo "  --strict-publish: additionally enforce PyPI publish readiness."
   exit 0
 fi
-TAG="$1"
-FULL=""
-DRY_RUN=""
-for arg in "$@"; do
-  if [[ "$arg" == "--full" ]]; then FULL="--full"; fi
-  if [[ "$arg" == "--dry-run" ]]; then DRY_RUN="1"; fi
+TAG="$1"; shift
+FULL=""; PUBLISH=""
+for opt in "$@"; do
+  case "$opt" in
+    --full) FULL="--full" ;;
+    --strict-publish) PUBLISH="--strict-publish" ;;
+    *) echo "release.sh: unknown option '$opt'" >&2; exit 1 ;;
+  esac
 done
 
 if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -36,12 +39,8 @@ if git rev-parse "$TAG" >/dev/null 2>&1; then
 fi
 
 # Q3.5: versions + CHANGES must agree with the tag before anything builds.
-python3 scripts/release_check.py "$TAG" || exit 1
-
-if [[ -n "$DRY_RUN" ]]; then
-  echo "DRY-RUN $TAG: guards green (tree clean, tag free, versions + CHANGES agree); build/tag skipped."
-  exit 0
-fi
+# shellcheck disable=SC2086  # PUBLISH is either "" or the literal flag.
+python3 scripts/release_check.py $PUBLISH "$TAG" || exit 1
 
 if [[ "$FULL" == "--full" ]]; then
   echo "=== 0/4 full suite ==="

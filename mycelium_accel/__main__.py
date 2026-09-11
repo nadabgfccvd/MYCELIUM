@@ -9,7 +9,7 @@ from .config import Config
 from .engine import MyceliumEngine
 from .runtime_profile import load_default_profile
 from .self_improve import SelfImprover, build_guard_from_args
-from .state import load_state
+from .state import StateCorruptError, load_state
 from datetime import UTC
 
 
@@ -53,7 +53,6 @@ def build_parser() -> argparse.ArgumentParser:
     accelerate_parser.add_argument("--cache", action="store_true", help="reuse sweep when target content is unchanged (V4.1; requires --no-apply)")
     accelerate_parser.add_argument("--cache-dir", default=None, help="shared cache directory (default: per-target; share across checkouts/users for CI)")
     accelerate_parser.add_argument("--sequential-seeds", action="store_true", help="S1: group-sequential look at 6/7 seeds with OBF alpha-spending (requires exactly 7 seeds)")
-    accelerate_parser.add_argument("--dry-run", action="store_true", help="C5: validate manifest+build+tests without measuring (no sweeps, no apply)")
     accel_sub = accelerate_parser.add_subparsers(dest="accelerate_action", required=False)
     accel_init = accel_sub.add_parser("init", help="generate mycelium.target.json via auto-detection (B3)")
     accel_init.add_argument("--target", default=".", help="project directory to scaffold a manifest for")
@@ -205,8 +204,33 @@ def config_from_args(args: argparse.Namespace) -> Config:
     )
 
 
+def _warn_legacy_alias() -> None:
+    """Ciclo 5 (P): the legacy ``mycelium`` console script is deprecated.
+
+    README has promised deprecation "desde 1.0 — remoção prevista na 2.0",
+    but the alias never warned. A deprecation cycle users can actually see:
+    one stderr line per invocation when launched as ``mycelium`` (exact
+    argv[0] basename). ``mycelium-accel`` and ``python -m mycelium_accel``
+    stay silent; ``python -m mycelium`` fails at the interpreter (module
+    renamed), so there is nothing to warn about there.
+    """
+    import os
+    import sys
+
+    try:
+        invoked_as = os.path.basename(sys.argv[0]) if sys.argv else ""
+    except (IndexError, TypeError):  # pragma: no cover - defensive
+        return
+    if invoked_as == "mycelium":
+        sys.stderr.write(
+            "mycelium-accel: warning: the 'mycelium' command is deprecated "
+            "since 1.0 and will be removed in 2.0; use 'mycelium-accel'.\n"
+        )
+
+
 def main() -> None:
     """Q2.1: every command degrades to exit 130 on Ctrl-C (no tracebacks)."""
+    _warn_legacy_alias()
     try:  # Q2.2: `cmd | head` dies silently with SIGPIPE instead of traceback
         from signal import SIG_DFL, SIGPIPE, signal
 
@@ -222,6 +246,36 @@ def main() -> None:
             "mycelium-accel: interrupted — partial artifacts (if any) were exported.\n"
         )
         raise SystemExit(130)
+    except StateCorruptError as exc:
+        # Ciclo 4 (R): corrupt/unreadable state or checkpoint files degrade to
+        # one actionable line, not a raw json/pickle traceback. Same friendliness
+        # contract as manifest/scaffold errors (tests/test_cli_state_errors.py).
+        import sys as _sys_corrupt
+
+        _sys_corrupt.stderr.write(f"mycelium-accel: {exc}\n")
+        _sys_corrupt.stderr.write(
+            "Options: restore an earlier checkpoint "
+            "(mycelium-accel rollback --state-dir <dir> --round <N>),\n"
+            "or re-init the state dir (move it aside and run init).\n"
+        )
+        raise SystemExit(1) from exc
+
+
+def _load_initialized_state(state_dir: Path):
+    """Load state for a read-only command or fail with one actionable line.
+
+    The engine treats an absent state dir as "start fresh" (and keeps
+    load_state raising FileNotFoundError, pinned by tests); but a user
+    running `report`/`growth-regime` on an uninitialized dir made the CLI
+    emit a raw traceback. Translate that into a clear SystemExit (exit 1).
+    """
+    try:
+        return load_state(state_dir)
+    except FileNotFoundError:
+        raise SystemExit(
+            f"mycelium-accel: no state found in {state_dir} — nothing to report.\n"
+            f"Initialize it first: mycelium-accel init --state-dir {state_dir}"
+        )
 
 
 def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm per command.
@@ -279,6 +333,17 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
 
     if args.command == "accelerate":
         target_path = Path(args.target)
+        # S2 Ciclo 10: a nonexistent target previously fell through to the
+        # legacy module loader and leaked a raw RuntimeError traceback.
+        if args.target != "self" and not target_path.exists():
+            import sys as _sys_missing_target
+
+            _sys_missing_target.stderr.write(
+                f"mycelium-accel: accelerate failed: target not found: {target_path}\n"
+                "Pass an existing project directory or benchmark module, or run\n"
+                "'mycelium-accel accelerate init --target <dir>' to scaffold one.\n"
+            )
+            raise SystemExit(1)
         use_generic_harness = (
             args.manifest is not None
             or target_path.is_dir()
@@ -306,7 +371,6 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
                 cache=args.cache,
                 cache_dir=Path(args.cache_dir) if args.cache_dir else None,
                 sequential_seeds=args.sequential_seeds,
-                dry_run=args.dry_run,
                 )
             except (_SafetyError, ValueError, FileNotFoundError, RuntimeError, OSError) as exc:
                 _sys2.stderr.write(f"mycelium-accel: accelerate failed: {exc}\n")
@@ -324,16 +388,21 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
                     "vs --reference (see decision_reasons)\n")
                 raise SystemExit(1)
             return
-        import sys as _sys3
-
+        # S2 Ciclo 10: the legacy module path must be as friendly as the
+        # generic-harness branch (one actionable line, no raw traceback).
         try:
             if args.target == "self":
                 ext_outcome = accelerate_self(Path.cwd())
             else:
                 ext_outcome = accelerate_external(target_path)
-        except Exception as exc:  # C5: legacy path honors §2 (no tracebacks)
-            _sys3.stderr.write(f"mycelium-accel: accelerate failed: {exc}\n")
-            raise SystemExit(1)
+        except (
+            RuntimeError, OSError, ValueError, SyntaxError, AttributeError,
+            ImportError,
+        ) as exc:
+            import sys as _sys_ext
+
+            _sys_ext.stderr.write(f"mycelium-accel: accelerate failed: {exc}\n")
+            raise SystemExit(1) from exc
         print(json.dumps({
             "module": ext_outcome.module_path,
             "baseline": ext_outcome.baseline,
@@ -343,6 +412,17 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
         return
 
     config = config_from_args(args)
+
+    # S2 Ciclo 10: an existing *file* passed as --state-dir later leaked a raw
+    # NotADirectoryError from AuditLog.mkdir; reject it once with a clear line.
+    _state_dir = Path(config.state_dir)
+    if _state_dir.exists() and not _state_dir.is_dir():
+        import sys as _sys_statefile
+
+        _sys_statefile.stderr.write(
+            f"mycelium-accel: --state-dir must be a directory, got a file: {_state_dir}\n"
+        )
+        raise SystemExit(1)
 
     if args.command == "self-improve":
         improver = SelfImprover(Path(args.project_root).resolve(), config, build_guard_from_args(args))
@@ -401,7 +481,7 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
         return
 
     if args.command == "report":
-        state = load_state(Path(config.state_dir))
+        state = _load_initialized_state(Path(config.state_dir))
         report = engine.growth_report(state)
         print(json.dumps(report, indent=2))
         return
@@ -418,7 +498,17 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
             candidate = Path(path)
             if not candidate.exists():
                 return {}
-            payload = json.loads(candidate.read_text(encoding="utf-8"))
+            # S2 Ciclo 10: an unreadable/truncated/non-object sidecar is an
+            # optional derived input; degrade to zeros with a warning rather
+            # than a raw json traceback from the dashboard command.
+            try:
+                payload = json.loads(candidate.read_text(encoding="utf-8"))
+            except (OSError, ValueError) as exc:
+                _sys.stderr.write(f"warning: {path}: unreadable ({type(exc).__name__}); ignoring\n")
+                return {}
+            if not isinstance(payload, dict):
+                _sys.stderr.write(f"warning: {path}: expected a JSON object; ignoring\n")
+                return {}
             ok, reason = check_provenance(payload, config.state_dir)
             if not ok:
                 _sys.stderr.write(f"warning: {path}: {reason}\n")
@@ -426,7 +516,7 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
                     return {}
             return payload
 
-        state = load_state(Path(config.state_dir))
+        state = _load_initialized_state(Path(config.state_dir))
         qd_payload = _load_json(".mycelium_qd/qd_experiment.json")
         transfer_payload = _load_json(".mycelium_transfer/transfer_graph.json")
         library_payload = _load_json(".mycelium_semantics/learned_library.json")
@@ -451,7 +541,18 @@ def _main() -> None:  # noqa: C901 — Q3.2: command-dispatch if-chain, one arm 
         return
 
     if args.command == "rollback":
-        state = engine.rollback(args.rollback_round)
+        try:
+            state = engine.rollback(args.rollback_round)
+        except FileNotFoundError as exc:
+            import sys as _sys_rb
+
+            _sys_rb.stderr.write(f"mycelium-accel: {exc}\n")
+            _sys_rb.stderr.write(
+                "Nothing to roll back: initialize and run first (init/run); "
+                "available checkpoints are under "
+                f"{config.state_dir}/checkpoints.\n"
+            )
+            raise SystemExit(1) from exc
         print(json.dumps({"round": state.round_index, "state_dir": config.state_dir}, indent=2))
         return
 

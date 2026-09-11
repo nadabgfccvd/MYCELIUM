@@ -1,0 +1,215 @@
+--- a/pygments/lexer.py
++++ b/pygments/lexer.py
+@@ -664,6 +664,191 @@
+         return type.__call__(cls, *args, **kwds)
+ 
+ 
++
++
++# ---------------------------------------------------------------------------
++# MYCELIUM-Accel portfolio case (2026-09-10): first-char dispatch.
++#
++# For each lexer state, precompute ordered per-first-character rule sublists:
++# a rule is excluded for character c only when its regex provably cannot
++# match any string starting with c (sound over-approximation: uncertain
++# constructs -- backrefs, categories, wide ranges -- keep the rule in every
++# list). "First matching rule in definition order wins" is preserved because
++# relative order inside each sublist never changes.
++# ---------------------------------------------------------------------------
++
++try:  # Python 3.11+
++    import re._parser as _sre_parse
++except ImportError:  # pragma: no cover
++    import sre_parse as _sre_parse
++
++
++class _FirstChars:
++    """Sound over-approximation of chars a regex can start with.
++
++    ``chars`` is the (possibly excluded) set; ``complement`` flips meaning.
++    """
++
++    __slots__ = ("chars", "complement")
++
++    def __init__(self, chars, complement):
++        self.chars = chars
++        self.complement = complement
++
++    def __contains__(self, ch):
++        if self.complement:
++            return ch not in self.chars
++        return ch in self.chars
++
++
++_ANY = _FirstChars(frozenset(), True)
++
++
++def _seq_first(seq):
++    """First-chars of a parsed sequence -> (chars|None, nullable)."""
++    union, nullable, saw_complement = set(), True, False
++    for op, av in seq:
++        result = _item_first(op, av)
++        if result is None:
++            return None, True
++        chars, item_nullable = result
++        if chars is None:
++            return None, True
++        if chars.complement:
++            saw_complement = True
++        else:
++            union |= chars.chars
++        if not item_nullable:
++            nullable = False
++            break
++    if nullable:
++        # A nullable pattern can match (consuming nothing) at ANY position:
++        # its effective first-char set is universal.
++        return _ANY, True
++    if saw_complement:
++        return _ANY, nullable
++    return _FirstChars(frozenset(union), False), nullable
++
++
++def _item_first(op, av):
++    if op is _sre_parse.LITERAL:
++        return _FirstChars(frozenset((chr(av),)), False), False
++    if op is _sre_parse.NOT_LITERAL:
++        return _FirstChars(frozenset((chr(av),)), True), False
++    if op is _sre_parse.ANY:
++        return _ANY, False
++    if op is _sre_parse.IN:
++        include, exclude, unknown, negate = set(), set(), False, False
++        for sub_op, sub_av in av:
++            if sub_op is _sre_parse.NEGATE:
++                negate = True
++            elif sub_op is _sre_parse.LITERAL:
++                (exclude if negate else include).add(chr(sub_av))
++            elif sub_op is _sre_parse.RANGE:
++                lo, hi = sub_av
++                if hi - lo > 1024:
++                    unknown = True
++                else:
++                    (exclude if negate else include).update(
++                        chr(c) for c in range(lo, hi + 1))
++            else:  # CATEGORY etc.
++                unknown = True
++        if unknown:
++            return None
++        if negate:
++            return _FirstChars(frozenset(exclude), True), False
++        return _FirstChars(frozenset(include), False), False
++    _possessive = tuple(
++        getattr(_sre_parse, name) for name in ("POSSESSIVE_REPEAT", "POSSESSIVE_REPEAT_ONE")
++        if hasattr(_sre_parse, name)
++    )
++    if op in (_sre_parse.SUBPATTERN, _sre_parse.ATOMIC_GROUP) or op in _possessive:
++        # SUBPATTERN/ATOMIC_GROUP/POSSESSIVE_*: (group, flags, seq) or (min, max, seq)
++        return _seq_first(av[-1])
++    if op in (_sre_parse.MAX_REPEAT, _sre_parse.MIN_REPEAT):
++        mn, mx, sub = av
++        chars, nullable = _seq_first(sub)
++        if chars is None:
++            return None
++        return chars, nullable or mn == 0
++    if op is _sre_parse.BRANCH:
++        all_chars, any_nullable, unknown = set(), False, False
++        for branch in av[1]:
++            chars, nullable = _seq_first(branch)
++            if chars is None:
++                unknown = True
++                break
++            if chars.complement:
++                return _ANY, True
++            all_chars |= chars.chars
++            any_nullable = any_nullable or nullable
++        if unknown:
++            return None
++        return _FirstChars(frozenset(all_chars), False), any_nullable
++    if op in (_sre_parse.AT, _sre_parse.ASSERT, _sre_parse.ASSERT_NOT):
++        # zero-width: consumes nothing; always passable (over-approximation).
++        return _FirstChars(frozenset(), True), True
++    return None  # GROUPREF and anything else: unknown
++
++
++def _regex_first_chars(pattern_str, flags):
++    import re as _re
++    # IGNORECASE/LOCALE make LITERAL first-chars unreliable ('select' also
++    # matches 'SELECT'); treat as unknown (rule stays in every sublist).
++    if flags & (_re.IGNORECASE | _re.LOCALE):
++        return None
++    try:
++        parsed = _sre_parse.parse(pattern_str, flags)
++    except Exception:
++        return None
++    chars, _nullable = _seq_first(parsed)
++    return chars
++
++
++_DISPATCH_CACHE = {}
++_PRINTABLE = {chr(c) for c in range(32, 127)} | {"\n", "\t"}
++
++
++def _rules_for(statetokens, text, pos):
++    ch = text[pos]
++    entry = _DISPATCH_CACHE.get(id(statetokens))
++    if entry is None or entry[0] is not statetokens:
++        firsts = []
++        for rexmatch, _action, _new_state in statetokens:
++            pattern = getattr(rexmatch, "__self__", None)
++            src = getattr(pattern, "pattern", None)
++            flags = getattr(pattern, "flags", 0)
++            firsts.append(None if src is None else _regex_first_chars(src, flags))
++        keys = set(_PRINTABLE)
++        for fs in firsts:
++            if fs is not None and not fs.complement:
++                keys |= fs.chars
++        if len(keys) > 2048:
++            table = None
++        else:
++            table = {}
++            for key in keys:
++                table[key] = [
++                    rule for rule, fs in zip(statetokens, firsts)
++                    if fs is None or key in fs
++                ]
++        # Default for chars we did not enumerate (complement sets contain
++        # them): keep every rule whose first-set is None or a complement.
++        if table is None:
++            default = list(statetokens)
++        else:
++            default = [
++                rule for rule, fs in zip(statetokens, firsts)
++                if fs is None or fs.complement
++            ]
++        entry = (statetokens, table, default)
++        _DISPATCH_CACHE[id(statetokens)] = entry
++    table = entry[1]
++    if table is None:
++        return statetokens
++    return table.get(ch, entry[2])
++
++
+ class RegexLexer(Lexer, metaclass=RegexLexerMeta):
+     """
+     Base for simple stateful regular expression-based lexers.
+@@ -709,8 +894,19 @@
+         tokendefs = self._tokens
+         statestack = list(stack)
+         statetokens = tokendefs[statestack[-1]]
++        ln = len(text)
+         while 1:
+-            for rexmatch, action, new_state in statetokens:
++            if pos >= ln:
++                # End of text: there is no character to index for the
++                # first-char table, but zero-width end rules (\Z, $, final
++                # lookaheads) still have to fire here -- exactly what the
++                # upstream unfiltered loop does on this extra pass. Consider
++                # every rule; when none match, the no-match arm below hits the
++                # IndexError at text[pos] and terminates, as upstream does.
++                rules = statetokens
++            else:
++                rules = _rules_for(statetokens, text, pos)
++            for rexmatch, action, new_state in rules:
+                 m = rexmatch(text, pos)
+                 if m:
+                     if action is not None:

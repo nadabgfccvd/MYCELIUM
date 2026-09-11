@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-p2-sqlparse-pythonoptimize",
+  "kind": "shell",
+  "test_command": "python digest_gate_pylib.py sqlparse",
+  "benchmark_command": "python bench_sqlparse.py",
+  "metrics_parser": "json_stdout",
+  "metric_name": "seconds",
+  "lower_is_better": true,
+  "warmup": 1,
+  "repeats": 5,
+  "timeout_seconds": 180.0,
+  "manifest_version": "1.0",
+  "variants": [
+    {"name": "pythonoptimize-1", "mode": "env", "env": {"PYTHONOPTIMIZE": "1"},
+     "description": "P2: skip assert/debug bytecode (-O); accepted small gain in archived run"}
+  ]
+}

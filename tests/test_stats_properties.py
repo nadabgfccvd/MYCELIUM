@@ -28,8 +28,16 @@ from mycelium_accel.stats import (
     sign_flip_permutation_test,
 )
 
-settings.register_profile("fast", max_examples=20, suppress_health_check=list(HealthCheck))
-settings.register_profile("ci", max_examples=200, suppress_health_check=list(HealthCheck))
+# Q2.1: deadline=None — wall-clock deadlines break under coverage
+# instrumentation / debuggers (measured: 256 ms vs 200 ms default under
+# --cov). Same policy as test_pipeline_stateful. Examples stay bounded by
+# max_examples, not by time.
+settings.register_profile(
+    "fast", max_examples=20, deadline=None, suppress_health_check=list(HealthCheck)
+)
+settings.register_profile(
+    "ci", max_examples=200, deadline=None, suppress_health_check=list(HealthCheck)
+)
 settings.load_profile(os.environ.get("HYPOTHESIS_PROFILE", "fast"))
 
 deltas_st = st.lists(

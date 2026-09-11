@@ -78,29 +78,3 @@ Metas R2 (roadmap): suíte <25 s, loop <8 s, 0 testes deletados.
 Nota honesta: a suíte total voltou a ~29 s porque W2 adicionou testes slow
 legítimos (S1/S3 live). O gate W1 (<25 s) foi cumprido no momento do W1
 (22.5 s); o número final reflete mais cobertura, não regressão.
-
-## Re-baseline C2 (2026-09-10, v1.4.0 + C1, 380 testes + 180 subtests)
-
-Medido em: Linux x86_64, **CPython 3.11.2, 2 CPUs** (sandbox Arena — máquina
-mais lenta que as dos baselines acima; números absolutos NÃO comparáveis
-entre máquinas, só os deltas C2 aqui dentro).
-
-| Medida | Antes (C1) | Depois (C2) | Nota |
-|---|---|---|---|
-| suíte total serial | 43.1 s | ~41 s | -2 s: timeout 2→1 s, SIGINT 3→2 s (sem mudar 1 asserção) |
-| loop `not slow` | 8.0 s | 8.0 s | intocado (meta <8 s: 8.0 s no limite — máquina lenta) |
-| suíte `-n auto` (2 workers) | 23.0 s | ~21 s | **-47% vs serial**: "xdist neutro em 2 cores" MORTO aqui |
-| stats por decisão (n=7) | 3.2 ms | 3.2 ms | BCa2000 3.2 ms · BCa5000 8.1 ms · exact n=16 72 ms (pior caso limitado) |
-
-Cauda slow (top 8, antes do C2): cli_ctrl_c 3.06 s · race_drops 2.77 s ·
-shell-text 2.45 s · race_adaptive live 2.31 s · stateful 2.05 s ·
-timeout_portable 2.00 s · python-lib 2.00 s · orphan_ctrl_c 1.76 s.
-Tudo subprocesso/sleep/sinal honesto — sem gordura removível sem enfraquecer.
-
-Kills C2 (com números):
-- **"otimizar stats/harness" MORTO 2×** (V2.1 + C2): decisão custa 3.2 ms;
-  piso matemático confirmado, teto de ganho 0.2% do sweep.
-- **"xdist neutro em 2 cores" MORTO nesta máquina** (43→23 s): reclassificado
-  como machine-specific — meça localmente (`pytest -q -n auto`).
-- Próximos ganhos reais exigem menos subprocessos nos testes slow (ex.:
-  fixtures compartilhadas) — risco de acoplamento; NÃO feito (custo > 2 s).

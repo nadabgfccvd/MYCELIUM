@@ -1,0 +1,34 @@
+diff --git a/unidecode/__init__.py b/unidecode/__init__.py
+index 5633c45..ff39b77 100644
+--- a/unidecode/__init__.py
++++ b/unidecode/__init__.py
+@@ -115,6 +115,29 @@ def _get_repl_str(char: str) -> Optional[str]:
+         return None
+ 
+ def _unidecode(string: str, errors: str, replace_str:str) -> str:
++    if errors == 'ignore':
++        # Fast path: build a one-shot ``str.translate`` table from the unique
++        # non-ASCII characters and let C do the per-character substitution.
++        # ASCII codepoints are left out (translate keeps them untouched) and
++        # characters with no replacement map to ``None`` (deleted), which is
++        # exactly errors='ignore'. Surrogates are left to the loop below so
++        # the per-character RuntimeWarning from _get_repl_str is preserved.
++        table: Dict[int, Optional[str]] = {}
++        for char in string:
++            codepoint = ord(char)
++            if codepoint < 0x80:
++                continue
++            if 0xd800 <= codepoint <= 0xdfff:
++                break  # surrogate: fall back to the warning-emitting loop
++            if codepoint not in table:
++                table[codepoint] = _get_repl_str(char)
++        else:  # no surrogate encountered: translate table is authoritative
++            return string.translate(table)
++
++    return _unidecode_loop(string, errors, replace_str)
++
++
++def _unidecode_loop(string: str, errors: str, replace_str:str) -> str:
+     retval = []
+ 
+     for index, char in enumerate(string):

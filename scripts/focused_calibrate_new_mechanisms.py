@@ -160,9 +160,9 @@ class FocusedMechanismImprover(SelfImprover):
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Focused calibration of new MYCELIUM Auto-evolve mechanisms")
-    parser.add_argument("--project-root", default="/home/user/mycelium-prototype")
+    parser.add_argument("--project-root", default=str(PROJECT_ROOT))
     parser.add_argument("--seed", type=int, default=101)
-    parser.add_argument("--state-dir", default="/home/user/mycelium-prototype/.mycelium_state")
+    parser.add_argument("--state-dir", default=str(PROJECT_ROOT / ".mycelium_state"))
     parser.add_argument("--rounds-per-cycle", type=int, default=15)
     parser.add_argument("--sleep-seconds", type=float, default=0.0)
     parser.add_argument("--max-cycles", type=int, default=None)
