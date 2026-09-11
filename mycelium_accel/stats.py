@@ -49,33 +49,6 @@ def _bootstrap_index_matrix(
     return tuple(tuple(randrange(n) for _ in range(n)) for _ in range(n_bootstrap))
 
 
-@lru_cache(maxsize=64)
-def _stable_bootstrap_index_matrix(
-    n: int, n_bootstrap: int, seed: int,
-) -> tuple[tuple[int, ...], ...]:
-    """Pre-3.14 ``randrange`` contract used by the frozen CI numerics.
-
-    The public helper above intentionally mirrors the interpreter's
-    ``randrange`` for its API test.  Python 3.14 changed that implementation's
-    floating-point path, which moved a pinned BCa quantile by one ULP.  The
-    decision interval uses the portable getrandbits/rejection contract that
-    CPython 3.11 used, preserving replay values across the supported matrix.
-    """
-    rng = random.Random(seed)
-    getrandbits = rng.getrandbits
-    bit_count = n.bit_length()
-    rows: list[tuple[int, ...]] = []
-    for _ in range(n_bootstrap):
-        row: list[int] = []
-        for _ in range(n):
-            value = getrandbits(bit_count)
-            while value >= n:
-                value = getrandbits(bit_count)
-            row.append(value)
-        rows.append(tuple(row))
-    return tuple(rows)
-
-
 @dataclass(slots=True)
 class PairedComparison:
     """Full paired comparison for a single metric."""
@@ -164,6 +137,11 @@ def _legacy_float_sum(values: Any) -> float:
     return float(total)
 
 
+def _legacy_normal_cdf(value: float) -> float:
+    """Use the pre-3.14 ``NormalDist.cdf`` arithmetic for frozen BCa values."""
+    return 0.5 * (1.0 + math.erf(value / math.sqrt(2.0)))
+
+
 def _jackknife_acceleration(data: list[float]) -> float:
     """Q3.2: BCa acceleration constant via the jackknife (extracted verbatim)."""
     n = len(data)
@@ -206,7 +184,7 @@ def bca_bootstrap_ci(
 
     theta_hat = _legacy_float_sum(data) / n
     boot_means: list[float] = []
-    for indices in _stable_bootstrap_index_matrix(n, n_bootstrap, seed):
+    for indices in _bootstrap_index_matrix(n, n_bootstrap, seed):
         total = 0.0
         for j in indices:
             total += data[j]
@@ -228,7 +206,7 @@ def bca_bootstrap_ci(
         if denom == 0.0:
             denom = 1e-12
         adjusted = z0 + (z0 + z_alpha) / denom
-        return _NORM.cdf(adjusted)
+        return _legacy_normal_cdf(adjusted)
 
     q_lo = min(max(_adjust(z_alpha_lo), 0.0), 1.0)
     q_hi = min(max(_adjust(z_alpha_hi), 0.0), 1.0)
@@ -254,7 +232,7 @@ def percentile_ci(
     if n == 1:
         return data[0], data[0]
     boot_means: list[float] = []
-    for indices in _stable_bootstrap_index_matrix(n, n_bootstrap, seed):
+    for indices in _bootstrap_index_matrix(n, n_bootstrap, seed):
         # ``fsum`` preserves the pre-memoization percentile values (notably
         # 0.1 rather than 0.09999999999999999 for decimal fixtures) while the
         # index matrix still supplies the exact historical draw sequence.
