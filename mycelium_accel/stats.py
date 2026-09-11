@@ -129,6 +129,14 @@ def _quantile(sorted_values: Sequence[float], q: float) -> float:
     return float(sorted_values[lower] * (1.0 - frac) + sorted_values[upper] * frac)
 
 
+def _legacy_float_sum(values: Any) -> float:
+    """Reproduce pre-3.14 left-to-right float addition deterministically."""
+    total: float | int = 0
+    for value in values:
+        total += value
+    return float(total)
+
+
 def _jackknife_acceleration(data: list[float]) -> float:
     """Q3.2: BCa acceleration constant via the jackknife (extracted verbatim)."""
     n = len(data)
@@ -139,10 +147,10 @@ def _jackknife_acceleration(data: list[float]) -> float:
             if j != i:
                 total += value
         jack_means.append(total / (n - 1))
-    jack_mean = sum(jack_means) / n
+    jack_mean = _legacy_float_sum(jack_means) / n
     try:
-        numerator = sum((jack_mean - m) ** 3 for m in jack_means)
-        denominator = 6.0 * (sum((jack_mean - m) ** 2 for m in jack_means) ** 1.5)
+        numerator = _legacy_float_sum((jack_mean - m) ** 3 for m in jack_means)
+        denominator = 6.0 * (_legacy_float_sum((jack_mean - m) ** 2 for m in jack_means) ** 1.5)
     except OverflowError:
         return 0.0  # M3: huge-but-finite data skips acceleration, never crashes
     return numerator / denominator if denominator > 0 else 0.0
@@ -169,7 +177,7 @@ def bca_bootstrap_ci(
     if n == 1:
         return data[0], data[0]
 
-    theta_hat = sum(data) / n
+    theta_hat = _legacy_float_sum(data) / n
     boot_means: list[float] = []
     for indices in _bootstrap_index_matrix(n, n_bootstrap, seed):
         total = 0.0

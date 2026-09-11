@@ -12,7 +12,10 @@ import os
 import json
 import sys
 from pathlib import Path
+from threading import RLock
 from typing import Any
+
+_CACHE_IO_LOCK = RLock()
 
 # Shared atomic replacement boundary used by exports, cache writes, and tests.
 # Keep this as a wrapper rather than a captured alias so monkeypatching either
@@ -78,41 +81,53 @@ def _replace_with_retry(tmp_name: str, path: Path, attempts: int = 10) -> None:
     raise last
 
 
-def _atomic_write_text(path: Path, text: str) -> None:
-    """Q2.2: crash- and concurrency-safe write (tmp + rename)."""
+def _atomic_write_text(
+    path: Path,
+    text: str,
+    *,
+    newline: str | None = None,
+) -> None:
+    """Q2.2: crash- and concurrency-safe write (tmp + rename).
+
+    ``newline=""`` is used by CSV exports so csv.writer's CRLF bytes are not
+    translated a second time on Windows.  The lock serializes writers and
+    readers in this process, avoiding Windows' replace-while-open race.
+    """
     import tempfile as _tempfile  # local: keeps module import light
 
-    fd, tmp_name = _tempfile.mkstemp(
-        dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            handle.write(text)
-        _replace_with_retry(tmp_name, path)
-    except BaseException:
+    with _CACHE_IO_LOCK:
+        fd, tmp_name = _tempfile.mkstemp(
+            dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
         try:
-            os.unlink(tmp_name)
-        except OSError:
-            pass
-        raise
+            with os.fdopen(fd, "w", encoding="utf-8", newline=newline) as handle:
+                handle.write(text)
+            _replace_with_retry(tmp_name, path)
+        except BaseException:
+            try:
+                os.unlink(tmp_name)
+            except OSError:
+                pass
+            raise
 
 
 def lookup(cache_dir: Path, key: str) -> dict[str, Any] | None:
     from . import __version__
 
-    path = cache_dir / f"{key}.json"
-    if not path.is_file():
-        return None
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except ValueError:
-        return None
-    if not isinstance(payload, dict):  # Q1.3: corrupt cache is a miss, not a crash
-        return None
-    if payload.get("key") != key or payload.get("mycelium_version") != __version__:
-        return None
-    if not isinstance(payload.get("sweep"), dict):
-        return None
-    return payload
+    with _CACHE_IO_LOCK:
+        path = cache_dir / f"{key}.json"
+        if not path.is_file():
+            return None
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+        if not isinstance(payload, dict):  # Q1.3: corrupt cache is a miss, not a crash
+            return None
+        if payload.get("key") != key or payload.get("mycelium_version") != __version__:
+            return None
+        if not isinstance(payload.get("sweep"), dict):
+            return None
+        return payload
 
 
 def store(cache_dir: Path, key: str, payload: dict[str, Any]) -> Path:

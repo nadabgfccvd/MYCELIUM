@@ -430,7 +430,7 @@ class BenchmarkExecutor:
         for summary in sweep.summaries:
             for run in summary.runs:
                 writer.writerow([run.candidate, run.seed, run.metric, run.value, run.seconds, run.ok])
-        _atomic_write_text(path, buffer.getvalue())
+        _atomic_write_text(path, buffer.getvalue(), newline="")
         return path
 
     def export_markdown(self, sweep: BenchmarkSweep) -> Path:
