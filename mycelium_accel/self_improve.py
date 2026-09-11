@@ -87,6 +87,9 @@ class SelfImproveCycleResult:
     baseline: BenchmarkSnapshot
     candidate: BenchmarkSnapshot | None
     guard: GuardDecision
+    # Explain every screened candidate without making the trail part of the
+    # acceptance decision.  It is intentionally optional for old reports.
+    screen_trail: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -150,6 +153,7 @@ class SelfImprover:
         self.report_dir.mkdir(parents=True, exist_ok=True)
         self.status_path = self.report_dir / "daemon.status.json"
         self.error_path = self.report_dir / "last_error.json"
+        self._last_search_trail: list[dict[str, Any]] = []
 
     def run(
         self,
@@ -375,6 +379,9 @@ class SelfImprover:
             active_variant=active_variants.AGGREGATE_SCORES_VARIANT,
             default_profile=load_default_profile(),
         )
+        # Reset before every search.  A mocked/short-circuited search must
+        # never attach the previous cycle's explanation trail.
+        self._last_search_trail = []
         candidate = self._search_best_candidate(baseline)
         if candidate is None:
             decision = GuardDecision(False, ["No candidate exceeded the guarded baseline."])
@@ -385,6 +392,7 @@ class SelfImprover:
                 baseline=baseline,
                 candidate=None,
                 guard=decision,
+                screen_trail=[],
             )
 
         decision = compare_snapshots(baseline, candidate, self.guard)
@@ -442,6 +450,7 @@ class SelfImprover:
             baseline=baseline,
             candidate=candidate,
             guard=decision,
+            screen_trail=list(self._last_search_trail),
         )
 
     def _benchmark_current_selection(self) -> BenchmarkSnapshot:
@@ -464,9 +473,22 @@ class SelfImprover:
                 tasks.append((variant, profile))
 
         snapshots = self._benchmark_candidates_parallel(tasks)
+        self._last_search_trail = []
         best_candidate: BenchmarkSnapshot | None = None
         for snapshot in snapshots:
             decision = compare_snapshots(baseline, snapshot, self.guard)
+            profile_diff = {
+                key: snapshot.profile.get(key)
+                for key in set(baseline.profile) | set(snapshot.profile)
+                if baseline.profile.get(key) != snapshot.profile.get(key)
+            }
+            self._last_search_trail.append({
+                "variant": snapshot.aggregate_variant,
+                "profile_diff": profile_diff,
+                "rounds_per_second_mean": snapshot.rounds_per_second_mean,
+                "accepted": decision.accepted,
+                "reasons": list(decision.reasons),
+            })
             if not decision.accepted:
                 continue
             if best_candidate is None or snapshot.rounds_per_second_mean > best_candidate.rounds_per_second_mean:

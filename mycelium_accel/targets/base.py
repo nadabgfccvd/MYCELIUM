@@ -21,6 +21,7 @@ import shlex
 import shutil
 import signal
 import subprocess
+import tempfile
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -34,7 +35,7 @@ DEFAULT_EXECUTABLE_ALLOWLIST = {
     "cargo", "rustc", "rustup",
     "cmake", "make", "ninja", "ctest",
     "cc", "c++", "gcc", "g++", "clang", "clang++",
-    "node", "npm", "npx", "yarn", "pnpm",
+    "node", "npm", "npx", "yarn", "pnpm", "go",
     "sh", "bash", "env", "echo", "true",
     "git", "tar", "patch",
 }
@@ -54,10 +55,21 @@ def canonical_executable(name: str) -> str:
     return "python3" if _re.fullmatch(r"python3\.\d+t?", stem) else stem
 
 
+def _is_safe_relative_path(value: str) -> bool:
+    """Platform-neutral check for a patch destination inside the target."""
+    normalized = value.replace("\\", "/")
+    return not (
+        normalized.startswith("/")
+        or (len(normalized) >= 2 and normalized[1] == ":")
+        or ".." in normalized.split("/")
+    )
+
+
 ENV_PASSTHROUGH = {
     "PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "TEMP", "TMP",
     "CARGO_HOME", "RUSTUP_HOME", "NODE_ENV", "VIRTUAL_ENV",
     "CC", "CXX", "CFLAGS", "CXXFLAGS", "LDFLAGS", "MAKEFLAGS",
+    "GOCACHE", "GOMODCACHE",
 }
 
 
@@ -138,8 +150,7 @@ class Variant:
                     raise ValueError(
                         f"patch variant {name!r} has an empty file destination."
                     )
-                rel = Path(destination)
-                if rel.is_absolute() or ".." in rel.parts:
+                if not _is_safe_relative_path(destination):
                     raise ValueError(
                         f"patch variant {name!r} destination {destination!r} must be "
                         "a relative path inside the target root (no absolute / '..')."
@@ -253,7 +264,8 @@ class TargetManifest:
             elif canonical_executable(argv[0].split("/")[-1]) not in allow:
                 errors.append(
                     f"{field_name}: executable {argv[0]!r} is not allowlisted "
-                    "(runs would fail at sandbox time; fix the manifest now)"
+                    "(add it to executable_allowlist in mycelium.target.json; "
+                    "runs would fail at sandbox time)"
                 )
         for variant in self.variants:
             for field_name in ("apply_command", "revert_command"):
@@ -264,9 +276,9 @@ class TargetManifest:
                 if canonical_executable(first) not in allow:
                     errors.append(f"variant {variant.name!r} {field_name}: {first!r} not allowlisted")
         if self.repeats < 1:
-            errors.append("repeats must be >= 1")
+            errors.append(f"repeats must be >= 1 (got {self.repeats})")
         if self.warmup < 0:
-            errors.append("warmup must be >= 0")
+            errors.append(f"warmup must be >= 0 (got {self.warmup})")
         return errors
 
     @classmethod
@@ -333,11 +345,34 @@ class CommandRunner:
                 f"Executable '{executable}' is not in the allowlist for this target."
             )
         for token in argv[1:]:
-            if token.startswith("/") and not token.startswith(str(self.root)):
-                # Absolute paths outside the sandbox root are rejected unless
-                # they point to interpreter/toolchain files handled above.
-                if not token.startswith(("/usr/", "/bin/", "/opt/", "/tmp/")):
-                    raise TargetSafetyError(f"Suspicious absolute path in command: {token}")
+            # Commands may legitimately refer to fixtures in the target,
+            # toolchain files, or the platform's temporary directory.  Keep
+            # the check platform-neutral: macOS tempdirs live under
+            # /var/folders and Windows paths use drive letters/backslashes.
+            drive, _ = os.path.splitdrive(token)
+            is_absolute = (
+                token.startswith(("/", "\\"))
+                or bool(drive)
+                or (len(token) >= 2 and token[1] == ":")
+            )
+            if not is_absolute:
+                continue
+
+            def _under(path: str, base: str) -> bool:
+                try:
+                    normalized_path = os.path.normcase(os.path.abspath(path))
+                    normalized_base = os.path.normcase(os.path.abspath(base))
+                    return os.path.commonpath((normalized_path, normalized_base)) == normalized_base
+                except ValueError:  # different Windows drives
+                    return False
+
+            trusted_roots = (
+                str(self.root),
+                tempfile.gettempdir(),
+                "/usr", "/bin", "/opt", "/tmp",
+            )
+            if not any(_under(token, root) for root in trusted_roots):
+                raise TargetSafetyError(f"Suspicious absolute path in command: {token}")
 
     def build_env(self, overrides: dict[str, str] | None = None) -> dict[str, str]:
         env = {key: value for key, value in os.environ.items() if key in ENV_PASSTHROUGH}
@@ -379,7 +414,10 @@ class CommandRunner:
             elapsed = time.perf_counter() - started
             return TargetRunResult(
                 command=argv,
-                returncode=-signal.SIGKILL,
+                # Keep the public timeout result stable on Windows, where
+                # signal.SIGKILL is not defined even though the process is
+                # forcibly terminated by proc.kill().
+                returncode=-9,
                 seconds=elapsed,
                 stdout_tail="",
                 stderr_tail=f"TIMEOUT after {elapsed:.1f}s",
@@ -532,7 +570,7 @@ class ProjectTarget:
             if variant.mode == "patch":
                 for rel_path, source_path in variant.files.items():
                     rel = Path(rel_path)
-                    if rel.is_absolute() or ".." in rel.parts:
+                    if not _is_safe_relative_path(rel_path):
                         raise TargetSafetyError(
                             f"patch destination {rel_path!r} must be relative "
                             "and stay inside the target root."
